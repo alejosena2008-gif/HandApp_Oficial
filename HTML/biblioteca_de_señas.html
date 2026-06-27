@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca de Señas — HandApp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/biblioteca_de_señas.css">
+     <link rel="icon" type="image/png" href="../IMG/manos.png">
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <!-- Logo -->
+            <a href="../index.html" class="logo">
+                <div class="logo-hands">
+                    <svg class="hand-left" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 4C28.686 4 26 6.686 26 10V30H22V16C22 12.686 19.314 10 16 10C12.686 10 10 12.686 10 16V38C10 50.15 19.85 60 32 60C44.15 60 54 50.15 54 38V22C54 18.686 51.314 16 48 16C44.686 16 42 18.686 42 22V30H38V10C38 6.686 35.314 4 32 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg class="hand-right" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 4C35.314 4 38 6.686 38 10V30H42V16C42 12.686 44.686 10 48 10C51.314 10 54 12.686 54 16V38C54 50.15 44.15 60 32 60C19.85 60 10 50.15 10 38V22C10 18.686 12.686 16 16 16C19.314 16 22 18.686 22 22V30H26V10C26 6.686 28.686 4 32 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Hand<span class="logo-accent">App</span></span>
+            </a>
+
+            <!-- Navegación principal -->
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li><a href="../index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="#" class="nav-link">Lecciones</a></li>
+                    <li><a href="#" class="nav-link">Juegos</a></li>
+                    <li><a href="#" class="nav-link">Comunidad</a></li>
+                </ul>
+            </nav>
+
+            <!-- Acciones -->
+            <div style="display:flex;align-items:center;gap:.75rem;">
+                <a href="#" class="btn btn-primary" style="display:none;" id="btnLogin">Iniciar sesión</a>
+                <a href="#" class="btn btn-primary">Empezar gratis</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== PAGE HERO ========== -->
+    <section class="page-hero">
+        <div class="container">
+            <span class="section-tag">Lengua de Señas</span>
+            <h1 class="page-title">
+                Biblioteca de <span class="highlight">Señas</span>
+            </h1>
+            <p class="page-subtitle">
+                Explora nuestra colección de señas en video. Busca, practica y aprende a tu ritmo.
+            </p>
+        </div>
+    </section>
+
+    <!-- ========== BUSCADOR ========== -->
+    <section class="buscador-section">
+        <div class="container">
+            <div class="buscador-wrapper">
+                <span class="buscador-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                    </svg>
+                </span>
+                <input type="text" id="searchLocal" placeholder="Buscar seña (ej: hola, gracias)..." autocomplete="off">
+                <button class="buscador-clear" id="clearBtn" title="Limpiar búsqueda">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Filtros de categoría -->
+            <div class="filtros" id="filtros">
+                <button class="filtro-btn active" data-categoria="todos">Todos</button>
+                <button class="filtro-btn" data-categoria="saludos">Saludos</button>
+                <button class="filtro-btn" data-categoria="emociones">Emociones</button>
+                <button class="filtro-btn" data-categoria="numeros">Números</button>
+                <button class="filtro-btn" data-categoria="familia">Familia</button>
+                <button class="filtro-btn" data-categoria="colores">Colores</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== BIBLIOTECA ========== -->
+    <main class="biblioteca-section">
+        <div class="container">
+
+            <p class="resultados-info" id="resultadosInfo">
+                Mostrando <span id="cantidadVisible">3</span> señas
+            </p>
+
+            <div class="tarjetas-container" id="tarjetasContainer">
+
+                <!-- Tarjeta: Hola -->
+                <div class="tarjeta-video" data-name="hola saludo" data-categoria="saludos">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/hola.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Saludos</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Hola</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para saludar de manera amigable.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+<!-------------------------------------------------------------------------------------------------------
+----------------------------------------------SALUDOS----------------------------------------------------
+---------------------------------------------------------------------------------------------------------->
+                <!-- Tarjeta: Adiós -->
+                <div class="tarjeta-video" data-name="adiós adios despedida" data-categoria="saludos">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/adios.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Saludos</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Adiós</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para despedirse al finalizar una conversación.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: Buenos dias -->
+                <div class="tarjeta-video" data-name="buenos días buenos dias" data-categoria="saludos">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/buenos_dias.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Saludos</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Buenos días</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para saludar en la mañana.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                
+                <!-- Tarjeta: Buenas tardes -->
+                <div class="tarjeta-video" data-name="buenas tardes" data-categoria="saludos">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/buenas_tardes.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Saludos</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Buenas tardes</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para saludar en la tarde.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                
+                <!-- Tarjeta: Buenas noches -->
+                <div class="tarjeta-video" data-name="buenas noches despedida" data-categoria="saludos">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/buenas_noches.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Saludos</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Buenas noches</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para saludar en la noche.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <!-- Tarjeta: Como estas -->
+                <div class="tarjeta-video" data-name="como estas" data-categoria="saludos">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/como_estas.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Saludos</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Como estas</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para preguntar cómo está alguien.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: Bienvenida -->
+                <div class="tarjeta-video" data-name="bienvenida recepción" data-categoria="saludos">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/bienvenida.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Saludos</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Bienvenida</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para recibir a alguien en una ocasión especial.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                
+
+
+
+<!-------------------------------------------------------------------------------------------------------
+----------------------------------------------EMOCIONES----------------------------------------------------
+---------------------------------------------------------------------------------------------------------->
+                <!-- Tarjeta: Gracias -->
+                <div class="tarjeta-video" data-name="gracias gratitud" data-categoria="emociones">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/gracias.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Emociones</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Gracias</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para expresar gratitud hacia otra persona.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: Bien -->
+                <div class="tarjeta-video" data-name="bien" data-categoria="emociones">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/bien.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Emociones</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Bien</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para expresar que algo está bien.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta: Mas o menos -->
+                <div class="tarjeta-video" data-name="mas o menos" data-categoria="emociones">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/mas_o_menos.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Emociones</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Mas o menos</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para expresar una opinión neutral o ambigua.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                              <!-- Tarjeta: mal -->
+                <div class="tarjeta-video" data-name="mal" data-categoria="emociones    ">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/mal.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Emociones</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Mal</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para expresar que algo está mal.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                              <!-- Tarjeta: miedo -->
+                <div class="tarjeta-video" data-name="miedo" data-categoria="emociones">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/miedo.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Emociones</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Miedo</h3>
+                        <p class="tarjeta-desc">Esta seña se utiliza para expresar miedo o temor.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+<!-------------------------------------------------------------------------------------------------------
+----------------------------------------------NUMEROS----------------------------------------------------
+---------------------------------------------------------------------------------------------------------->
+                <!-- Tarjeta: uno -->
+                <div class="tarjeta-video" data-name="uno" data-categoria="numeros">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/uno.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Números</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Uno</h3>
+                        <p class="tarjeta-desc">Esta seña representa el número uno en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+
+
+                </div>
+                                <!-- Tarjeta: dos -->
+                <div class="tarjeta-video" data-name="dos" data-categoria="numeros">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/dos.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Números</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Dos</h3>
+                        <p class="tarjeta-desc">Esta seña representa el número dos en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                                <!-- Tarjeta: tres -->
+                <div class="tarjeta-video" data-name="tres" data-categoria="numeros">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/tres.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Números</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Tres</h3>
+                        <p class="tarjeta-desc">Esta seña representa el número tres en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                                <!-- Tarjeta: cuatro -->
+                <div class="tarjeta-video" data-name="cuatro" data-categoria="numeros">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/cuatro.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Números</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Cuatro</h3>
+                        <p class="tarjeta-desc">Esta seña representa el número cuatro en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta: cinco -->
+                <div class="tarjeta-video" data-name="cinco" data-categoria="numeros">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/cinco.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Números</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Cinco</h3>
+                        <p class="tarjeta-desc">Esta seña representa el número cinco en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta: seis -->
+                <div class="tarjeta-video" data-name="seis" data-categoria="numeros">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/seis.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Números</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Seis</h3>
+                        <p class="tarjeta-desc">Esta seña representa el número seis en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: siete -->
+                <div class="tarjeta-video" data-name="siete" data-categoria="numeros">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/siete   .mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Números</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Siete</h3>
+                        <p class="tarjeta-desc">Esta seña representa el número siete en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: ocho -->
+                <div class="tarjeta-video" data-name="ocho" data-categoria="numeros">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/ocho.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Números</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Ocho</h3>
+                        <p class="tarjeta-desc">Esta seña representa el número ocho en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: nueve -->
+                <div class="tarjeta-video" data-name="nueve" data-categoria="numeros">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/nueve.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Números</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Nueve</h3>
+                        <p class="tarjeta-desc">Esta seña representa el número nueve en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta: diez -->
+                <div class="tarjeta-video" data-name="diez" data-categoria="numeros">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/diez.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Números</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Diez</h3>
+                        <p class="tarjeta-desc">Esta seña representa el número diez en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+
+
+<!-------------------------------------------------------------------------------------------------------
+----------------------------------------------FAMILIA----------------------------------------------------
+---------------------------------------------------------------------------------------------------------->
+
+                <!-- Tarjeta: Mamá -->
+                <div class="tarjeta-video" data-name="mama" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/mama.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Mamá</h3>
+                        <p class="tarjeta-desc">Esta seña representa a la mamá en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <!-- Tarjeta: papá -->
+                <div class="tarjeta-video" data-name="papa" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/papa.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Papá</h3>
+                        <p class="tarjeta-desc">Esta seña representa al papá en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Tarjeta: Hermano -->
+                <div class="tarjeta-video" data-name="hermano" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/hermano.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Hermano</h3>
+                        <p class="tarjeta-desc">Esta seña representa al hermano en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <!-- Tarjeta: hermana -->
+                <div class="tarjeta-video" data-name="hermana" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/hermana.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Hermana</h3>
+                        <p class="tarjeta-desc">Esta seña representa a la hermana en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <!-- Tarjeta: abuelo -->
+                <div class="tarjeta-video" data-name="abuelo" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/abuelo.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Abuelo</h3>
+                        <p class="tarjeta-desc">Esta seña representa al abuelo en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                
+                <!-- Tarjeta: abuela -->
+                <div class="tarjeta-video" data-name="abuela" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/abuela.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Abuela</h3>
+                        <p class="tarjeta-desc">Esta seña representa a la abuela en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <!-- Tarjeta: tio -->
+                <div class="tarjeta-video" data-name="tio" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/tio.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Tío</h3>
+                        <p class="tarjeta-desc">Esta seña representa al tío en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                
+
+                <!-- Tarjeta: tia -->
+                <div class="tarjeta-video" data-name="tia" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/tia.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Tía</h3>
+                        <p class="tarjeta-desc">Esta seña representa a la tía en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: primo -->
+                <div class="tarjeta-video" data-name="primo" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/primo.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Primo</h3>
+                        <p class="tarjeta-desc">Esta seña representa al primo en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: prima -->
+                <div class="tarjeta-video" data-name="prima" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/prima.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Prima</h3>
+                        <p class="tarjeta-desc">Esta seña representa a la prima en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Tarjeta: bisabuelo -->
+                <div class="tarjeta-video" data-name="bisabuelo" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/bisabuelo.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Bisabuelo</h3>
+                        <p class="tarjeta-desc">Esta seña representa al bisabuelo en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: bisabuela -->
+                <div class="tarjeta-video" data-name="bisabuela" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/bisabuela.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Bisabuela</h3>
+                        <p class="tarjeta-desc">Esta seña representa a la bisabuela en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <!-- Tarjeta: pariente -->
+                <div class="tarjeta-video" data-name="pariente" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/pariente.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Pariente</h3>
+                        <p class="tarjeta-desc">Esta seña representa a un pariente en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <!-- Tarjeta: familia -->
+                <div class="tarjeta-video" data-name="familia" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/familia.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Familia</h3>
+                        <p class="tarjeta-desc">Esta seña representa a la familia en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <!-- Tarjeta: familiar -->
+                <div class="tarjeta-video" data-name="familiar" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/familiar.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Familiar</h3>
+                        <p class="tarjeta-desc">Esta seña representa a un familiar en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <!-- Tarjeta: Papás -->
+                <div class="tarjeta-video" data-name="papás" data-categoria="familia">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/papás.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Familia</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Papás</h3>
+                        <p class="tarjeta-desc">Esta seña representa a los papás en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+<!-------------------------------------------------------------------------------------------------------
+----------------------------------------------COLORES----------------------------------------------------
+---------------------------------------------------------------------------------------------------------->
+                <!-- Tarjeta: Rojo -->
+                <div class="tarjeta-video" data-name="rojo" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/rojo.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Rojo</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color rojo en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                <!-- Tarjeta: Azul -->
+                <div class="tarjeta-video" data-name="azul" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/azul.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Azul</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color azul en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: Amarillo -->
+                <div class="tarjeta-video" data-name="amarillo" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/amarillo.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Amarillo</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color amarillo en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                    <!-- Tarjeta: Verde -->
+                <div class="tarjeta-video" data-name="verde" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/verde.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Verde</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color verde en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: Negro -->
+                <div class="tarjeta-video" data-name="negro" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/negro.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Negro</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color negro en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta: Blanco -->
+                <div class="tarjeta-video" data-name="blanco" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/blanco.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Blanco</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color blanco en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta: Celeste -->
+                <div class="tarjeta-video" data-name="celeste" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/celeste.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Celeste</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color celeste en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+
+                 <!-- Tarjeta: Naranja -->
+                <div class="tarjeta-video" data-name="naranja" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/naranja.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Naranja</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color naranja en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta: Gris -->
+                <div class="tarjeta-video" data-name="gris" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/gris.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Gris</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color gris en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta: Café -->
+                <div class="tarjeta-video" data-name="cafe" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/cafe.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Café</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color café en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Tarjeta: morado -->
+                <div class="tarjeta-video" data-name="morado" data-categoria="colores">
+                    <div class="tarjeta-video-wrapper">
+                        <video controls preload="metadata">
+                            <source src="videos/morado.mp4" type="video/mp4">
+                            Tu navegador no admite video HTML5.
+                        </video>
+                        <span class="tarjeta-badge">Colores</span>
+                    </div>
+                    <div class="tarjeta-body">
+                        <h3 class="tarjeta-title">Morado</h3>
+                        <p class="tarjeta-desc">Esta seña representa al color morado en la lengua de señas.</p>
+                        <a href="#" class="tarjeta-link">
+                            Practicar
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Estado: Sin resultados -->
+                <div class="no-resultados" id="noResultados" style="display:none;">
+                    <div class="no-resultados-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                        </svg>
+                    </div>
+                    <h3>Sin resultados</h3>
+                    <p>No encontramos señas que coincidan con tu búsqueda. Intenta con otro término.</p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <a href="../index.html" class="footer-logo">Hand<span class="footer-logo-accent">App</span></a>
+                <p>© 2025 HandApp. Aprende lengua de señas.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script>
+        /* ─── Header scroll ─── */
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        /* ─── Referencias ─── */
+        const searchInput      = document.getElementById('searchLocal');
+        const clearBtn         = document.getElementById('clearBtn');
+        const noResultados     = document.getElementById('noResultados');
+        const cantidadSpan     = document.getElementById('cantidadVisible');
+        const todasLasTarjetas = document.querySelectorAll('.tarjeta-video');
+
+        let categoriaActiva = 'todos';
+
+        /* ─── Lógica principal ─────────────────────────────────────────────
+         *
+         *  MODO "Todos" (sin texto):        muestra TODAS las tarjetas.
+         *  MODO categoría (sin texto):      muestra solo las de esa categoría.
+         *  MODO búsqueda (con texto):       muestra UNA sola tarjeta por cada
+         *                                   categoría que coincida (la primera
+         *                                   que encuentre en esa categoría),
+         *                                   ignorando el filtro de botón activo.
+         * ────────────────────────────────────────────────────────────────── */
+        function filtrar() {
+            const termino = searchInput.value.toLowerCase().trim();
+            let count = 0;
+
+            if (!termino) {
+                /* ── Sin búsqueda: comportamiento normal de categoría ── */
+                todasLasTarjetas.forEach(tarjeta => {
+                    const cat = (tarjeta.dataset.categoria || '').toLowerCase();
+                    const visible = categoriaActiva === 'todos' || cat === categoriaActiva;
+                    tarjeta.style.display = visible ? '' : 'none';
+                    if (visible) count++;
+                });
+
+            } else {
+                /* ── Con búsqueda: una tarjeta por categoría que coincida ── */
+
+                // 1. Encontrar qué tarjetas coinciden con el texto
+                const coincidentes = Array.from(todasLasTarjetas).filter(tarjeta => {
+                    const nombre = (tarjeta.dataset.name || '').toLowerCase();
+                    const titulo = (tarjeta.querySelector('.tarjeta-title')?.textContent || '').toLowerCase();
+                    const desc   = (tarjeta.querySelector('.tarjeta-desc')?.textContent || '').toLowerCase();
+                    return nombre.includes(termino) || titulo.includes(termino) || desc.includes(termino);
+                });
+
+                // 2. De las que coinciden, tomar solo la primera por categoría
+                const categoriasMostradas = new Set();
+                const amostrar = new Set();
+
+                coincidentes.forEach(tarjeta => {
+                    const cat = (tarjeta.dataset.categoria || '').toLowerCase();
+                    if (!categoriasMostradas.has(cat)) {
+                        categoriasMostradas.add(cat);
+                        amostrar.add(tarjeta);
+                    }
+                });
+
+                // 3. Mostrar/ocultar
+                todasLasTarjetas.forEach(tarjeta => {
+                    if (amostrar.has(tarjeta)) {
+                        tarjeta.style.display = '';
+                        count++;
+                    } else {
+                        tarjeta.style.display = 'none';
+                    }
+                });
+            }
+
+            noResultados.style.display = count === 0 ? 'block' : 'none';
+            cantidadSpan.textContent = count;
+            clearBtn.classList.toggle('visible', termino.length > 0);
+        }
+
+        /* ─── Eventos ─── */
+        searchInput.addEventListener('input', filtrar);
+
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            filtrar();
+            searchInput.focus();
+        });
+
+        document.getElementById('filtros').addEventListener('click', e => {
+            const btn = e.target.closest('.filtro-btn');
+            if (!btn) return;
+            document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            categoriaActiva = btn.dataset.categoria;
+            // Al cambiar categoría, limpiar la búsqueda para no confundir modos
+            searchInput.value = '';
+            filtrar();
+        });
+
+        /* ─── Parámetro ?buscar= desde el index ─── */
+        const params = new URLSearchParams(window.location.search);
+        const query  = params.get('buscar');
+        if (query) {
+            searchInput.value = query;
+            filtrar();
+        } else {
+            /* ─── Cuenta inicial ─── */
+            cantidadSpan.textContent = todasLasTarjetas.length;
+        }
+    </script>
+
+</body>
+</html>

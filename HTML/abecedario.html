@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abecedario Interactivo — HandApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/abecedario.css">
+    <link rel="icon" type="image/png" href="../IMG/manos.png">
+</head>
+<body>
+
+    <div class="particles"></div> 
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <button class="modal-close" id="modalClose" aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6 6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <span class="modal-number" id="modalNumber">#01</span>
+            <div class="modal-letter" id="modalLetter">A</div>
+            <div class="modal-img">
+                <img id="modalImg" src="" alt="">
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="../index.html" class="logo">
+                <div class="logo-hands">
+                    <svg class="hand-left" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 4C28.686 4 26 6.686 26 10V30H22V16C22 12.686 19.314 10 16 10C12.686 10 10 12.686 10 16V38C10 50.15 19.85 60 32 60C44.15 60 54 50.15 54 38V22C54 18.686 51.314 16 48 16C44.686 16 42 18.686 42 22V30H38V10C38 6.686 35.314 4 32 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg class="hand-right" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 4C35.314 4 38 6.686 38 10V30H42V16C42 12.686 44.686 10 48 10C51.314 10 54 12.686 54 16V38C54 50.15 44.15 60 32 60C19.85 60 10 50.15 10 38V22C10 18.686 12.686 16 16 16C19.314 16 22 18.686 22 22V30H26V10C26 6.686 28.686 4 32 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Hand<span class="logo-accent">App</span></span>
+            </a>
+            <div class="header-pill">Abecedario · 27 letras</div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+            <span class="badge">
+                <span class="badge-dot"></span>
+                Aprende fácil
+            </span>
+            <h1>Aprende el<br><span>Abecedario</span><br>de forma visual</h1>
+            <p>Explora cada letra con imágenes interactivas, animaciones suaves y una experiencia moderna diseñada para aprender jugando.</p>
+        </div>
+    </section>
+
+    <div class="section-divider"><h2>Las 27 letras</h2></div>
+
+    <main class="contenedor">
+
+        <div class="letra">
+            <div class="letter-bg">A</div>
+            <span class="card-number">#01</span>
+            <h2>A</h2>
+            <div class="img-container">
+                <img src="../img/a.jpg" alt="A" onerror="this.parentElement.innerHTML='<div class=img-placeholder>A</div>'">
+            </div>
+            <button class="btn-ver" data-letra="A" data-num="#01" data-src="../img/a.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">B</div>
+            <span class="card-number">#02</span>
+            <h2>B</h2>
+            <div class="img-container">
+                <img src="../img/b.jpg" alt="B" onerror="this.parentElement.innerHTML='<div class=img-placeholder>B</div>'">
+            </div>
+            <button class="btn-ver" data-letra="B" data-num="#02" data-src="../img/b.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">C</div>
+            <span class="card-number">#03</span>
+            <h2>C</h2>
+            <div class="img-container">
+                <img src="../img/c.jpg" alt="C" onerror="this.parentElement.innerHTML='<div class=img-placeholder>C</div>'">
+            </div>
+            <button class="btn-ver" data-letra="C" data-num="#03" data-src="../img/c.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">D</div>
+            <span class="card-number">#04</span>
+            <h2>D</h2>
+            <div class="img-container">
+                <img src="../img/d.jpg" alt="D" onerror="this.parentElement.innerHTML='<div class=img-placeholder>D</div>'">
+            </div>
+            <button class="btn-ver" data-letra="D" data-num="#04" data-src="../img/d.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">E</div>
+            <span class="card-number">#05</span>
+            <h2>E</h2>
+            <div class="img-container">
+                <img src="../img/e.jpg" alt="E" onerror="this.parentElement.innerHTML='<div class=img-placeholder>E</div>'">
+            </div>
+            <button class="btn-ver" data-letra="E" data-num="#05" data-src="../img/e.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">F</div>
+            <span class="card-number">#06</span>
+            <h2>F</h2>
+            <div class="img-container">
+                <img src="../img/f.jpg" alt="F" onerror="this.parentElement.innerHTML='<div class=img-placeholder>F</div>'">
+            </div>
+            <button class="btn-ver" data-letra="F" data-num="#06" data-src="../img/f.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">G</div>
+            <span class="card-number">#07</span>
+            <h2>G</h2>
+            <div class="img-container">
+                <img src="../img/g.jpg" alt="G" onerror="this.parentElement.innerHTML='<div class=img-placeholder>G</div>'">
+            </div>
+            <button class="btn-ver" data-letra="G" data-num="#07" data-src="../img/g.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">H</div>
+            <span class="card-number">#08</span>
+            <h2>H</h2>
+            <div class="img-container">
+                <img src="../img/h.jpg" alt="H" onerror="this.parentElement.innerHTML='<div class=img-placeholder>H</div>'">
+            </div>
+            <button class="btn-ver" data-letra="H" data-num="#08" data-src="../img/h.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">I</div>
+            <span class="card-number">#09</span>
+            <h2>I</h2>
+            <div class="img-container">
+                <img src="../img/i.jpg" alt="I" onerror="this.parentElement.innerHTML='<div class=img-placeholder>I</div>'">
+            </div>
+            <button class="btn-ver" data-letra="I" data-num="#09" data-src="../img/i.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">J</div>
+            <span class="card-number">#10</span>
+            <h2>J</h2>
+            <div class="img-container">
+                <img src="../img/j.jpg" alt="J" onerror="this.parentElement.innerHTML='<div class=img-placeholder>J</div>'">
+            </div>
+            <button class="btn-ver" data-letra="J" data-num="#10" data-src="../img/j.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">K</div>
+            <span class="card-number">#11</span>
+            <h2>K</h2>
+            <div class="img-container">
+                <img src="../img/k.jpg" alt="K" onerror="this.parentElement.innerHTML='<div class=img-placeholder>K</div>'">
+            </div>
+            <button class="btn-ver" data-letra="K" data-num="#11" data-src="../img/k.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">L</div>
+            <span class="card-number">#12</span>
+            <h2>L</h2>
+            <div class="img-container">
+                <img src="../img/l.jpg" alt="L" onerror="this.parentElement.innerHTML='<div class=img-placeholder>L</div>'">
+            </div>
+            <button class="btn-ver" data-letra="L" data-num="#12" data-src="../img/l.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">M</div>
+            <span class="card-number">#13</span>
+            <h2>M</h2>
+            <div class="img-container">
+                <img src="../img/m.jpg" alt="M" onerror="this.parentElement.innerHTML='<div class=img-placeholder>M</div>'">
+            </div>
+            <button class="btn-ver" data-letra="M" data-num="#13" data-src="../img/m.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">N</div>
+            <span class="card-number">#14</span>
+            <h2>N</h2>
+            <div class="img-container">
+                <img src="../img/n.jpg" alt="N" onerror="this.parentElement.innerHTML='<div class=img-placeholder>N</div>'">
+            </div>
+            <button class="btn-ver" data-letra="N" data-num="#14" data-src="../img/n.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">Ñ</div>
+            <span class="card-number">#15</span>
+            <h2>Ñ</h2>
+            <div class="img-container">
+                <img src="../img/ñ.jpg" alt="Ñ" onerror="this.parentElement.innerHTML='<div class=img-placeholder>Ñ</div>'">
+            </div>
+            <button class="btn-ver" data-letra="Ñ" data-num="#15" data-src="../img/ñ.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">O</div>
+            <span class="card-number">#16</span>
+            <h2>O</h2>
+            <div class="img-container">
+                <img src="../img/o.jpg" alt="O" onerror="this.parentElement.innerHTML='<div class=img-placeholder>O</div>'">
+            </div>
+            <button class="btn-ver" data-letra="O" data-num="#16" data-src="../img/o.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">P</div>
+            <span class="card-number">#17</span>
+            <h2>P</h2>
+            <div class="img-container">
+                <img src="../img/p.jpg" alt="P" onerror="this.parentElement.innerHTML='<div class=img-placeholder>P</div>'">
+            </div>
+            <button class="btn-ver" data-letra="P" data-num="#17" data-src="../img/p.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">Q</div>
+            <span class="card-number">#18</span>
+            <h2>Q</h2>
+            <div class="img-container">
+                <img src="../img/q.jpg" alt="Q" onerror="this.parentElement.innerHTML='<div class=img-placeholder>Q</div>'">
+            </div>
+            <button class="btn-ver" data-letra="Q" data-num="#18" data-src="../img/q.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">R</div>
+            <span class="card-number">#19</span>
+            <h2>R</h2>
+            <div class="img-container">
+                <img src="../img/r.jpg" alt="R" onerror="this.parentElement.innerHTML='<div class=img-placeholder>R</div>'">
+            </div>
+            <button class="btn-ver" data-letra="R" data-num="#19" data-src="../img/r.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">S</div>
+            <span class="card-number">#20</span>
+            <h2>S</h2>
+            <div class="img-container">
+                <img src="../img/s.jpg" alt="S" onerror="this.parentElement.innerHTML='<div class=img-placeholder>S</div>'">
+            </div>
+            <button class="btn-ver" data-letra="S" data-num="#20" data-src="../img/s.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">T</div>
+            <span class="card-number">#21</span>
+            <h2>T</h2>
+            <div class="img-container">
+                <img src="../img/t.jpg" alt="T" onerror="this.parentElement.innerHTML='<div class=img-placeholder>T</div>'">
+            </div>
+            <button class="btn-ver" data-letra="T" data-num="#21" data-src="../img/t.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">U</div>
+            <span class="card-number">#22</span>
+            <h2>U</h2>
+            <div class="img-container">
+                <img src="../img/u.jpg" alt="U" onerror="this.parentElement.innerHTML='<div class=img-placeholder>U</div>'">
+            </div>
+            <button class="btn-ver" data-letra="U" data-num="#22" data-src="../img/u.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">V</div>
+            <span class="card-number">#23</span>
+            <h2>V</h2>
+            <div class="img-container">
+                <img src="../img/v.jpg" alt="V" onerror="this.parentElement.innerHTML='<div class=img-placeholder>V</div>'">
+            </div>
+            <button class="btn-ver" data-letra="V" data-num="#23" data-src="../img/v.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">W</div>
+            <span class="card-number">#24</span>
+            <h2>W</h2>
+            <div class="img-container">
+                <img src="../img/w.jpg" alt="W" onerror="this.parentElement.innerHTML='<div class=img-placeholder>W</div>'">
+            </div>
+            <button class="btn-ver" data-letra="W" data-num="#24" data-src="../img/w.jpg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">X</div>
+            <span class="card-number">#25</span>
+            <h2>X</h2>
+            <div class="img-container">
+                <img src="../img/x.png" alt="X" onerror="this.parentElement.innerHTML='<div class=img-placeholder>X</div>'">
+            </div>
+            <button class="btn-ver" data-letra="X" data-num="#25" data-src="../img/x.png">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">Y</div>
+            <span class="card-number">#26</span>
+            <h2>Y</h2>
+            <div class="img-container">
+                <img src="../img/y.png" alt="Y" onerror="this.parentElement.innerHTML='<div class=img-placeholder>Y</div>'">
+            </div>
+            <button class="btn-ver" data-letra="Y" data-num="#26" data-src="../img/y.png">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+        <div class="letra">
+            <div class="letter-bg">Z</div>
+            <span class="card-number">#27</span>
+            <h2>Z</h2>
+            <div class="img-container">
+                <img src="../img/z.png" alt="Z" onerror="this.parentElement.innerHTML='<div class=img-placeholder>Z</div>'">
+            </div>
+            <button class="btn-ver" data-letra="Z" data-num="#27" data-src="../img/z.png">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver letra
+            </button>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p>HandApp · Abecedario Interactivo · <strong>27 letras</strong></p>
+    </footer>
+
+    <script>
+        // ── Partículas ──
+        const particlesEl = document.querySelector('.particles');
+        for (let i = 0; i < 40; i++) {
+            const p = document.createElement('span');
+            p.classList.add('particle');
+            p.style.left              = Math.random() * 100 + '%';
+            p.style.animationDelay    = Math.random() * 10 + 's';
+            p.style.animationDuration = 10 + Math.random() * 20 + 's';
+            particlesEl.appendChild(p);
+        }
+
+        // ── Header scroll ──
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 30);
+        });
+
+        // ── Reveal cards ──
+        const cards = document.querySelectorAll('.letra');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('show'), 0);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+        cards.forEach(card => observer.observe(card));
+
+        // ── Modal ──
+        const overlay    = document.getElementById('modalOverlay');
+        const modalLetter = document.getElementById('modalLetter');
+        const modalImg    = document.getElementById('modalImg');
+        const modalNumber = document.getElementById('modalNumber');
+        const modalClose  = document.getElementById('modalClose');
+
+        function openModal(letra, num, src) {
+            modalLetter.textContent = letra;
+            modalNumber.textContent = num;
+            modalImg.src  = src;
+            modalImg.alt  = letra;
+            modalImg.onerror = function() {
+                this.parentElement.innerHTML = `<div class="img-placeholder">${letra}</div>`;
+            };
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Botones "Ver letra"
+        document.querySelectorAll('.btn-ver').forEach(btn => {
+            btn.addEventListener('click', () => {
+                openModal(
+                    btn.dataset.letra,
+                    btn.dataset.num,
+                    btn.dataset.src
+                );
+            });
+        });
+
+        // Cerrar con el botón X
+        modalClose.addEventListener('click', closeModal);
+
+        // Cerrar al hacer click fuera del modal
+        overlay.addEventListener('click', e => {
+            if (e.target === overlay) closeModal();
+        });
+
+        // Cerrar con Escape
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+
+</body>
+</html>

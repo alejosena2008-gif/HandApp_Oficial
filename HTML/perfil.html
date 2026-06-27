@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HandApp – Mi Perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" type="image/png" href="../../IMG/manos.png">
+  <style>
+    /* ── Variables (mismas del index) ── */
+    :root {
+      --accent:   #6c63ff;
+      --accent2:  #8b84ff;
+      --bg:       #0b0d14;
+      --surface:  #13151f;
+      --card:     #1a1d2b;
+      --border:   #272a3d;
+      --text:     #e8eaf6;
+      --muted:    #7880a0;
+      --success:  #3ecf8e;
+      --error:    #e05252;
+      --warning:  #f0a845;
+      --radius:   16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER (igual al index) ── */
+    .header {
+      background: rgba(11,13,20,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+    }
+    .logo-text { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
+    .logo-accent { color: var(--accent2); }
+    .logo-hands { display: flex; gap: -4px; }
+    .logo-hands svg { width: 28px; height: 28px; color: var(--accent2); }
+    .hand-left  { margin-right: -6px; }
+
+    .header-back {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--muted); font-size: 0.9rem;
+      text-decoration: none; transition: color .2s;
+      padding: 8px 14px; border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .header-back:hover { color: var(--text); border-color: var(--accent); }
+    .header-back svg { width: 16px; height: 16px; }
+
+    /* ── MAIN LAYOUT ── */
+    .perfil-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .page-header {
+      margin-bottom: 40px;
+    }
+    .page-tag {
+      display: inline-block;
+      background: rgba(108,99,255,0.15);
+      color: var(--accent2);
+      border: 1px solid rgba(108,99,255,0.3);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+    .page-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .page-sub { color: var(--muted); font-size: 0.95rem; }
+
+    /* ── GRID ── */
+    .perfil-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .perfil-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── CARD base ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    /* ── AVATAR CARD ── */
+    .avatar-card { text-align: center; }
+
+    .avatar-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .avatar-img {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      background: var(--surface);
+      display: block;
+    }
+    .avatar-initial {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.8rem; font-weight: 800; color: #fff;
+      border: 3px solid var(--accent);
+    }
+    .avatar-edit-btn {
+      position: absolute;
+      bottom: 4px; right: 4px;
+      width: 34px; height: 34px;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .2s;
+    }
+    .avatar-edit-btn:hover { background: var(--accent2); }
+    .avatar-edit-btn svg { width: 14px; height: 14px; color: #fff; }
+    #fotoInput { display: none; }
+
+    .avatar-name {
+      font-size: 1.2rem; font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .avatar-user {
+      color: var(--muted); font-size: 0.85rem;
+      margin-bottom: 14px;
+    }
+    .avatar-rol {
+      display: inline-block;
+      padding: 4px 14px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .rol-usuario { background: rgba(62,207,142,0.12); color: var(--success); border: 1px solid rgba(62,207,142,0.3); }
+    .rol-admin   { background: rgba(108,99,255,0.15); color: var(--accent2);  border: 1px solid rgba(108,99,255,0.3); }
+
+    .stats-mini {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .stat-mini {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-mini-val {
+      font-size: 1.4rem; font-weight: 800;
+      color: var(--accent2);
+    }
+    .stat-mini-lbl {
+      font-size: 0.72rem; color: var(--muted);
+      margin-top: 2px; text-transform: uppercase; letter-spacing: .4px;
+    }
+
+    /* ── FORM CARD ── */
+    .form-section { margin-bottom: 28px; }
+    .form-section:last-child { margin-bottom: 0; }
+
+    .section-title-sm {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title-sm svg { width: 14px; height: 14px; color: var(--accent2); }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 14px; }
+    .form-group:last-child { margin-bottom: 0; }
+    .form-group label {
+      display: block;
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 7px;
+      text-transform: uppercase; letter-spacing: .4px;
+    }
+    .input-wrap { position: relative; }
+    .input-wrap svg {
+      position: absolute; left: 13px; top: 50%;
+      transform: translateY(-50%);
+      width: 16px; height: 16px; color: var(--muted);
+      pointer-events: none;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 11px 14px 11px 40px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(108,99,255,0.12);
+    }
+    .form-group input:disabled {
+      opacity: .5; cursor: not-allowed;
+    }
+    .form-group input::placeholder { color: var(--muted); }
+
+    /* Contraseña */
+    .toggle-pass {
+      position: absolute; right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); padding: 4px; display: flex;
+    }
+    .toggle-pass:hover { color: var(--text); }
+    .toggle-pass svg { width: 16px; height: 16px; }
+
+    /* Botones */
+    .btn-save {
+      width: 100%;
+      background: var(--accent);
+      color: #fff; border: none;
+      padding: 13px; border-radius: 10px;
+      font-size: 0.95rem; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+      transition: all .2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 20px;
+    }
+    .btn-save:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-save:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    .btn-save svg { width: 17px; height: 17px; }
+
+    .btn-danger {
+      width: 100%;
+      background: transparent;
+      color: var(--error);
+      border: 1px solid rgba(224,82,82,0.3);
+      padding: 11px; border-radius: 10px;
+      font-size: 0.88rem; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+      transition: all .2s;
+      margin-top: 10px;
+    }
+    .btn-danger:hover { background: rgba(224,82,82,0.1); border-color: var(--error); }
+
+    /* Alerts */
+    .alert {
+      padding: 12px 16px; border-radius: 10px;
+      font-size: 0.85rem; margin-bottom: 16px;
+      display: none;
+    }
+    .alert.show { display: flex; align-items: center; gap: 10px; }
+    .alert.ok  { background: rgba(62,207,142,0.1); border: 1px solid rgba(62,207,142,0.3); color: var(--success); }
+    .alert.err { background: rgba(224,82,82,0.1);  border: 1px solid rgba(224,82,82,0.3);  color: var(--error); }
+    .alert svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* Spinner */
+    .spinner {
+      width: 17px; height: 17px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Foto preview */
+    .foto-preview-msg {
+      background: rgba(108,99,255,0.1);
+      border: 1px solid rgba(108,99,255,0.25);
+      color: var(--accent2);
+      padding: 10px 14px; border-radius: 10px;
+      font-size: 0.82rem; margin-top: 12px;
+      display: none; align-items: center; gap: 8px;
+    }
+    .foto-preview-msg.show { display: flex; }
+    .foto-preview-msg svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* Loading overlay */
+    #pageLoading {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999;
+      flex-direction: column; gap: 16px;
+    }
+    .loading-spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    #pageLoading p { color: var(--muted); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div id="pageLoading">
+  <div class="loading-spinner"></div>
+  <p>Cargando perfil...</p>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-container">
+    <a href="../index.html" class="logo">
+      <div class="logo-hands">
+        <svg class="hand-left" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M32 4C28.686 4 26 6.686 26 10V30H22V16C22 12.686 19.314 10 16 10C12.686 10 10 12.686 10 16V38C10 50.15 19.85 60 32 60C44.15 60 54 50.15 54 38V22C54 18.686 51.314 16 48 16C44.686 16 42 18.686 42 22V30H38V10C38 6.686 35.314 4 32 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="logo-text">Hand<span class="logo-accent">App</span></span>
+    </a>
+    <a href="../index.html" class="header-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15,18 9,12 15,6"/>
+      </svg>
+      Volver al inicio
+    </a>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="perfil-page">
+  <div class="page-header">
+    <div class="page-tag">Mi cuenta</div>
+    <h1 class="page-title">Mi Perfil</h1>
+    <p class="page-sub">Personaliza tu cuenta y administra tu información.</p>
+  </div>
+
+  <div class="perfil-grid">
+
+    <!-- COL IZQUIERDA: Avatar + stats -->
+    <div>
+      <div class="card avatar-card">
+        <div class="alert" id="alertaFoto"></div>
+
+        <div class="avatar-wrap">
+          <img id="avatarImg" src="" alt="Foto de perfil" class="avatar-img"
+               onerror="this.style.display='none'; document.getElementById('avatarInitial').style.display='flex'">
+          <div id="avatarInitial" class="avatar-initial" style="display:none"></div>
+          <label for="fotoInput" class="avatar-edit-btn" title="Cambiar foto">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </label>
+          <input type="file" id="fotoInput" accept="image/*" onchange="previsualizarFoto(this)">
+        </div>
+
+        <div class="avatar-name" id="avatarNombre">—</div>
+        <div class="avatar-user" id="avatarUsuario">@—</div>
+        <span class="avatar-rol rol-usuario" id="avatarRol">—</span>
+
+        <div class="foto-preview-msg" id="fotoMsg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Nueva foto seleccionada — guarda los cambios para aplicarla.
+        </div>
+
+        <div class="stats-mini" style="margin-top:20px">
+          <div class="stat-mini">
+            <div class="stat-mini-val" id="statLecciones">0</div>
+            <div class="stat-mini-lbl">Lecciones</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val" id="statRacha">0</div>
+            <div class="stat-mini-lbl">Días racha</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL DERECHA: Formularios -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+
+      <!-- Info personal -->
+      <div class="card">
+        <div class="alert" id="alertaInfo"></div>
+
+        <div class="form-section">
+          <div class="section-title-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Información personal
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre completo</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <input type="text" id="inputNombre" placeholder="Tu nombre completo">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Nombre de usuario</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <input type="text" id="inputUsuario" placeholder="@usuario" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Correo electrónico</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <input type="email" id="inputCorreo" placeholder="correo@email.com">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-save" id="btnGuardarInfo" onclick="guardarInfo()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+            <polyline points="17,21 17,13 7,13 7,21"/>
+            <polyline points="7,3 7,8 15,8"/>
+          </svg>
+          <span id="btnInfoText">Guardar cambios</span>
+          <div class="spinner" id="spinnerInfo"></div>
+        </button>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="card">
+        <div class="alert" id="alertaPass"></div>
+
+        <div class="form-section">
+          <div class="section-title-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+            Cambiar contraseña
+          </div>
+
+          <div class="form-group">
+            <label>Contraseña actual</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0110 0v4"/>
+              </svg>
+              <input type="password" id="passActual" placeholder="••••••••">
+              <button class="toggle-pass" type="button" onclick="togglePass('passActual', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nueva contraseña</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+                <input type="password" id="passNueva" placeholder="Mínimo 6 caracteres">
+                <button class="toggle-pass" type="button" onclick="togglePass('passNueva', this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Confirmar contraseña</label>
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+                <input type="password" id="passConfirm" placeholder="Repite la contraseña">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-save" id="btnGuardarPass" onclick="cambiarPassword()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+          <span id="btnPassText">Actualizar contraseña</span>
+          <div class="spinner" id="spinnerPass"></div>
+        </button>
+      </div>
+
+      <!-- Zona de peligro -->
+      <div class="card">
+        <div class="section-title-sm" style="color: var(--error); border-color: rgba(224,82,82,0.2);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--error)">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Zona de peligro
+        </div>
+        <p style="font-size:0.85rem; color:var(--muted); margin-bottom:4px;">
+          Cerrar sesión te desconectará de tu cuenta en este dispositivo.
+        </p>
+        <button class="btn-danger" onclick="cerrarSesion()">
+          Cerrar sesión
+        </button>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+  const PHP = '../PHP/';
+  let fotoSeleccionada = null;
+
+  // ── Cargar datos al inicio ──
+  window.addEventListener('DOMContentLoaded', () => {
+    fetch(PHP + 'perfil.php')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('pageLoading').style.display = 'none';
+        if (data.status !== 'ok') {
+          window.location.href = 'login.html';
+          return;
+        }
+        const u = data.usuario;
+
+        // Llenar formulario
+        document.getElementById('inputNombre').value  = u.nombre;
+        document.getElementById('inputUsuario').value = u.usuario;
+        document.getElementById('inputCorreo').value  = u.correo;
+
+        // Avatar
+        document.getElementById('avatarNombre').textContent  = u.nombre;
+        document.getElementById('avatarUsuario').textContent = '@' + u.usuario;
+
+        const rolEl = document.getElementById('avatarRol');
+        rolEl.textContent = u.rol === 'admin' ? '⚙️ Administrador' : '👤 Usuario';
+        rolEl.className   = 'avatar-rol ' + (u.rol === 'admin' ? 'rol-admin' : 'rol-usuario');
+
+        if (u.foto && u.foto !== 'default.png') {
+          document.getElementById('avatarImg').src = '../IMG/usuarios/' + u.foto;
+        } else {
+          document.getElementById('avatarImg').style.display = 'none';
+          const ini = document.getElementById('avatarInitial');
+          ini.style.display = 'flex';
+          ini.textContent = u.nombre.charAt(0).toUpperCase();
+        }
+
+        // Stats ficticias (puedes conectar a una tabla real después)
+        document.getElementById('statLecciones').textContent = Math.floor(Math.random() * 5);
+        document.getElementById('statRacha').textContent = Math.floor(Math.random() * 7);
+      })
+      .catch(() => window.location.href = 'login.html');
+  });
+
+  // ── Previsualizar foto ──
+  function previsualizarFoto(input) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+
+    if (file.size > 3 * 1024 * 1024) {
+      mostrarAlerta('alertaFoto', 'La imagen no puede superar 3 MB.', 'err');
+      return;
+    }
+
+    fotoSeleccionada = file;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.getElementById('avatarImg');
+      img.src = e.target.result;
+      img.style.display = 'block';
+      document.getElementById('avatarInitial').style.display = 'none';
+      document.getElementById('fotoMsg').classList.add('show');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── Guardar info + foto ──
+  function guardarInfo() {
+    const nombre = document.getElementById('inputNombre').value.trim();
+    const correo = document.getElementById('inputCorreo').value.trim();
+
+    if (!nombre || !correo) {
+      mostrarAlerta('alertaInfo', 'El nombre y el correo son obligatorios.', 'err');
+      return;
+    }
+
+    setLoading('btnGuardarInfo', 'btnInfoText', 'spinnerInfo', true);
+
+    const fd = new FormData();
+    fd.append('nombre', nombre);
+    fd.append('correo', correo);
+    if (fotoSeleccionada) fd.append('foto', fotoSeleccionada);
+
+    fetch(PHP + 'perfil.php', { method: 'POST', body: fd })
+      .then(r => r.json())
+      .then(data => {
+        setLoading('btnGuardarInfo', 'btnInfoText', 'spinnerInfo', false, 'Guardar cambios');
+        if (data.status === 'ok') {
+          mostrarAlerta('alertaInfo', '✓ Perfil actualizado correctamente.', 'ok');
+          document.getElementById('avatarNombre').textContent = nombre;
+          document.getElementById('fotoMsg').classList.remove('show');
+          fotoSeleccionada = null;
+        } else {
+          mostrarAlerta('alertaInfo', data.mensaje || 'Error al guardar.', 'err');
+        }
+      })
+      .catch(() => {
+        setLoading('btnGuardarInfo', 'btnInfoText', 'spinnerInfo', false, 'Guardar cambios');
+        mostrarAlerta('alertaInfo', 'No se pudo conectar con el servidor.', 'err');
+      });
+  }
+
+  // ── Cambiar contraseña ──
+  function cambiarPassword() {
+    const actual   = document.getElementById('passActual').value;
+    const nueva    = document.getElementById('passNueva').value;
+    const confirma = document.getElementById('passConfirm').value;
+
+    if (!actual || !nueva || !confirma) {
+      mostrarAlerta('alertaPass', 'Completa todos los campos de contraseña.', 'err');
+      return;
+    }
+    if (nueva.length < 6) {
+      mostrarAlerta('alertaPass', 'La nueva contraseña debe tener al menos 6 caracteres.', 'err');
+      return;
+    }
+    if (nueva !== confirma) {
+      mostrarAlerta('alertaPass', 'Las contraseñas no coinciden.', 'err');
+      return;
+    }
+
+    setLoading('btnGuardarPass', 'btnPassText', 'spinnerPass', true);
+
+    const fd = new FormData();
+    fd.append('accion', 'cambiar_password');
+    fd.append('pass_actual', actual);
+    fd.append('pass_nueva', nueva);
+
+    fetch(PHP + 'cambiar_password.php', { method: 'POST', body: fd })
+      .then(r => r.json())
+      .then(data => {
+        setLoading('btnGuardarPass', 'btnPassText', 'spinnerPass', false, 'Actualizar contraseña');
+        if (data.status === 'ok') {
+          mostrarAlerta('alertaPass', '✓ Contraseña actualizada correctamente.', 'ok');
+          document.getElementById('passActual').value  = '';
+          document.getElementById('passNueva').value   = '';
+          document.getElementById('passConfirm').value = '';
+        } else {
+          mostrarAlerta('alertaPass', data.mensaje || 'Error al cambiar contraseña.', 'err');
+        }
+      })
+      .catch(() => {
+        setLoading('btnGuardarPass', 'btnPassText', 'spinnerPass', false, 'Actualizar contraseña');
+        mostrarAlerta('alertaPass', 'No se pudo conectar con el servidor.', 'err');
+      });
+  }
+
+  // ── Cerrar sesión ──
+  function cerrarSesion() {
+    window.location.href = PHP + 'cerrar_sesion.php';
+  }
+
+  // ── Toggle password visible ──
+  function togglePass(inputId, btn) {
+    const inp = document.getElementById(inputId);
+    const isVisible = inp.type === 'text';
+    inp.type = isVisible ? 'password' : 'text';
+    btn.querySelector('svg').innerHTML = isVisible
+      ? `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`
+      : `<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+         <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+         <line x1="1" y1="1" x2="23" y2="23"/>`;
+  }
+
+  // ── Helpers ──
+  function mostrarAlerta(id, msg, tipo) {
+    const el = document.getElementById(id);
+    el.innerHTML = (tipo === 'ok'
+      ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>`
+      : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+    ) + msg;
+    el.className = 'alert ' + tipo + ' show';
+    setTimeout(() => el.classList.remove('show'), 4000);
+  }
+
+  function setLoading(btnId, txtId, spinnerId, loading, label = '') {
+    document.getElementById(btnId).disabled = loading;
+    document.getElementById(txtId).textContent = loading ? 'Guardando...' : label;
+    document.getElementById(spinnerId).style.display = loading ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>

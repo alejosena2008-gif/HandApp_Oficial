@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HandApp – Iniciar Sesión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0b0d14;
+      --surface: #13151f;
+      --card:    #1a1d2b;
+      --border:  #272a3d;
+      --accent:  #6c63ff;
+      --accent2: #8b84ff;
+      --text:    #e8eaf6;
+      --muted:   #7880a0;
+      --error:   #e05252;
+      --success: #3ecf8e;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Fondo decorativo */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px; left: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -200px; right: -200px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(139,132,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .login-wrapper {
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Logo */
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 36px;
+      justify-content: center;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 22px; height: 22px; color: #fff; }
+    .logo-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .logo-name span { color: var(--accent2); }
+
+    /* Card */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .card-sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+    }
+
+    /* Form */
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .input-wrap { position: relative; }
+    .input-wrap svg {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      width: 17px; height: 17px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .form-group input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 14px 12px 42px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+    }
+    .form-group input::placeholder { color: var(--muted); }
+
+    /* Toggle password */
+    .toggle-pass {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      cursor: pointer; color: var(--muted);
+      padding: 4px; display: flex;
+    }
+    .toggle-pass:hover { color: var(--text); }
+    .toggle-pass svg { width: 17px; height: 17px; }
+
+    /* Error */
+    .alert {
+      background: rgba(224,82,82,0.1);
+      border: 1px solid rgba(224,82,82,0.3);
+      color: var(--error);
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      margin-bottom: 18px;
+      display: none;
+    }
+    .alert.show { display: block; }
+
+    /* Botón */
+    .btn-login {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .btn-login:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-login:active { transform: translateY(0); }
+    .btn-login:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Footer del form */
+    .form-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .form-footer a {
+      color: var(--accent2);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .form-footer a:hover { text-decoration: underline; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 22px 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+  <!-- Logo -->
+  <a class="logo-link" href="../index.html">
+    <div class="logo-icon">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M32 4C28.686 4 26 6.686 26 10V30H22V16C22 12.686 19.314 10 16 10C12.686 10 10 12.686 10 16V38C10 50.15 19.85 60 32 60C44.15 60 54 50.15 54 38V22C54 18.686 51.314 16 48 16C44.686 16 42 18.686 42 22V30H38V10C38 6.686 35.314 4 32 4Z" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="logo-name">Hand<span>App</span></span>
+  </a>
+
+  <!-- Card -->
+  <div class="card">
+    <h1 class="card-title">Bienvenido de nuevo</h1>
+    <p class="card-sub">Ingresa tus datos para continuar aprendiendo</p>
+
+    <div class="alert" id="alerta"></div>
+
+    <div class="form-group">
+      <label>Usuario o correo</label>
+      <div class="input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <input type="text" id="usuario" placeholder="tu_usuario o correo@email.com" autocomplete="username">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Contraseña</label>
+      <div class="input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0110 0v4"/>
+        </svg>
+        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+        <button class="toggle-pass" type="button" onclick="togglePass()" id="toggleBtn">
+          <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <button class="btn-login" id="btnLogin" onclick="iniciarSesion()">
+      <span id="btnText">Iniciar Sesión</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
+
+    <div class="divider">o</div>
+
+    <div class="form-footer">
+      ¿No tienes cuenta? <a href="register.html">Regístrate gratis</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Detectar si ya hay sesión activa
+  window.addEventListener('DOMContentLoaded', () => {
+    fetch('../PHP/perfil.php')
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          // Ya logueado → redirigir según rol
+          if (data.usuario.rol === 'admin') {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = '../index.html';
+          }
+        }
+      })
+      .catch(() => {}); // No hay sesión, quedarse en login
+  });
+
+  function togglePass() {
+    const inp = document.getElementById('password');
+    const icon = document.getElementById('eyeIcon');
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      icon.innerHTML = `
+        <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+        <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+        <line x1="1" y1="1" x2="23" y2="23"/>`;
+    } else {
+      inp.type = 'password';
+      icon.innerHTML = `
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>`;
+    }
+  }
+
+  function mostrarError(msg) {
+    const a = document.getElementById('alerta');
+    a.textContent = '⚠️ ' + msg;
+    a.classList.add('show');
+  }
+
+  function iniciarSesion() {
+    const usuario  = document.getElementById('usuario').value.trim();
+    const password = document.getElementById('password').value;
+
+    document.getElementById('alerta').classList.remove('show');
+
+    if (!usuario || !password) {
+      mostrarError('Por favor completa todos los campos.');
+      return;
+    }
+
+    // Estado cargando
+    const btn = document.getElementById('btnLogin');
+    document.getElementById('btnText').textContent = 'Iniciando...';
+    document.getElementById('spinner').style.display = 'block';
+    btn.disabled = true;
+
+    const fd = new FormData();
+    fd.append('usuario', usuario);
+    fd.append('password', password);
+
+    fetch('../PHP/login.php', { method: 'POST', body: fd })
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          document.getElementById('btnText').textContent = '✓ Entrando...';
+          setTimeout(() => {
+            if (data.rol === 'admin') {
+              window.location.href = 'admin.html';
+            } else {
+              window.location.href = '../index.html';
+            }
+          }, 500);
+        } else {
+          mostrarError(data.mensaje || 'Usuario o contraseña incorrectos.');
+          document.getElementById('btnText').textContent = 'Iniciar Sesión';
+          document.getElementById('spinner').style.display = 'none';
+          btn.disabled = false;
+        }
+      })
+      .catch(() => {
+        mostrarError('No se pudo conectar con el servidor. Verifica que XAMPP esté corriendo.');
+        document.getElementById('btnText').textContent = 'Iniciar Sesión';
+        document.getElementById('spinner').style.display = 'none';
+        btn.disabled = false;
+      });
+  }
+
+  // Enter para enviar
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') iniciarSesion();
+  });
+</script>
+</body>
+</html>

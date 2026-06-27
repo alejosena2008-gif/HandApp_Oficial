@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Introductorio — HandApp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/video.css"> 
+    <link rel="icon" type="" href="../IMG/manos.png">
+</head>
+<body>
+
+    <!-- Cursor personalizado -->
+    <div class="custom-cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Partículas -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                <div class="logo-hands">
+                    <svg class="hand-left" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 4C28.686 4 26 6.686 26 10V30H22V16C22 12.686 19.314 10 16 10C12.686 10 10 12.686 10 16V38C10 50.15 19.85 60 32 60C44.15 60 54 50.15 54 38V22C54 18.686 51.314 16 48 16C44.686 16 42 18.686 42 22V30H38V10C38 6.686 35.314 4 32 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg class="hand-right" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32 4C35.314 4 38 6.686 38 10V30H42V16C42 12.686 44.686 10 48 10C51.314 10 54 12.686 54 16V38C54 50.15 44.15 60 32 60C19.85 60 10 50.15 10 38V22C10 18.686 12.686 16 16 16C19.314 16 22 18.686 22 22V30H26V10C26 6.686 28.686 4 32 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Hand<span class="logo-accent">App</span></span>
+            </a>
+
+            <div class="header-actions">
+                <a href="../html/login.html" class="btn btn-ghost">Iniciar Sesión</a>
+                <a href="../html/register.html" class="btn btn-primary">
+                    <span>Comenzar Gratis</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12,5 19,12 12,19"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <span>Introducción a HandApp</span>
+            </div>
+
+            <h1 class="hero-title">
+                Video Introductorio a<br>
+                <span class="highlight">HandApp</span>
+            </h1>
+
+            <p class="hero-description">
+                Bienvenidos a HandApp, la plataforma de aprendizaje de lenguaje de señas.
+                En este video te mostraremos cómo navegar por nuestra aplicación, acceder
+                a las lecciones y utilizar nuestras herramientas interactivas para aprender
+                el lenguaje de señas de manera efectiva. ¡Comencemos!
+            </p>
+
+            <div class="hero-actions">
+                <a href="../index.html" class="btn btn-outline btn-large">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"/>
+                        <polyline points="12,19 5,12 12,5"/>
+                    </svg>
+                    <span>Volver al inicio</span>
+                </a>
+                <a href="../html/register.html" class="btn btn-primary btn-large">
+                    <span>Empezar Ahora</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12,5 19,12 12,19"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Card del video -->
+        <div class="video-section">
+            <div class="video-card">
+                <video controls>
+                    <source src="../VID/HandApp.mp4" type="video/mp4">
+                    Tu navegador no soporta videos.
+                </video>
+                <div class="video-footer">
+                    <span class="video-label">HandApp · Introducción</span>
+                    <span class="video-tag">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5,3 19,12 5,21"/>
+                        </svg>
+                        Lección 0
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">¿Listo para empezar?</h2>
+                <p class="cta-description">
+                    Únete a miles de personas que ya están aprendiendo lenguaje de señas con HandApp.
+                    Es gratis, es fácil, y cambiará tu forma de comunicarte.
+                </p>
+                <div class="cta-actions">
+                    <a href="../html/register.html" class="btn btn-primary btn-large">
+                        <span>Crear Cuenta Gratis</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12,5 19,12 12,19"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="../index.html" class="logo">
+                        <div class="logo-hands small">
+                            <svg class="hand-left" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M32 4C28.686 4 26 6.686 26 10V30H22V16C22 12.686 19.314 10 16 10C12.686 10 10 12.686 10 16V38C10 50.15 19.85 60 32 60C44.15 60 54 50.15 54 38V22C54 18.686 51.314 16 48 16C44.686 16 42 18.686 42 22V30H38V10C38 6.686 35.314 4 32 4Z" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <span class="logo-text">Hand<span class="logo-accent">App</span></span>
+                    </a>
+                    <p class="footer-tagline">Conectando personas a través del lenguaje de señas.</p>
+                </div>
+                <nav class="footer-nav">
+                    <div class="footer-nav-column">
+                        <h4>Aprender</h4>
+                        <a href="../html/abecedario.html">Abecedario</a>
+                        <a href="#">Lecciones</a>
+                        <a href="#">Juegos</a>
+                        <a href="#">Traductor</a>
+                    </div>
+                    <div class="footer-nav-column">
+                        <h4>Recursos</h4>
+                        <a href="#">Guías</a>
+                        <a href="#">Blog</a>
+                        <a href="#">Comunidad</a>
+                        <a href="#">FAQ</a>
+                    </div>
+                    <div class="footer-nav-column">
+                        <h4>Legal</h4>
+                        <a href="#">Privacidad</a>
+                        <a href="#">Términos</a>
+                        <a href="#">Cookies</a>
+                    </div>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 HandApp. Todos los derechos reservados.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.instagram.com/" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/>
+                            <polygon points="9.75,15.02 15.5,11.75 9.75,8.48"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cursor personalizado
+        const cursor = document.querySelector('.custom-cursor');
+        const follower = document.querySelector('.cursor-follower');
+
+        document.addEventListener('mousemove', e => {
+            cursor.style.left   = e.clientX + 'px';
+            cursor.style.top    = e.clientY + 'px';
+            follower.style.left = e.clientX + 'px';
+            follower.style.top  = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, button, video').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                follower.classList.add('hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+                follower.classList.remove('hover');
+            });
+        });
+
+        // Partículas
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 40; i++) {
+            const p = document.createElement('span');
+            p.classList.add('particle');
+            p.style.left              = Math.random() * 100 + '%';
+            p.style.animationDelay    = Math.random() * 10 + 's';
+            p.style.animationDuration = 10 + Math.random() * 20 + 's';
+            container.appendChild(p);
+        }
+
+        // Header scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 30);
+        });
+    </script>
+
+</body>
+</html>

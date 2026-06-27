@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lección 1 - Saludos | HandApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="../Prototipo HandApp/IMG/icons/manos.ico">
+  <style>
+    
+    :root {
+      --color-primary: #0a0a0a;
+      --color-primary-light: #1a1a1a;
+      --color-accent: #6366f1;
+      --color-accent-light: #2eddcf;
+      --color-accent-glow: rgba(99,102,241,.4);
+      --color-white: #ffffff;
+      --color-gray-50:  #fafafa;
+      --color-gray-100: #f4f4f5;
+      --color-gray-200: #e4e4e7;
+      --color-gray-300: #d4d4d8;
+      --color-gray-400: #a1a1aa;
+      --color-gray-500: #71717a;
+      --color-gray-600: #52525b;
+      --color-gray-700: #3f3f46;
+      --color-gray-800: #27272a;
+      --color-gray-900: #18181b;
+      --bg-primary: var(--color-white);
+      --bg-secondary: var(--color-gray-50);
+      --text-primary: var(--color-gray-900);
+      --text-secondary: var(--color-gray-600);
+      --text-muted: var(--color-gray-400);
+      --text-inverse: var(--color-white);
+      --border-light: var(--color-gray-200);
+      --border-medium: var(--color-gray-300);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04);
+      --font-family: 'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      --radius-sm: .25rem; --radius-md: .5rem; --radius-lg: .75rem;
+      --radius-xl: 1rem;   --radius-2xl: 1.5rem; --radius-full: 9999px;
+      --transition-fast: 150ms ease; --transition-base: 200ms ease; --transition-slow: 300ms ease;
+      --correct: #22c55e; --correct-bg: #f0fdf4; --correct-border: #86efac;
+      --wrong: #ef4444;   --wrong-bg: #fef2f2;   --wrong-border: #fca5a5;
+    }
+
+    *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; font-size:16px; }
+    body {
+      font-family: var(--font-family);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--bg-secondary);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Partículas de fondo ── */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .lesson-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Top bar ── */
+    .lesson-topbar {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .topbar-back {
+      display: flex;
+      align-items: center;
+      gap: .375rem;
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: .5rem .875rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+      background: var(--bg-primary);
+      transition: color var(--transition-fast), background var(--transition-fast);
+      cursor: pointer;
+    }
+    .topbar-back:hover { color: var(--color-accent); background: var(--color-gray-100); }
+    .topbar-back svg { width:16px; height:16px; }
+    .topbar-lesson-title { font-size: .875rem; font-weight: 600; color: var(--text-primary); }
+    .topbar-lesson-tag {
+      margin-left: auto;
+      font-size: .75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .08em;
+      background: var(--color-accent); color: var(--text-inverse);
+      padding: .25rem .625rem; border-radius: var(--radius-sm);
+    }
+
+    /* ── Progress ── */
+    .progress-wrap { width: 100%; max-width: 680px; margin-bottom: .5rem; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: .8125rem; color: var(--text-muted); margin-bottom: .5rem; }
+    .progress-track { width: 100%; height: 10px; background: var(--color-gray-200); border-radius: var(--radius-full); overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light)); border-radius: var(--radius-full); transition: width .5s ease; width: 0%; }
+
+    /* ── Main card ── */
+    .lesson-card {
+      width: 100%; max-width: 680px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    /* ── Mascot duo bar ── */
+    .mascot-bar {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 2rem;
+      padding: 1.5rem 2rem .5rem;
+      background: var(--bg-primary);
+    }
+    .mascot-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .25rem;
+    }
+    .mascot-name {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      background: rgba(99,102,241,.09);
+      padding: .15rem .6rem;
+      border-radius: var(--radius-full);
+    }
+    .seal-wrap { position: relative; width: 110px; height: 110px; }
+    .seal-svg { width: 100%; height: 100%; }
+    .duck-wrap { position: relative; width: 90px; height: 90px; }
+    .duck-svg { width: 100%; height: 100%; }
+
+    /* ── Animaciones foca ── */
+    @keyframes seal-bounce { 0%,100%{transform:translateY(0)} 35%{transform:translateY(-14px)} 65%{transform:translateY(-6px)} }
+    @keyframes seal-shake  { 0%,100%{transform:translateX(0) rotate(0deg)} 20%{transform:translateX(-7px) rotate(-4deg)} 40%{transform:translateX(7px) rotate(4deg)} 60%{transform:translateX(-5px) rotate(-3deg)} 80%{transform:translateX(5px) rotate(3deg)} }
+    @keyframes seal-celebrate { 0%{transform:rotate(0deg) scale(1)} 25%{transform:rotate(-12deg) scale(1.12)} 50%{transform:rotate(12deg) scale(1.16)} 75%{transform:rotate(-8deg) scale(1.1)} 100%{transform:rotate(0deg) scale(1)} }
+    .seal-svg.bounce    { animation: seal-bounce .65s ease; }
+    .seal-svg.shake     { animation: seal-shake .55s ease; }
+    .seal-svg.celebrate { animation: seal-celebrate .7s ease; }
+
+    /* ── Animaciones pato ── */
+    @keyframes duck-bounce    { 0%,100%{transform:translateY(0)} 35%{transform:translateY(-12px)} 65%{transform:translateY(-5px)} }
+    @keyframes duck-shake     { 0%,100%{transform:translateX(0) rotate(0deg)} 20%{transform:translateX(-6px) rotate(-5deg)} 40%{transform:translateX(6px) rotate(5deg)} 60%{transform:translateX(-4px) rotate(-3deg)} 80%{transform:translateX(4px) rotate(3deg)} }
+    @keyframes duck-celebrate { 0%{transform:rotate(0deg) scale(1)} 25%{transform:rotate(-15deg) scale(1.15)} 50%{transform:rotate(15deg) scale(1.18)} 75%{transform:rotate(-10deg) scale(1.1)} 100%{transform:rotate(0deg) scale(1)} }
+    .duck-svg.bounce    { animation: duck-bounce .65s ease; }
+    .duck-svg.shake     { animation: duck-shake .55s ease; }
+    .duck-svg.celebrate { animation: duck-celebrate .7s ease; }
+
+    /* ── Question block ── */
+    .q-block { padding: 0 2rem 2rem; display: none; }
+    .q-block.active { display: block; }
+    .q-number { font-size: .8125rem; font-weight: 600; color: var(--color-accent); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .375rem; }
+    .q-text { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); line-height: 1.4; margin-bottom: 1.5rem; }
+
+    /* ── Options grid ── */
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.25rem; }
+    @media (max-width: 500px) { .options-grid { grid-template-columns: 1fr; } }
+
+    .option-card {
+      position: relative; background: var(--bg-primary);
+      border: 2px solid var(--border-light); border-radius: var(--radius-xl);
+      overflow: hidden; cursor: pointer;
+      transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+      user-select: none;
+    }
+    .option-card:hover:not(.disabled) { border-color: var(--color-accent); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .option-card:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+    .video-slot { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--color-gray-100); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .video-slot video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+    .video-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .375rem; width: 100%; height: 100%; color: var(--text-muted); }
+    .video-placeholder svg { width: 32px; height: 32px; opacity: .5; }
+    .video-placeholder span { font-size: .75rem; font-weight: 500; }
+    .play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.18); transition: background var(--transition-fast); }
+    .option-card:hover .play-overlay { background: rgba(0,0,0,.28); }
+    .play-btn { width: 44px; height: 44px; background: rgba(255,255,255,.92); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); }
+    .play-btn svg { width: 20px; height: 20px; color: var(--color-accent); margin-left: 2px; }
+
+    .option-label-row { display: flex; align-items: center; gap: .5rem; padding: .625rem .875rem; border-top: 1px solid var(--border-light); }
+    .option-letter { width: 22px; height: 22px; border-radius: 50%; background: var(--color-gray-100); display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 700; color: var(--text-secondary); flex-shrink: 0; transition: background var(--transition-fast), color var(--transition-fast); }
+    .option-label { font-size: .8125rem; font-weight: 500; color: var(--text-secondary); line-height: 1.4; }
+
+    .option-card.correct { border-color: var(--correct); background: var(--correct-bg); }
+    .option-card.correct .option-letter { background: var(--correct); color: #fff; }
+    .option-card.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+    .option-card.wrong .option-letter { background: var(--wrong); color: #fff; }
+    .option-card.disabled { pointer-events: none; }
+    .option-card.disabled:not(.correct):not(.wrong) { opacity: .5; }
+    .state-badge { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; box-shadow: var(--shadow-sm); }
+    .option-card.correct .state-badge { display: flex; background: var(--correct); }
+    .option-card.wrong   .state-badge { display: flex; background: var(--wrong); }
+
+    /* ── Feedback bar ── */
+    .feedback-bar { display: none; align-items: flex-start; gap: .75rem; padding: .875rem 1rem; border-radius: var(--radius-xl); margin-bottom: 1rem; font-size: .9375rem; font-weight: 500; line-height: 1.5; }
+    .feedback-bar.show { display: flex; }
+    .feedback-bar.good { background: var(--correct-bg); color: #166534; border: 1px solid var(--correct-border); }
+    .feedback-bar.bad  { background: var(--wrong-bg);   color: #991b1b; border: 1px solid var(--wrong-border); }
+    .feedback-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: .05rem; }
+
+    /* ── Continue button ── */
+    .btn-continue { display: none; width: 100%; padding: .875rem; background: var(--color-primary); color: var(--text-inverse); font-size: 1rem; font-weight: 600; border: none; border-radius: var(--radius-xl); cursor: pointer; transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast); }
+    .btn-continue.show { display: block; }
+    .btn-continue:hover { background: var(--color-primary-light); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+
+    /* ── Transition screen ── */
+    .transition-screen { display: none; padding: 1.5rem 2rem 2rem; text-align: center; }
+    .transition-screen.active { display: block; }
+    .fun-fact-eyebrow { display: inline-block; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--color-accent); background: rgba(99,102,241,.08); padding: .3rem .75rem; border-radius: var(--radius-full); margin-bottom: 1rem; }
+    .fun-fact-heading { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: .625rem; }
+    .fun-fact-body { font-size: .9375rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.75rem; font-style: italic; min-height: 3rem; }
+    .btn-next-fact { display: inline-flex; align-items: center; gap: .5rem; padding: .875rem 2.25rem; background: var(--color-accent); color: #fff; font-size: 1rem; font-weight: 600; border: none; border-radius: var(--radius-xl); cursor: pointer; transition: opacity var(--transition-fast), transform var(--transition-fast); }
+    .btn-next-fact:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-next-fact svg { width: 18px; height: 18px; }
+
+    /* ── Complete screen ── */
+    .complete-screen { display: none; padding: 2rem 2rem 2.5rem; text-align: center; }
+    .complete-screen.active { display: block; }
+    .complete-trophy { font-size: 3rem; margin-bottom: .75rem; }
+    .complete-title { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: .375rem; }
+    .complete-score { font-size: 3.5rem; font-weight: 800; color: var(--color-accent); line-height: 1; margin: .5rem 0 .375rem; }
+    .complete-sub { font-size: .9375rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
+    .complete-msg { font-size: .9rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
+    .btn-restart { display: inline-flex; align-items: center; gap: .5rem; padding: .875rem 2rem; background: var(--color-primary); color: #fff; font-size: 1rem; font-weight: 600; border: none; border-radius: var(--radius-xl); cursor: pointer; transition: background var(--transition-fast), transform var(--transition-fast); }
+    .btn-restart:hover { background: var(--color-primary-light); transform: translateY(-1px); }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .lesson-card { border-radius: var(--radius-xl); }
+      .q-block, .transition-screen, .complete-screen { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .mascot-bar { padding: 1.25rem 1.25rem .5rem; gap: 1rem; }
+      .seal-wrap { width: 90px; height: 90px; }
+      .duck-wrap { width: 75px; height: 75px; }
+      .q-text { font-size: 1rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; }
+    }
+    
+  </style>
+</head>
+<body>
+
+<!-- Canvas para partículas -->
+<canvas id="particles-canvas"></canvas>
+
+<main class="lesson-page" role="main">
+
+  <!-- Top bar -->
+  <div class="lesson-topbar">
+    <a href="../../index.html" class="topbar-back" aria-label="Volver al inicio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Inicio
+    </a>
+    <span class="topbar-lesson-title">Lección 1 – Saludos</span>
+    <span class="topbar-lesson-tag">LSC</span>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-wrap" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de la lección" id="progressbar-region">
+    <div class="progress-meta">
+      <span id="progress-label">Pregunta 1 de 15</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- Main card -->
+  <div class="lesson-card" id="lesson-card">
+
+    <!-- Mascots: Mili + Lulú -->
+    <div class="mascot-bar" aria-hidden="true">
+      <!-- Mili La Foca -->
+      <div class="mascot-unit">
+        <div class="seal-wrap">
+          <svg class="seal-svg" id="seal-svg" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg">
+            <!-- Sombra suave -->
+            <ellipse cx="65" cy="122" rx="30" ry="5" fill="rgba(0,0,0,0.08)"/>
+            <!-- Cola con aletas bifurcadas -->
+            <path d="M50 108 Q55 120 40 124 Q50 116 65 118 Q80 116 90 124 Q75 120 80 108 Q72 114 65 114 Q58 114 50 108Z" fill="#8bbbd8"/>
+            <!-- Cuerpo principal -->
+            <ellipse cx="65" cy="80" rx="32" ry="28" fill="#9ec8e2"/>
+            <!-- Vientre más claro -->
+            <ellipse cx="65" cy="84" rx="20" ry="18" fill="#cfe8f6"/>
+            <!-- Mancha de vientre interna -->
+            <ellipse cx="65" cy="88" rx="13" ry="11" fill="#dff0fb"/>
+            <!-- Flipper izquierdo con forma de aleta real -->
+            <path d="M33 82 Q18 78 16 90 Q20 96 30 92 Q28 88 33 86Z" fill="#8bbbd8"/>
+            <path d="M33 86 Q26 90 24 95 Q28 97 32 93Z" fill="#7aaec9"/>
+            <!-- Flipper derecho -->
+            <path d="M97 82 Q112 78 114 90 Q110 96 100 92 Q102 88 97 86Z" fill="#8bbbd8"/>
+            <path d="M97 86 Q104 90 106 95 Q102 97 98 93Z" fill="#7aaec9"/>
+            <!-- Cuello -->
+            <ellipse cx="65" cy="58" rx="18" ry="12" fill="#9ec8e2"/>
+            <!-- Cabeza -->
+            <ellipse cx="65" cy="44" rx="24" ry="22" fill="#b8d8ee"/>
+            <!-- Hocico / morro más prominente -->
+            <ellipse cx="65" cy="56" rx="12" ry="8" fill="#cfe8f6"/>
+            <!-- Nariz brillante -->
+            <ellipse cx="65" cy="54" rx="5" ry="3.5" fill="#5e9fc4"/>
+            <ellipse cx="63.5" cy="53" rx="1.5" ry="1" fill="rgba(255,255,255,0.4)"/>
+            <!-- Bigotes superiores -->
+            <line x1="42" y1="52" x2="53" y2="55" stroke="#6495ED" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="42" y1="56" x2="53" y2="57" stroke="#6495ED" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="87" y1="52" x2="77" y2="55" stroke="#6495ED" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="87" y1="56" x2="77" y2="57" stroke="#6495ED" stroke-width="1.2" stroke-linecap="round"/>
+            <!-- Bigotes inferiores -->
+            <line x1="42" y1="59" x2="53" y2="58.5" stroke="#6495ED" stroke-width="0.8" stroke-linecap="round"/>
+            <line x1="87" y1="59" x2="77" y2="58.5" stroke="#6495ED" stroke-width="0.8" stroke-linecap="round"/>
+
+            <!-- OJOS - Neutral -->
+            <g id="seal-eyes-neutral">
+              <ellipse cx="53" cy="42" rx="6" ry="7" fill="#1a2a3a"/>
+              <ellipse cx="77" cy="42" rx="6" ry="7" fill="#1a2a3a"/>
+              <!-- Iris -->
+              <ellipse cx="53" cy="43" rx="4" ry="5" fill="#000000"/>
+              <ellipse cx="77" cy="43" rx="4" ry="5" fill="#000000"/>
+              <!-- Pupila -->
+              <ellipse cx="53.5" cy="43.5" rx="2.5" ry="3" fill="#0a0a14"/>
+              <ellipse cx="77.5" cy="43.5" rx="2.5" ry="3" fill="#0a0a14"/>
+              <!-- Reflejo -->
+              <circle cx="55" cy="41" r="1.5" fill="white" opacity="0.85"/>
+              <circle cx="79" cy="41" r="1.5" fill="white" opacity="0.85"/>
+              <circle cx="52" cy="45" r="0.7" fill="white" opacity="0.4"/>
+              <circle cx="76" cy="45" r="0.7" fill="white" opacity="0.4"/>
+            </g>
+            <!-- OJOS - Happy -->
+            <g id="seal-eyes-happy" style="display:none">
+              <path d="M47 40 Q53 33 59 40" stroke="#1a2a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M71 40 Q77 33 83 40" stroke="#1a2a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <ellipse cx="47" cy="47" rx="6" ry="3.5" fill="#f9a8d4" opacity=".5"/>
+              <ellipse cx="83" cy="47" rx="6" ry="3.5" fill="#f9a8d4" opacity=".5"/>
+            </g>
+            <!-- OJOS - Sad -->
+            <g id="seal-eyes-sad" style="display:none">
+              <path d="M47 37 Q53 44 59 37" stroke="#1a2a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M71 37 Q77 44 83 37" stroke="#1a2a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <ellipse cx="50" cy="46" rx="2.5" ry="4" fill="#93c5fd" opacity=".7"/>
+              <ellipse cx="74" cy="46" rx="2.5" ry="4" fill="#93c5fd" opacity=".7"/>
+            </g>
+
+            <!-- BOCA - Neutral -->
+            <path id="seal-mouth-neutral" d="M57 60 Q65 64 73 60" stroke="#5e9fc4" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- BOCA - Happy -->
+            <path id="seal-mouth-happy" d="M55 59 Q65 68 75 59" stroke="#5e9fc4" stroke-width="2.5" fill="none" stroke-linecap="round" style="display:none"/>
+            <!-- BOCA - Sad -->
+            <path id="seal-mouth-sad" d="M55 65 Q65 59 75 65" stroke="#5e9fc4" stroke-width="2.5" fill="none" stroke-linecap="round" style="display:none"/>
+
+            <!-- Manchas características -->
+            <ellipse cx="56" cy="76" rx="4" ry="3" fill="#7aaec9" opacity=".35"/>
+            <ellipse cx="74" cy="80" rx="3.5" ry="2.5" fill="#7aaec9" opacity=".3"/>
+            <ellipse cx="65" cy="70" rx="3" ry="2" fill="#7aaec9" opacity=".25"/>
+
+            <!-- Estrellas happy -->
+            <g id="seal-stars-happy" style="display:none">
+              <text x="6"  y="20" font-size="14" fill="#fbbf24">★</text>
+              <text x="105" y="18" font-size="12" fill="#fbbf24">★</text>
+              <text x="56" y="8"  font-size="9"  fill="#fbbf24">✦</text>
+              <text x="9" y="10"  font-size="8"  fill="#fbbf24">09</text>
+            </g>
+          </svg>
+        </div>
+        <span class="mascot-name">Mili</span>
+      </div>
+
+      <!-- Lulú la Pata -->
+      <div class="mascot-unit">
+        <div class="duck-wrap">
+          <svg class="duck-svg" id="duck-svg" viewBox="0 0 110 120" xmlns="http://www.w3.org/2000/svg">
+            <!-- Sombra -->
+            <ellipse cx="55" cy="115" rx="24" ry="4" fill="rgba(0,0,0,0.08)"/>
+            <!-- Patas -->
+            <path d="M43 100 L38 110 L34 110 L33 112 L38 112 L39 110 L43 110 L44 112 L48 112 L46 110 L45 110 L44 100Z" fill="#f59e0b"/>
+            <path d="M67 100 L62 110 L58 110 L57 112 L62 112 L63 110 L67 110 L68 112 L72 112 L70 110 L69 110 L68 100Z" fill="#f59e0b"/>
+            <!-- Cola -->
+            <path d="M74 75 Q85 68 88 60 Q84 70 78 74Z" fill="gold"/>
+            <path d="M74 78 Q84 74 87 65 Q83 74 76 78Z" fill="gold"/>
+            <!-- Cuerpo principal -->
+            <ellipse cx="55" cy="82" rx="28" ry="22" fill="#fbbf24"/>
+            <!-- Vientre más claro -->
+            <ellipse cx="52" cy="86" rx="18" ry="14" fill="#fde68a"/>
+            <!-- Ala izquierda -->
+            <path d="M27 78 Q18 72 16 82 Q18 90 28 86 Q26 82 27 78Z" fill="#f59e0b"/>
+            <!-- Ala derecha (doblada) -->
+            <path d="M76 75 Q82 68 84 78 Q82 86 74 84 Q76 80 76 75Z" fill="#d97706"/>
+            <!-- Detalles de ala -->
+            <path d="M27 78 Q23 82 22 87" stroke="#d97706" stroke-width="1" fill="none" stroke-linecap="round"/>
+            <!-- Cuello -->
+            <ellipse cx="55" cy="62" rx="14" ry="10" fill="#FFD700"/>
+            <!-- Cabeza principal -->
+            <ellipse cx="55" cy="46" rx="20" ry="18" fill="#FFD700"/>
+            <!-- Plumas de cabeza, color más oscuro arriba -->
+            <ellipse cx="55" cy="36" rx="16" ry="10" fill="#FFD700" opacity="0.9"/>
+            <!-- Mejilla blanca característica del pato real -->
+            <ellipse cx="68" cy="50" rx="8" ry="6" fill="gold" opacity="0.9"/>
+            <!-- Pico -->
+            <path d="M70 48 Q82 46 84 50 Q82 54 70 52Z" fill="#f59e0b"/>
+            <line x1="70" y1="50" x2="83" y2="50" stroke="#d97706" stroke-width="0.8"/>
+            <!-- Fosa nasal del pico -->
+            <ellipse cx="77" cy="48.5" rx="1.5" ry="0.8" fill="#d97706"/>
+            <!-- Collar verde (pato real) -->
+            <path d="M42 55 Q55 60 68 55 Q65 62 55 63 Q45 62 42 55Z" fill="#FFD700"/>
+            <path d="M43 56 Q55 61 67 56 Q65 60 55 61 Q45 60 43 56Z" fill="#FFD700"/>
+
+            <!-- OJOS - Neutral -->
+            <g id="duck-eyes-neutral">
+              <circle cx="62" cy="43" r="5" fill="#0f172a"/>
+              <circle cx="62" cy="43" r="3.5" fill="#9400D3"/>
+              <circle cx="62" cy="43" r="2" fill="#0a0a14"/>
+              <circle cx="63.5" cy="41.5" r="1.2" fill="white" opacity="0.85"/>
+            </g>
+            <!-- OJOS - Happy -->
+            <g id="duck-eyes-happy" style="display:none">
+              <path d="M57 41 Q62 35 67 41" stroke="#0f172a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <ellipse cx="62" cy="47" rx="5" ry="3" fill="#f9a8d4" opacity=".5"/>
+            </g>
+            <!-- OJOS - Sad -->
+            <g id="duck-eyes-sad" style="display:none">
+              <path d="M57 38 Q62 44 67 38" stroke="#0f172a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <ellipse cx="62" cy="46" rx="2" ry="3.5" fill="#93c5fd" opacity=".7"/>
+            </g>
+
+            <!-- Estrellas happy -->
+            <g id="duck-stars-happy" style="display:none">
+              <text x="5"  y="18" font-size="12" fill="#fbbf24">★</text>
+              <text x="92" y="16" font-size="10" fill="#fbbf24">★</text>
+              <text x="48" y="6"  font-size="8"  fill="#fbbf24">✦</text>
+              <text x="59" y="9"  font-size="8"  fill="#fbbf24">09</text>
+
+            </g>
+          </svg>
+        </div>
+        <span class="mascot-name">Lulú  </span>
+      </div>
+    </div>
+
+    <!-- PREGUNTAS -->
+    <section class="q-block active" id="qblock-0" aria-labelledby="qt-0">
+      <p class="q-number" aria-hidden="true">Pregunta 1 de 15</p>
+      <h2 class="q-text" id="qt-0">¿Cuál video muestra la seña correcta para <strong>"Hola"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-0">
+        <button class="option-card" data-correct="false" tabindex="0" aria-label="Opción A">
+          <div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div>
+          <div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Puño cerrado golpea el pecho dos veces</span></div>
+          <span class="state-badge" aria-hidden="true">✗</span>
+        </button>
+        <button class="option-card" data-correct="true" tabindex="0" aria-label="Opción B">
+          <div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div>
+          <div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Mano abierta en la frente, se mueve hacia afuera</span></div>
+          <span class="state-badge" aria-hidden="true">✓</span>
+        </button>
+        <button class="option-card" data-correct="false" tabindex="0" aria-label="Opción C">
+          <div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div>
+          <div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Dedo índice apunta a los ojos y luego al frente</span></div>
+          <span class="state-badge" aria-hidden="true">✗</span>
+        </button>
+        <button class="option-card" data-correct="false" tabindex="0" aria-label="Opción D">
+          <div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div>
+          <div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Palmas abiertas mirando hacia arriba, se elevan</span></div>
+          <span class="state-badge" aria-hidden="true">✗</span>
+        </button>
+      </div>
+      <div class="feedback-bar" id="fb-0" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-0">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-1" aria-labelledby="qt-1">
+      <p class="q-number" aria-hidden="true">Pregunta 2 de 15</p>
+      <h2 class="q-text" id="qt-1">¿Cuál video muestra la seña correcta para <strong>"Buenos días"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-1">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Mano en la barbilla y movimiento hacia abajo</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Puños cerrados que se rotan hacia afuera, luego de ser levantadas desde el pecho.</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Se levanta el dedo índice y apunta al sol y luego al reloj</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Mano baja desde la barbilla y se deja caer a la mano de apoyo y luego se levantan las manos abiertas.</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-1" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-1">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-2" aria-labelledby="qt-2">
+      <p class="q-number" aria-hidden="true">Pregunta 3 de 15</p>
+      <h2 class="q-text" id="qt-2">¿Qué video representa la seña de <strong>"Buenas tardes"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-2">
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Mano abierta baja desde la frente hacia el pecho en arco</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Ambas manos se agitan hacia los lados</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Puño en el pecho, se abre hacia afuera</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Mano señala hacia la derecha repetidamente</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-2" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-2">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-3" aria-labelledby="qt-3">
+      <p class="q-number" aria-hidden="true">Pregunta 4 de 15</p>
+      <h2 class="q-text" id="qt-3">¿Cuál video muestra la seña para <strong>"Buenas noches"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-3">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Mano abierta en la mejilla, inclina la cabeza</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Dos dedos apuntan hacia arriba como antenas</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Mano en forma de luna baja desde arriba hacia el pecho</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Palmas juntas se alejan del pecho hacia el frente</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-3" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-3">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-4" aria-labelledby="qt-4">
+      <p class="q-number" aria-hidden="true">Pregunta 5 de 15</p>
+      <h2 class="q-text" id="qt-4">¿Qué video muestra la seña correcta para <strong>"¿Cómo estás?"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-4">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Mano toca la frente y baja al mentón</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Mano abierta apunta a la otra persona y hace círculo en el pecho</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Ambos índices se tocan en el centro repetidamente</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Puño en el pecho que se abre como flor</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-4" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-4">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-5" aria-labelledby="qt-5">
+      <p class="q-number" aria-hidden="true">Pregunta 6 de 15</p>
+      <h2 class="q-text" id="qt-5">¿Cuál video muestra la seña para <strong>"Mucho gusto"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-5">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Dedos entrelazados se separan hacia afuera</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Mano abierta toca la mejilla y se aleja</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Ambas manos se estrechan al frente con movimiento hacia abajo</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Pulgar levantado se mueve de izquierda a derecha</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-5" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-5">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-6" aria-labelledby="qt-6">
+      <p class="q-number" aria-hidden="true">Pregunta 7 de 15</p>
+      <h2 class="q-text" id="qt-6">¿Cuál video muestra la seña para <strong>"Adiós"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-6">
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Mano abierta se agita de lado a lado a la altura del hombro</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Mano toca el hombro opuesto y baja</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Índice y medio forman una V y se mueven al frente</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Ambas palmas se presionan entre sí y se separan</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-6" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-6">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-7" aria-labelledby="qt-7">
+      <p class="q-number" aria-hidden="true">Pregunta 8 de 15</p>
+      <h2 class="q-text" id="qt-7">¿Cuál video muestra la seña para <strong>"Por favor"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-7">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Puño cerrado golpea dos veces el pecho</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Mano abierta en la frente y gira hacia afuera</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Índice dibuja una línea horizontal en el aire</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Mano plana hace círculo sobre el pecho y se inclina hacia adelante</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-7" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-7">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-8" aria-labelledby="qt-8">
+      <p class="q-number" aria-hidden="true">Pregunta 9 de 15</p>
+      <h2 class="q-text" id="qt-8">¿Qué video muestra la seña para <strong>"Gracias"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-8">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Palmas abiertas se unen y se elevan juntas</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Mano plana toca la barbilla y se mueve hacia afuera y abajo</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Ambos pulgares apuntan hacia arriba y se mueven al frente</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Mano en puño rota en el pecho varias veces</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-8" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-8">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-9" aria-labelledby="qt-9">
+      <p class="q-number" aria-hidden="true">Pregunta 10 de 15</p>
+      <h2 class="q-text" id="qt-9">¿Cuál video muestra la seña para <strong>"De nada"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-9">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Mano en forma de L rota sobre la muñeca</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Dedos apuntando al otro y luego al propio pecho</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Mano plana se mueve hacia la otra persona con la palma arriba</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Mano cerrada en el hombro se abre al extenderse</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-9" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-9">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-10" aria-labelledby="qt-10">
+      <p class="q-number" aria-hidden="true">Pregunta 11 de 15</p>
+      <h2 class="q-text" id="qt-10">¿Qué video muestra la seña para <strong>"Perdón / Disculpa"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-10">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Mano abierta sube desde el pecho hacia arriba</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Índice hace zigzag frente a la cara</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Palmas juntas apuntan al frente y se separan</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Dedos de una mano frotan la palma de la otra en círculo</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-10" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-10">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-11" aria-labelledby="qt-11">
+      <p class="q-number" aria-hidden="true">Pregunta 12 de 15</p>
+      <h2 class="q-text" id="qt-11">¿Cuál video representa la seña para <strong>"¿Cómo te llamas?"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-11">
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Índice apunta al otro, luego ambas manos deletrean "nombre"</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Ambas manos abiertas se golpean entre sí</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Mano en el oído y luego se aleja</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Puños cerrados se acercan y se separan horizontalmente</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-11" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-11">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-12" aria-labelledby="qt-12">
+      <p class="q-number" aria-hidden="true">Pregunta 13 de 15</p>
+      <h2 class="q-text" id="qt-12">¿Cuál video muestra la seña para <strong>"Me alegra verte"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-12">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Mano toca la oreja y apunta hacia el frente</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Puños rotan sobre la muñeca repetidamente</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Índice y medio señalan los ojos, luego apuntan al otro y el pecho sonríe</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Palma hacia abajo se agita de lado a lado</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-12" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-12">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-13" aria-labelledby="qt-13">
+      <p class="q-number" aria-hidden="true">Pregunta 14 de 15</p>
+      <h2 class="q-text" id="qt-13">¿Qué video muestra la seña para <strong>"Hasta luego"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-13">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Mano en el pecho se extiende al frente abierta</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Mano abierta se despide y luego señala hacia adelante (futuro)</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Ambos índices apuntan hacia abajo y se balancean</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Palma en el hombro y desliza hacia el codo</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-13" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-13">Continuar →</button>
+    </section>
+
+    <section class="q-block" id="qblock-14" aria-labelledby="qt-14">
+      <p class="q-number" aria-hidden="true">Pregunta 15 de 15</p>
+      <h2 class="q-text" id="qt-14">Última pregunta: ¿cuál video muestra la seña para <strong>"Bienvenido/a"</strong> en LSC?</h2>
+      <div class="options-grid" role="group" aria-labelledby="qt-14">
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video A</span></div></div><div class="option-label-row"><span class="option-letter">A</span><span class="option-label">Mano en el pecho y movimiento en espiral</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video B</span></div></div><div class="option-label-row"><span class="option-letter">B</span><span class="option-label">Dedos de ambas manos se entrelazan y rotan</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="false" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video C</span></div></div><div class="option-label-row"><span class="option-letter">C</span><span class="option-label">Índice dibuja una flecha hacia la derecha</span></div><span class="state-badge" aria-hidden="true">✗</span></button>
+        <button class="option-card" data-correct="true" tabindex="0"><div class="video-slot"><video src="" loop muted playsinline preload="metadata"></video><div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div><div class="video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Video D</span></div></div><div class="option-label-row"><span class="option-letter">D</span><span class="option-label">Mano abierta gira hacia adentro como invitando a entrar, con sonrisa</span></div><span class="state-badge" aria-hidden="true">✓</span></button>
+      </div>
+      <div class="feedback-bar" id="fb-14" role="alert" aria-live="polite"></div>
+      <button class="btn-continue" id="btn-14">Ver resultados →</button>
+    </section>
+
+    <!-- TRANSITION SCREEN -->
+    <div class="transition-screen" id="transition-screen" role="status" aria-live="polite">
+      <span class="fun-fact-eyebrow">Dato curioso – LSC</span>
+      <p class="fun-fact-heading" id="fact-heading">¿Sabías esto?</p>
+      <p class="fun-fact-body" id="fact-body"></p>
+      <button class="btn-next-fact" id="btn-next-fact">
+        Siguiente
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <!-- COMPLETE SCREEN -->
+    <div class="complete-screen" id="complete-screen">
+      <div class="complete-trophy" aria-hidden="true">🏆</div>
+      <h2 class="complete-title">¡Lección completada!</h2>
+      <div class="complete-score" id="final-score" aria-label="Puntuación final">— / 15</div>
+      <p class="complete-sub">Respuestas correctas</p>
+      <p class="complete-msg" id="final-msg"></p>
+      <button class="btn-restart" onclick="restartLesson()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+        Repetir lección
+      </button>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  /* ═══════ PARTÍCULAS ═══════ */
+  (function() {
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let W, H;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const COLORS = [
+      'rgba(99,102,241,',
+      'rgba(46,221,207,',
+      'rgba(251,191,36,',
+      'rgba(167,139,250,',
+      'rgba(99,102,241,',
+    ];
+
+    function makeParticle() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 3 + 1,
+        dx: (Math.random() - 0.5) * 0.4,
+        dy: (Math.random() - 0.5) * 0.4,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        alpha: Math.random() * 0.4 + 0.1,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: Math.random() * 0.02 + 0.005,
+      };
+    }
+
+    for (let i = 0; i < 80; i++) particles.push(makeParticle());
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => {
+        p.pulse += p.pulseSpeed;
+        const a = p.alpha + Math.sin(p.pulse) * 0.1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + Math.max(0.05, Math.min(0.6, a)) + ')';
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < -10) p.x = W + 10;
+        if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10;
+        if (p.y > H + 10) p.y = -10;
+      });
+
+      // Líneas de conexión entre partículas cercanas
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(99,102,241,' + (0.08 * (1 - dist/100)) + ')';
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  /* ═══════ FUN FACTS ═══════ */
+  const FUN_FACTS = [
+    "En LSC (Lengua de Señas Colombiana ) el espacio juega un papel fundamental: puedes indicar si un objeto está cerca tocando tu pecho con las manos, o lejos alejándolas de tu cuerpo. ¡El espacio habla!",
+    "La LSC (Lengua de Señas Colombiana ) fue reconocida oficialmente en Colombia con la Ley 982 de 2005, que garantiza derechos educativos y de comunicación a la comunidad sorda.",
+    "En LSC (Lengua de Señas Colombiana ), la expresión facial no es solo emoción — es gramática. Levantar las cejas puede convertir una afirmación en una pregunta de sí/no.",
+    "Existen más de 300 lenguas de señas distintas en el mundo. La LSC (Lengua de Señas Colombiana ) es única para Colombia y difiere del español en su estructura gramatical.",
+    "En LSC (Lengua de Señas Colombiana ) el orden de las palabras suele ser diferente al español. Por ejemplo, 'Yo quiero agua' puede señarse como 'AGUA YO QUERER'.",
+    "Los clasificadores en LSC (Lengua de Señas Colombiana ) son formas de mano que representan categorías de objetos o personas, permitiendo describir movimientos y ubicaciones con gran detalle.",
+    "La comunidad sorda colombiana llama a su idioma 'LSC' con orgullo. Es una lengua natural con toda la complejidad gramatical de cualquier lengua hablada.",
+    "En LSC (Lengua de Señas Colombiana ) existe el 'espacio sintáctico': zonas del espacio frente al signante se asignan a personas o cosas, y apuntar a ese espacio las referencia después.",
+    "El deletreo manual (dactilología) se usa en LSC (Lengua de Señas Colombiana ) para nombres propios o palabras sin seña establecida, usando el alfabeto manual colombiano.",
+    "Las señas de LSC (Lengua de Señas Colombiana ) pueden variar por región. Bogotá, Medellín y Cali tienen algunas señas diferentes, como ocurre con los dialectos en los idiomas hablados.",
+    "La intensidad y velocidad de una seña puede cambiar su significado en LSC (Lengua de Señas Colombiana ). Una seña lenta y amplia puede indicar énfasis o tamaño grande.",
+    "En LSC (Lengua de Señas Colombiana ) se puede 'incorporar' el número en la seña. Por ejemplo, 'tres semanas' se hace modificando la seña de SEMANA para mostrar el tres directamente.",
+    "La LSC (Lengua de Señas Colombiana ) tiene su propia poesía y literatura. Existen narradores sordos que crean arte visual-gestual con la misma riqueza que la literatura escrita.",
+    "Aprender LSC beneficia a todos. Los estudios muestran que aprender una lengua de señas mejora la atención visual, la memoria espacial y la empatía.",
+  ];
+
+  const TOTAL = 15;
+  let current = 0, score = 0, answered = false;
+
+  const sealEl     = document.getElementById('seal-svg');
+  const duckEl     = document.getElementById('duck-svg');
+  const progressEl = document.getElementById('progress-fill');
+  const progressLb = document.getElementById('progress-label');
+  const progressPc = document.getElementById('progress-pct');
+  const progressRg = document.getElementById('progressbar-region');
+  const transitionEl = document.getElementById('transition-screen');
+  const factBody   = document.getElementById('fact-body');
+  const completeEl = document.getElementById('complete-screen');
+
+  /* ═══════ MASCOT STATE ═══════ */
+  function setSealState(state) {
+    const parts = {
+      'seal-eyes-neutral': document.getElementById('seal-eyes-neutral'),
+      'seal-eyes-happy':   document.getElementById('seal-eyes-happy'),
+      'seal-eyes-sad':     document.getElementById('seal-eyes-sad'),
+      'seal-mouth-neutral':document.getElementById('seal-mouth-neutral'),
+      'seal-mouth-happy':  document.getElementById('seal-mouth-happy'),
+      'seal-mouth-sad':    document.getElementById('seal-mouth-sad'),
+      'seal-stars-happy':  document.getElementById('seal-stars-happy'),
+    };
+    Object.values(parts).forEach(el => el && (el.style.display = 'none'));
+    sealEl.classList.remove('bounce','shake','celebrate');
+
+    if (state === 'happy') {
+      parts['seal-eyes-happy'].style.display  = '';
+      parts['seal-mouth-happy'].style.display = '';
+      parts['seal-stars-happy'].style.display = '';
+      void sealEl.offsetWidth;
+      sealEl.classList.add('bounce');
+    } else if (state === 'sad') {
+      parts['seal-eyes-sad'].style.display  = '';
+      parts['seal-mouth-sad'].style.display = '';
+      void sealEl.offsetWidth;
+      sealEl.classList.add('shake');
+    } else if (state === 'celebrate') {
+      parts['seal-eyes-happy'].style.display  = '';
+      parts['seal-mouth-happy'].style.display = '';
+      parts['seal-stars-happy'].style.display = '';
+      void sealEl.offsetWidth;
+      sealEl.classList.add('celebrate');
+    } else {
+      parts['seal-eyes-neutral'].style.display  = '';
+      parts['seal-mouth-neutral'].style.display = '';
+    }
+  }
+
+  function setDuckState(state) {
+    const parts = {
+      'duck-eyes-neutral': document.getElementById('duck-eyes-neutral'),
+      'duck-eyes-happy':   document.getElementById('duck-eyes-happy'),
+      'duck-eyes-sad':     document.getElementById('duck-eyes-sad'),
+      'duck-stars-happy':  document.getElementById('duck-stars-happy'),
+    };
+    Object.values(parts).forEach(el => el && (el.style.display = 'none'));
+    duckEl.classList.remove('bounce','shake','celebrate');
+
+    if (state === 'happy') {
+      parts['duck-eyes-happy'].style.display  = '';
+      parts['duck-stars-happy'].style.display = '';
+      void duckEl.offsetWidth;
+      duckEl.classList.add('bounce');
+    } else if (state === 'sad') {
+      parts['duck-eyes-sad'].style.display  = '';
+      void duckEl.offsetWidth;
+      duckEl.classList.add('shake');
+    } else if (state === 'celebrate') {
+      parts['duck-eyes-happy'].style.display  = '';
+      parts['duck-stars-happy'].style.display = '';
+      void duckEl.offsetWidth;
+      duckEl.classList.add('celebrate');
+    } else {
+      parts['duck-eyes-neutral'].style.display = '';
+    }
+  }
+
+  function setMascotState(state) {
+    setSealState(state);
+    setDuckState(state);
+  }
+
+  /* ═══════ PROGRESS ═══════ */
+  function updateProgress(idx) {
+    const pct = Math.round((idx / TOTAL) * 100);
+    progressEl.style.width = pct + '%';
+    progressLb.textContent = idx < TOTAL ? 'Pregunta ' + (idx + 1) + ' de ' + TOTAL : '¡Lección completada!';
+    progressPc.textContent = pct + '%';
+    progressRg.setAttribute('aria-valuenow', pct);
+  }
+
+  /* ═══════ VIDEO PREVIEWS ═══════ */
+  function initVideoPreviews() {
+    document.querySelectorAll('.option-card').forEach(card => {
+      const video = card.querySelector('video');
+      const placeholder = card.querySelector('.video-placeholder');
+      if (!video) return;
+      if (video.src && video.src !== window.location.href) placeholder.style.display = 'none';
+      card.addEventListener('mouseenter', () => { if (video.src && video.src !== window.location.href) video.play().catch(() => {}); });
+      card.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
+    });
+  }
+
+  /* ═══════ ANSWER SELECTION ═══════ */
+  function bindOptions(qIndex) {
+    const block = document.getElementById('qblock-' + qIndex);
+    const fb    = document.getElementById('fb-' + qIndex);
+    const btn   = document.getElementById('btn-' + qIndex);
+    const cards = block.querySelectorAll('.option-card');
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        if (answered) return;
+        answered = true;
+        const isCorrect = card.dataset.correct === 'true';
+        cards.forEach(c => {
+          c.classList.add('disabled');
+          if (c.dataset.correct === 'true') c.classList.add('correct');
+        });
+        if (isCorrect) {
+          score++;
+          card.classList.add('correct');
+          fb.className = 'feedback-bar good show';
+          fb.innerHTML = '<span class="feedback-icon">✅</span><span>¡Excelente! Esa es la seña correcta. ¡Muy bien!</span>';
+          setMascotState('happy');
+        } else {
+          card.classList.add('wrong');
+          fb.className = 'feedback-bar bad show';
+          fb.innerHTML = '<span class="feedback-icon">❌</span><span>¡Ups! Esa no era la seña. La correcta está marcada en verde.</span>';
+          setMascotState('sad');
+        }
+        btn.classList.add('show');
+        btn.focus();
+      });
+    });
+  }
+
+  /* ═══════ CONTINUE ═══════ */
+  document.querySelectorAll('.btn-continue').forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      hideAllBlocks();
+      if (idx < TOTAL - 1) showTransition(idx);
+      else showComplete();
+    });
+  });
+
+  /* ═══════ TRANSITION ═══════ */
+  function showTransition(afterIndex) {
+    factBody.textContent = FUN_FACTS[afterIndex] || '';
+    transitionEl.classList.add('active');
+    setMascotState('neutral');
+  }
+
+  document.getElementById('btn-next-fact').addEventListener('click', () => {
+    transitionEl.classList.remove('active');
+    current++;
+    showQuestion(current);
+  });
+
+  /* ═══════ SHOW QUESTION ═══════ */
+  function showQuestion(idx) {
+    answered = false;
+    const block = document.getElementById('qblock-' + idx);
+    if (!block) return;
+    block.classList.add('active');
+    updateProgress(idx);
+    setMascotState('neutral');
+    block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function hideAllBlocks() {
+    document.querySelectorAll('.q-block, .transition-screen, .complete-screen').forEach(el => el.classList.remove('active'));
+  }
+
+  /* ═══════ COMPLETE ═══════ */
+  function showComplete() {
+    completeEl.classList.add('active');
+    document.getElementById('final-score').textContent = score + ' / ' + TOTAL;
+    updateProgress(TOTAL);
+    const pct = Math.round((score / TOTAL) * 100);
+    const msgs = [
+      [100, '¡Puntaje perfecto! Eres un experto en LSC 🦭⭐'],
+      [80,  '¡Muy bien! Dominas la mayoría de las señas de salud.'],
+      [60,  'Buen intento. Repasa los videos y vuelve a intentarlo.'],
+      [0,   'Sigue practicando. ¡Cada intento cuenta!'],
+    ];
+    document.getElementById('final-msg').textContent = msgs.find(([min]) => pct >= min)[1];
+    setMascotState('celebrate');
+  }
+
+  /* ═══════ RESTART ═══════ */
+  function restartLesson() {
+    current = 0; score = 0; answered = false;
+    document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct','wrong','disabled'));
+    document.querySelectorAll('.feedback-bar').forEach(fb => { fb.className = 'feedback-bar'; fb.textContent = ''; });
+    document.querySelectorAll('.btn-continue').forEach(b => b.classList.remove('show'));
+    hideAllBlocks();
+    document.getElementById('qblock-0').classList.add('active');
+    updateProgress(0);
+    setMascotState('neutral');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ═══════ INIT ═══════ */
+  for (let i = 0; i < TOTAL; i++) bindOptions(i);
+  initVideoPreviews();
+  updateProgress(0);
+  setMascotState('neutral');
+</script>
+</body>
+</html>4
