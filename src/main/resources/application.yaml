@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: HandApp
+
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3306/HandApp
+    username: "root"
+    password: ""
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+server:
+  port: 8081
+  error:
+    include-message: never
+    include-binding-errors: never
+    include-stacktrace: never
