@@ -1,0 +1,701 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel Administrador — HandApp</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --card:      #20243a;
+      --border:    #2e3350;
+      --accent:    #5b6af0;
+      --accent2:   #7c8bff;
+      --danger:    #e05252;
+      --success:   #3ecf8e;
+      --warning:   #f0a845;
+      --text:      #e8eaf6;
+      --muted:     #7880a0;
+      --radius:    12px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo span {
+      background: var(--accent);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .admin-badge {
+      background: rgba(91,106,240,0.15);
+      border: 1px solid var(--accent);
+      color: var(--accent2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .btn-logout {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all .2s;
+    }
+    .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      padding: 40px 32px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .page-subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 32px; }
+
+    /* ── STATS ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+    .stat-value { font-size: 2rem; font-weight: 700; }
+    .stat-value.blue  { color: var(--accent2); }
+    .stat-value.green { color: var(--success); }
+    .stat-value.orange{ color: var(--warning); }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      max-width: 340px;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 16px 10px 40px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .search-box input:focus { border-color: var(--accent); }
+    .search-box::before {
+      content: "🔍";
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+    }
+    .filter-btns { display: flex; gap: 8px; }
+    .filter-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all .2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent2);
+      background: rgba(91,106,240,0.1);
+    }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: rgba(91,106,240,0.07); border-bottom: 1px solid var(--border); }
+    th {
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+    td { padding: 14px 20px; font-size: 0.9rem; }
+
+    .user-cell { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--accent2);
+      flex-shrink: 0;
+    }
+    .user-name { font-weight: 600; }
+    .user-handle { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-admin   { background: rgba(91,106,240,0.15); color: var(--accent2); border: 1px solid var(--accent); }
+    .badge-usuario { background: rgba(62,207,142,0.12); color: var(--success); border: 1px solid rgba(62,207,142,0.4); }
+
+    .date-text { color: var(--muted); font-size: 0.82rem; }
+
+    .actions { display: flex; gap: 8px; }
+    .btn-edit, .btn-del {
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+    }
+    .btn-edit { background: rgba(91,106,240,0.15); color: var(--accent2); }
+    .btn-edit:hover { background: rgba(91,106,240,0.3); }
+    .btn-del  { background: rgba(224,82,82,0.12); color: var(--danger); }
+    .btn-del:hover  { background: rgba(224,82,82,0.25); }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    .modal h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 24px; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+    .form-group input, .form-group select {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
+    .form-group select option { background: var(--card); }
+
+    .modal-actions { display: flex; gap: 10px; margin-top: 24px; }
+    .btn-save {
+      flex: 1;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-save:hover { opacity: .85; }
+    .btn-cancel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-cancel:hover { border-color: var(--muted); color: var(--text); }
+
+    /* ── CONFIRM MODAL ── */
+    .confirm-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+    .confirm-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .confirm-modal h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+    .confirm-modal p  { color: var(--muted); font-size: 0.9rem; margin-bottom: 24px; }
+    .confirm-actions { display: flex; gap: 10px; justify-content: center; }
+    .btn-confirm-del {
+      background: var(--danger);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-confirm-del:hover { opacity: .85; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px 22px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      z-index: 300;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .3s;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.ok  { border-left: 4px solid var(--success); }
+    .toast.err { border-left: 4px solid var(--danger); }
+
+    #loading { text-align: center; padding: 60px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    HandApp <span>Admin</span>
+  </div>
+  <div class="header-right">
+    <span class="admin-badge" id="adminNombre">Administrador</span>
+    <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+  <div class="page-title">Gestión de Usuarios</div>
+  <div class="page-subtitle">Administra todos los usuarios registrados en la plataforma.</div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">Total usuarios</div>
+      <div class="stat-value blue" id="statTotal">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Usuarios activos</div>
+      <div class="stat-value green" id="statUsuarios">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Administradores</div>
+      <div class="stat-value orange" id="statAdmins">—</div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Buscar por nombre, usuario o correo..." oninput="filtrar()">
+    </div>
+    <div class="filter-btns">
+      <button class="filter-btn active" onclick="setFiltro('todos',this)">Todos</button>
+      <button class="filter-btn" onclick="setFiltro('usuario',this)">Usuarios</button>
+      <button class="filter-btn" onclick="setFiltro('admin',this)">Admins</button>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div id="loading">Cargando usuarios...</div>
+    <table id="tablaUsuarios" style="display:none">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th>Registro</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyUsuarios"></tbody>
+    </table>
+    <div id="emptyState" class="empty-state" style="display:none">
+      No se encontraron usuarios.
+    </div>
+  </div>
+</main>
+
+<!-- MODAL EDITAR -->
+<div class="modal-overlay" id="modalEditar">
+  <div class="modal">
+    <h3>✏️ Editar Usuario</h3>
+    <input type="hidden" id="editId">
+    <div class="form-group">
+      <label>Nombre completo</label>
+      <input type="text" id="editNombre" placeholder="Nombre">
+    </div>
+    <div class="form-group">
+      <label>Correo electrónico</label>
+      <input type="email" id="editCorreo" placeholder="correo@email.com">
+    </div>
+    <div class="form-group">
+      <label>Rol</label>
+      <select id="editRol">
+        <option value="usuario">Usuario</option>
+        <option value="admin">Administrador</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-save" onclick="guardarEdicion()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMAR ELIMINAR -->
+<div class="modal-overlay" id="modalConfirm">
+  <div class="confirm-modal">
+    <div class="confirm-icon">🗑️</div>
+    <h3>¿Eliminar usuario?</h3>
+    <p>Esta acción no se puede deshacer. El usuario será eliminado permanentemente.</p>
+    <div class="confirm-actions">
+      <button class="btn-cancel" onclick="cerrarConfirm()">Cancelar</button>
+      <button class="btn-confirm-del" onclick="confirmarEliminar()">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const PHP = '../PHP/';
+  let todosUsuarios = [];
+  let filtroActual = 'todos';
+  let idAEliminar = null;
+
+  // ── Verificar sesión admin ──
+  window.addEventListener('DOMContentLoaded', () => {
+    verificarAdmin();
+    cargarUsuarios();
+  });
+
+  function verificarAdmin() {
+    fetch(PHP + 'perfil.php')
+      .then(r => r.json())
+      .then(data => {
+        if (data.status !== 'ok' || data.usuario.rol !== 'admin') {
+          window.location.href = '../HTML/login.html';
+          return;
+        }
+        document.getElementById('adminNombre').textContent = data.usuario.nombre;
+      })
+      .catch(() => window.location.href = '../HTML/login.html');
+  }
+
+  // ── Cargar usuarios ──
+  function cargarUsuarios() {
+    fetch(PHP + 'admin_usuarios.php?accion=listar')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('loading').style.display = 'none';
+        if (data.status !== 'ok') { mostrarToast('Error al cargar usuarios', 'err'); return; }
+        todosUsuarios = data.usuarios;
+        actualizarStats();
+        renderTabla(todosUsuarios);
+      })
+      .catch(() => mostrarToast('No se pudo conectar con el servidor', 'err'));
+  }
+
+  function actualizarStats() {
+    const total    = todosUsuarios.length;
+    const admins   = todosUsuarios.filter(u => u.rol === 'admin').length;
+    const usuarios = total - admins;
+    document.getElementById('statTotal').textContent    = total;
+    document.getElementById('statUsuarios').textContent = usuarios;
+    document.getElementById('statAdmins').textContent   = admins;
+  }
+
+  function renderTabla(lista) {
+    const tbody = document.getElementById('tbodyUsuarios');
+    const tabla = document.getElementById('tablaUsuarios');
+    const empty = document.getElementById('emptyState');
+
+    if (lista.length === 0) {
+      tabla.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+    tabla.style.display = 'table';
+
+    tbody.innerHTML = lista.map(u => {
+      const inicial = u.nombre.charAt(0).toUpperCase();
+      const foto = (u.foto && u.foto !== 'default.png')
+        ? `<img src="../IMG/usuarios/${u.foto}" class="avatar" alt="${u.nombre}" onerror="this.outerHTML='<div class=\\'avatar\\'>${inicial}</div>'">`
+        : `<div class="avatar">${inicial}</div>`;
+
+      const fecha = new Date(u.fecha_registro).toLocaleDateString('es-ES', {
+        day: '2-digit', month: 'short', year: 'numeric'
+      });
+
+      return `
+        <tr>
+          <td>
+            <div class="user-cell">
+              ${foto}
+              <div>
+                <div class="user-name">${esc(u.nombre)}</div>
+                <div class="user-handle">@${esc(u.usuario)}</div>
+              </div>
+            </div>
+          </td>
+          <td>${esc(u.correo)}</td>
+          <td><span class="badge badge-${u.rol}">${u.rol === 'admin' ? '⚙️ Admin' : '👤 Usuario'}</span></td>
+          <td><span class="date-text">${fecha}</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-edit" onclick="abrirEditar(${u.id})">Editar</button>
+              <button class="btn-del"  onclick="pedirEliminar(${u.id})">Eliminar</button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  // ── Filtros ──
+  function filtrar() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    let lista = filtroActual === 'todos' ? todosUsuarios
+              : todosUsuarios.filter(u => u.rol === filtroActual);
+    if (q) lista = lista.filter(u =>
+      u.nombre.toLowerCase().includes(q) ||
+      u.usuario.toLowerCase().includes(q) ||
+      u.correo.toLowerCase().includes(q)
+    );
+    renderTabla(lista);
+  }
+
+  function setFiltro(f, btn) {
+    filtroActual = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filtrar();
+  }
+
+  // ── Editar ──
+  function abrirEditar(id) {
+    fetch(PHP + 'admin_usuarios.php?accion=obtener&id=' + id)
+      .then(r => r.json())
+      .then(data => {
+        if (data.status !== 'ok') return;
+        const u = data.usuario;
+        document.getElementById('editId').value     = u.id;
+        document.getElementById('editNombre').value = u.nombre;
+        document.getElementById('editCorreo').value = u.correo;
+        document.getElementById('editRol').value    = u.rol;
+        document.getElementById('modalEditar').classList.add('open');
+      });
+  }
+
+  function guardarEdicion() {
+    const fd = new FormData();
+    fd.append('accion', 'editar');
+    fd.append('id',     document.getElementById('editId').value);
+    fd.append('nombre', document.getElementById('editNombre').value.trim());
+    fd.append('correo', document.getElementById('editCorreo').value.trim());
+    fd.append('rol',    document.getElementById('editRol').value);
+
+    fetch(PHP + 'admin_usuarios.php', { method: 'POST', body: fd })
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          mostrarToast('Usuario actualizado ✓', 'ok');
+          cerrarModal();
+          cargarUsuarios();
+        } else {
+          mostrarToast(data.mensaje || 'Error al actualizar', 'err');
+        }
+      });
+  }
+
+  function cerrarModal() {
+    document.getElementById('modalEditar').classList.remove('open');
+  }
+
+  // ── Eliminar ──
+  function pedirEliminar(id) {
+    idAEliminar = id;
+    document.getElementById('modalConfirm').classList.add('open');
+  }
+
+  function confirmarEliminar() {
+    const fd = new FormData();
+    fd.append('accion', 'eliminar');
+    fd.append('id', idAEliminar);
+
+    fetch(PHP + 'admin_usuarios.php', { method: 'POST', body: fd })
+      .then(r => r.json())
+      .then(data => {
+        cerrarConfirm();
+        if (data.status === 'ok') {
+          mostrarToast('Usuario eliminado', 'ok');
+          cargarUsuarios();
+        } else {
+          mostrarToast(data.mensaje || 'Error al eliminar', 'err');
+        }
+      });
+  }
+
+  function cerrarConfirm() {
+    document.getElementById('modalConfirm').classList.remove('open');
+    idAEliminar = null;
+  }
+
+  // ── Cerrar sesión ──
+  function cerrarSesion() {
+    window.location.href = PHP + 'cerrar_sesion.php';
+  }
+
+  // ── Toast ──
+  function mostrarToast(msg, tipo = 'ok') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + tipo;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── Escape HTML ──
+  function esc(str) {
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  // Cerrar modales al hacer clic fuera
+  document.getElementById('modalEditar').addEventListener('click', function(e) {
+    if (e.target === this) cerrarModal();
+  });
+  document.getElementById('modalConfirm').addEventListener('click', function(e) {
+    if (e.target === this) cerrarConfirm();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${esNuevo} ? 'Nuevo usuario - HandApp' : 'Editar usuario - HandApp'">Usuario - HandApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/IMG/manos.png}">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #0a0a0f;
+            --bg2:       #12121a;
+            --bg3:       #1a1a26;
+            --border:    rgba(255,255,255,0.07);
+            --accent:    #7c6cfc;
+            --accent2:   #a78bfa;
+            --accent-glow: rgba(124,108,252,0.25);
+            --text:      #f0eeff;
+            --text-muted:#8b87a8;
+            --success:   #34d399;
+            --error:     #f87171;
+            --radius:    12px;
+            --radius-sm: 8px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .form-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 460px;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .form-header {
+            padding: 22px 28px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-icon {
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 9px;
+            display: grid; place-items: center;
+            flex-shrink: 0;
+        }
+        .brand-icon svg { width: 16px; height: 16px; color: #fff; }
+        .form-header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .form-body { padding: 24px 28px 28px; }
+
+        .error-box {
+            background: rgba(248,113,113,.1);
+            border: 1px solid rgba(248,113,113,.3);
+            color: var(--error);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: .82rem;
+            margin-bottom: 18px;
+        }
+
+        .campo { margin-bottom: 18px; }
+        .campo label {
+            display: block;
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+        .campo input, .campo select {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem;
+            outline: none;
+            transition: border-color .15s;
+        }
+        .campo input:focus, .campo select:focus { border-color: var(--accent); }
+        .campo select option { background: var(--bg3); color: var(--text); }
+        .campo small { display: block; margin-top: 6px; font-size: .72rem; color: var(--text-muted); line-height: 1.4; }
+
+        .acciones { display: flex; gap: 10px; margin-top: 26px; }
+        .btn {
+            flex: 1;
+            padding: 11px;
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .85rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all .2s;
+        }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: var(--accent2); }
+        .btn-secondary { background: var(--bg3); color: var(--text-muted); border: 1px solid var(--border); }
+        .btn-secondary:hover { color: var(--text); border-color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <div class="form-header">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+                </svg>
+            </div>
+            <h1 th:text="${esNuevo} ? 'Crear nuevo usuario' : 'Editar usuario'">Usuario</h1>
+        </div>
+
+        <div class="form-body">
+
+            <div class="error-box" th:if="${error}" th:text="${error}"></div>
+
+            <form th:action="${esNuevo} ? @{/admin/usuarios/nuevo} : @{/admin/usuarios/{id}/editar(id=${usuarioForm.id})}"
+                  th:object="${usuarioForm}"
+                  method="post">
+
+                <div class="campo">
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" required>
+                </div>
+
+                <div class="campo">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" th:field="*{correo}" required>
+                    <small>ADMINISTRADOR → debe terminar en @handapp.com · EDITOR → @editorhand.com</small>
+                </div>
+
+                <div class="campo">
+                    <label for="contrasena">Contraseña</label>
+                    <input type="password" id="contrasena" th:field="*{contrasena}"
+                           th:required="${esNuevo}"
+                           placeholder="Dejar en blanco para no cambiarla">
+                    <small th:unless="${esNuevo}">Solo se actualiza si escribes algo aquí.</small>
+                </div>
+
+                <div class="campo">
+                    <label for="rol">Rol</label>
+                    <select id="rol" th:field="*{rol}" required>
+                        <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+                    </select>
+                </div>
+
+                <div class="acciones">
+                    <a class="btn btn-secondary" th:href="@{/admin/panel}">Cancelar</a>
+                    <button type="submit" class="btn btn-primary"
+                            th:text="${esNuevo} ? 'Crear usuario' : 'Guardar cambios'">Guardar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
+</html>

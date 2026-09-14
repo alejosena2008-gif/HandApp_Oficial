@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandApp — Panel Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/IMG/manos.png}">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #0a0a0f; --bg2: #12121a; --bg3: #1a1a26;
+            --border: rgba(255,255,255,0.07);
+            --accent: #34d399; --accent2: #6ee7b7;
+            --accent-glow: rgba(52,211,153,0.2);
+            --text: #f0eeff; --text-muted: #8b87a8;
+            --error: #f87171; --warning: #fbbf24;
+            --radius: 12px; --radius-sm: 8px; --sidebar-w: 260px; --header-h: 64px;
+        }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; }
+
+        .sidebar {
+            width: var(--sidebar-w); background: var(--bg2); border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
+        }
+        .sidebar-brand { display: flex; align-items: center; gap: 10px; padding: 20px 24px; border-bottom: 1px solid var(--border); text-decoration: none; }
+        .brand-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 10px; display: grid; place-items: center; }
+        .brand-icon svg { width: 18px; height: 18px; color: #062; }
+        .brand-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--text); }
+        .brand-name span { color: var(--accent2); }
+        .brand-badge { margin-left: auto; font-size: .6rem; font-weight: 600; letter-spacing: .05em; background: var(--accent-glow); color: var(--accent2); border: 1px solid var(--accent); padding: 2px 7px; border-radius: 20px; text-transform: uppercase; }
+
+        .sidebar-nav { flex: 1; overflow-y: auto; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; }
+        .nav-section-label { font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: 12px 12px 6px; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius-sm); color: var(--text-muted); font-size: .875rem; text-decoration: none; }
+        .nav-item svg { width: 17px; height: 17px; flex-shrink: 0; }
+        .nav-item.active { background: var(--accent-glow); color: var(--accent2); border: 1px solid rgba(52,211,153,.25); }
+        .nav-item .badge { margin-left: auto; background: var(--accent); color: #062; font-size: .65rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+
+        .sidebar-footer { padding: 16px 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+        .user-card { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+        .avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: grid; place-items: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: .8rem; color: #062; flex-shrink: 0; }
+        .user-info { flex: 1; min-width: 0; }
+        .user-name { font-size: .8rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-role { font-size: .7rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .logout-btn { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius-sm); color: var(--text-muted); font-size: .875rem; font-family: inherit; border: none; background: none; width: 100%; text-align: left; cursor: pointer; }
+        .logout-btn:hover { background: rgba(248,113,113,.1); color: var(--error); }
+        .logout-btn svg { width: 17px; height: 17px; }
+
+        .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+        .topbar { height: var(--header-h); background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 28px; position: sticky; top: 0; }
+        .topbar-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; }
+        .topbar-title span { color: var(--text-muted); font-weight: 400; font-size: .85rem; margin-left: 8px; }
+
+        .content { flex: 1; padding: 28px; display: flex; flex-direction: column; gap: 24px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .stat-label { font-size: .8rem; color: var(--text-muted); font-weight: 500; }
+        .stat-value { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; }
+
+        .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+        .card-head { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .card-head-title { font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 700; }
+
+        .btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: .82rem; font-weight: 500; cursor: pointer; border: none; text-decoration: none; }
+        .btn svg { width: 14px; height: 14px; }
+        .btn-primary { background: var(--accent); color: #062; }
+        .btn-primary:hover { background: var(--accent2); }
+        .btn-sm { padding: 5px 11px; font-size: .78rem; }
+
+        table { width: 100%; border-collapse: collapse; }
+        thead th { padding: 10px 16px; text-align: left; font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); background: rgba(255,255,255,.02); }
+        tbody td { padding: 12px 16px; font-size: .84rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: rgba(255,255,255,.03); }
+
+        .cell-title { font-weight: 500; }
+        .cell-desc { font-size: .75rem; color: var(--text-muted); max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: .72rem; font-weight: 600; }
+        .chip-dot { width: 5px; height: 5px; border-radius: 50%; }
+        .chip.publicada { background: rgba(52,211,153,.12); color: var(--accent); }
+        .chip.publicada .chip-dot { background: var(--accent); }
+        .chip.borrador { background: rgba(251,191,36,.12); color: var(--warning); }
+        .chip.borrador .chip-dot { background: var(--warning); }
+
+        .action-btns { display: flex; gap: 6px; }
+        .action-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg3); display: grid; place-items: center; cursor: pointer; color: var(--text-muted); text-decoration: none; }
+        .action-btn:hover { color: var(--text); border-color: var(--accent); }
+        .action-btn svg { width: 13px; height: 13px; }
+
+        .empty-state { padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: .85rem; }
+        .alert-flash { padding: 12px 16px; border-radius: 8px; font-size: .85rem; }
+        .alert-ok { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); color: var(--accent); }
+        .alert-err { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3); color: var(--error); }
+
+        @media (max-width: 900px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <a th:href="@{/}" class="sidebar-brand">
+        <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+            </svg>
+        </div>
+        <span class="brand-name">Hand<span>App</span></span>
+        <span class="brand-badge">Editor</span>
+    </a>
+
+    <nav class="sidebar-nav">
+        <span class="nav-section-label">Contenido</span>
+        <a th:href="@{/editor/panel}" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+            </svg>
+            Lecciones
+            <span class="badge" th:text="${totalLecciones}">0</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-card">
+            <div class="avatar" th:text="${inicialEditor}">E</div>
+            <div class="user-info">
+                <div class="user-name" th:text="${nombreEditor}">Editor</div>
+                <div class="user-role" th:text="${correoEditor}">editor@editorhand.com</div>
+            </div>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="logout-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+                    <polyline points="16,17 21,12 16,7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Cerrar sesión
+            </button>
+        </form>
+    </div>
+</aside>
+
+<div class="main">
+    <header class="topbar">
+        <div class="topbar-title">Panel Editor <span>/ Gestión de lecciones</span></div>
+    </header>
+
+    <div class="content">
+
+        <div class="alert-flash alert-ok" th:if="${mensaje}" th:text="${mensaje}"></div>
+        <div class="alert-flash alert-err" th:if="${error}" th:text="${error}"></div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">Lecciones totales</span>
+                <div class="stat-value" th:text="${totalLecciones}">0</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Publicadas</span>
+                <div class="stat-value" th:text="${totalPublicadas}">0</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">En borrador</span>
+                <div class="stat-value" th:text="${totalBorrador}">0</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-head">
+                <div class="card-head-title">Mis lecciones</div>
+                <a th:href="@{/editor/lecciones/nueva}" class="btn btn-primary btn-sm">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Nueva lección
+                </a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Título</th>
+                        <th>Estado</th>
+                        <th>Vista (HTML)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="leccion : ${lecciones}">
+                        <td th:text="${leccion.orden}">1</td>
+                        <td>
+                            <div class="cell-title" th:text="${leccion.titulo}">Título</div>
+                            <div class="cell-desc" th:text="${leccion.descripcion}">Descripción</div>
+                        </td>
+                        <td>
+                            <span class="chip" th:classappend="${leccion.publicada} ? 'publicada' : 'borrador'">
+                                <span class="chip-dot"></span>
+                                <span th:text="${leccion.publicada} ? 'Publicada' : 'Borrador'">Estado</span>
+                            </span>
+                        </td>
+                        <td>
+                            <span th:if="${leccion.vista != null and !leccion.vista.isEmpty()}"
+                                  style="font-size:.78rem; color:var(--accent);" th:text="${leccion.vista}">archivo</span>
+                            <span th:if="${leccion.vista == null or leccion.vista.isEmpty()}"
+                                  class="chip borrador" style="font-size:.7rem;">
+                                <span class="chip-dot"></span> Sin asignar
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <a th:href="@{/editor/lecciones/{id}/editar(id=${leccion.id})}" class="action-btn" title="Editar">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </a>
+                                <form th:action="@{/editor/lecciones/{id}/eliminar(id=${leccion.id})}" method="post"
+                                      onsubmit="return confirm('¿Eliminar esta lección?');" style="display:contents">
+                                    <button type="submit" class="action-btn" title="Eliminar">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(lecciones)}">
+                        <td colspan="4" class="empty-state">Todavía no has creado ninguna lección.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

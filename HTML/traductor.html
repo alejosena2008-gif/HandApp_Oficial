@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traductor LSC — HandApp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/traductor.css">
+</head>
+<body>
+
+<header class="header" id="header">
+    <div class="header-container">
+        <a href="../index.html" class="logo">
+            <div class="logo-hands">
+                <svg class="hand-left" viewBox="0 0 64 64" fill="none">
+                    <path d="M32 4C28.686 4 26 6.686 26 10V30H22V16C22 12.686 19.314 10 16 10C12.686 10 10 12.686 10 16V38C10 50.15 19.85 60 32 60C44.15 60 54 50.15 54 38V22C54 18.686 51.314 16 48 16C44.686 16 42 18.686 42 22V30H38V10C38 6.686 35.314 4 32 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg class="hand-right" viewBox="0 0 64 64" fill="none">
+                    <path d="M32 4C35.314 4 38 6.686 38 10V30H42V16C42 12.686 44.686 10 48 10C51.314 10 54 12.686 54 16V38C54 50.15 44.15 60 32 60C19.85 60 10 50.15 10 38V22C10 18.686 12.686 16 16 16C19.314 16 22 18.686 22 22V30H26V10C26 6.686 28.686 4 32 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <span class="logo-text">Hand<span class="logo-accent">App</span></span>
+        </a>
+
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="../index.html" class="nav-link">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></span>
+                    Inicio
+                </a></li>
+                <li><a href="abecedario.html" class="nav-link">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></span>
+                    Abecedario
+                </a></li>
+                <li><a href="#" class="nav-link">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
+                    Lecciones
+                </a></li>
+                <li><a href="#" class="nav-link">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><circle cx="17" cy="10" r="1"/><circle cx="15" cy="13" r="1"/></svg></span>
+                    Juegos
+                </a></li>
+                <li><a href="traductor.html" class="nav-link active">
+                    <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg></span>
+                    Traductor
+                </a></li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <a href="login.html" class="btn btn-ghost">Iniciar Sesión</a>
+            <a href="register.html" class="btn btn-primary">Comenzar Gratis</a>
+            <button class="mobile-menu-toggle" aria-label="Menú">
+                <span class="hamburger"><span></span><span></span><span></span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+
+    <section class="traductor-hero">
+        <div class="hero-tag"><span></span>IA en tiempo real</div>
+        <h1>Traductor de <span>Señas LSC</span></h1>
+        <p>Muestra una seña frente a la cámara y el modelo de IA reconocerá la letra al instante</p>
+    </section>
+
+    <div class="traductor-main">
+
+        <div class="camara-card">
+            <div class="camara-card-header">
+                <h2>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                    Cámara en vivo
+                </h2>
+                <div class="status-pill" id="statusPill">
+                    <span class="dot"></span>
+                    <span id="statusText">Cargando...</span>
+                </div>
+            </div>
+
+            <div class="camara-viewport">
+                <video id="video" autoplay playsinline style="width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;"></video>
+                <canvas id="canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;transform:scaleX(-1);"></canvas>
+                <div class="camara-placeholder" id="placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                    <p id="placeholderText">Iniciando cámara...</p>
+                </div>
+            </div>
+
+            <div class="camara-controls">
+                <button class="btn-cam btn-stop" onclick="detener()">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+                    Detener
+                </button>
+                <button class="btn-cam btn-start" onclick="iniciar()">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                    Reiniciar
+                </button>
+            </div>
+        </div>
+
+        <div class="resultado-card">
+            <div class="resultado-card-header">
+                <h2>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    Letra detectada
+                </h2>
+            </div>
+
+            <div class="letra-display">
+                <div class="letra-grande vacia" id="letra">—</div>
+                <div class="confianza-bar-wrap">
+                    <div class="confianza-label">
+                        <span>Confianza</span>
+                        <span id="confianzaNum">—</span>
+                    </div>
+                    <div class="confianza-bar">
+                        <div class="confianza-fill" id="confianzaFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="texto-section">
+                <div class="texto-label">Texto acumulado</div>
+                <div class="texto-box vacio" id="textoBox">Las letras que formes aparecerán aquí…</div>
+                <div class="texto-actions">
+                    <button class="btn-accion" onclick="agregarEspacio()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                        Espacio
+                    </button>
+                    <button class="btn-accion" onclick="borrarUltima()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+                        Borrar última
+                    </button>
+                    <button class="btn-accion" onclick="copiarTexto()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                        Copiar
+                    </button>
+                    <button class="btn-accion danger" onclick="limpiar()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                        Limpiar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="instrucciones">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                ¿Cómo usar el traductor?
+            </h3>
+            <div class="pasos">
+                <div class="paso"><div class="paso-num">1</div><div class="paso-text"><strong>Abre la página</strong>La cámara se activa automáticamente al entrar.</div></div>
+                <div class="paso"><div class="paso-num">2</div><div class="paso-text"><strong>Permite la cámara</strong>Acepta el permiso que pide el navegador.</div></div>
+                <div class="paso"><div class="paso-num">3</div><div class="paso-text"><strong>Haz la seña</strong>Coloca tu mano frente a la cámara con buena iluminación.</div></div>
+                <div class="paso"><div class="paso-num">4</div><div class="paso-text"><strong>Mantén la posición</strong>Sostén la seña 2 segundos para que se añada al texto.</div></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="toast" id="toast">¡Copiado al portapapeles!</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+
+<script>
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    let sesion = null;
+    let ultimaLetra = "";
+    let contadorLetra = 0;
+    let textoAcumulado = "";
+    let activo = false;
+    let cameraInstance = null;
+
+    async function cargarModelo() {
+        const rutas = [
+            'http://localhost:8080/JS/modelo_lsc.onnx',
+            '../JS/modelo_lsc.onnx'
+        ];
+        for (const ruta of rutas) {
+            try {
+                sesion = await ort.InferenceSession.create(ruta);
+                console.log('Modelo cargado desde:', ruta);
+                return true;
+            } catch(e) {
+                console.log('No se pudo cargar desde:', ruta);
+            }
+        }
+        console.error('No se pudo cargar el modelo');
+        return false;
+    }
+
+    async function predecir(landmarks) {
+        if (!sesion) return null;
+        try {
+            const xs = landmarks.map(lm => lm.x);
+            const ys = landmarks.map(lm => lm.y);
+            const datos = new Float32Array([...xs, ...ys]);
+            const tensor = new ort.Tensor('float32', datos, [1, 42]);
+            const resultado = await sesion.run({ float_input: tensor });
+
+            const letra = String(resultado['label'].data[0]);
+            const probs = resultado['probabilities'].data;
+            const confianza = Math.max(...probs) * 100;
+            return { letra, confianza };
+        } catch(e) {
+            console.error('Error prediciendo:', e);
+            return null;
+        }
+    }
+
+    function setLetra(letra, confianza) {
+        const el = document.getElementById('letra');
+        const fill = document.getElementById('confianzaFill');
+        const num = document.getElementById('confianzaNum');
+        if (letra) {
+            if (el.textContent !== letra) {
+                el.textContent = letra;
+                el.classList.remove('vacia', 'letra-pop');
+                void el.offsetWidth;
+                el.classList.add('letra-pop');
+            }
+            fill.style.width = confianza + '%';
+            num.textContent = confianza.toFixed(1) + '%';
+            if (letra === ultimaLetra) {
+                contadorLetra++;
+                if (contadorLetra === 4) {
+                    textoAcumulado += letra;
+                    actualizarTexto();
+                }
+            } else {
+                ultimaLetra = letra;
+                contadorLetra = 0;
+            }
+        } else {
+            el.textContent = '—';
+            el.classList.add('vacia');
+            fill.style.width = '0%';
+            num.textContent = '—';
+        }
+    }
+
+    function actualizarTexto() {
+        const box = document.getElementById('textoBox');
+        if (textoAcumulado) {
+            box.textContent = textoAcumulado;
+            box.classList.remove('vacio');
+        } else {
+            box.textContent = 'Las letras que formes aparecerán aquí…';
+            box.classList.add('vacio');
+        }
+    }
+
+    function agregarEspacio() { textoAcumulado += ' '; actualizarTexto(); }
+    function borrarUltima()   { textoAcumulado = textoAcumulado.slice(0, -1); actualizarTexto(); }
+    function limpiar()        { textoAcumulado = ''; ultimaLetra = ''; contadorLetra = 0; actualizarTexto(); }
+
+    function copiarTexto() {
+        if (!textoAcumulado) return;
+        navigator.clipboard.writeText(textoAcumulado).then(() => {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        });
+    }
+
+    async function iniciar() {
+        const pill = document.getElementById('statusPill');
+        const pillText = document.getElementById('statusText');
+        const placeholder = document.getElementById('placeholder');
+        const placeholderText = document.getElementById('placeholderText');
+
+        pillText.textContent = 'Cargando modelo...';
+        placeholderText.textContent = 'Cargando modelo de IA...';
+
+        const modeloCargado = await cargarModelo();
+        if (!modeloCargado) {
+            pillText.textContent = 'Error';
+            placeholderText.textContent = 'Abre desde: http://localhost:8080/HTML/traductor.html';
+            return;
+        }
+
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const hands = new Hands({
+            locateFile: file => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+        });
+
+        hands.setOptions({
+            maxNumHands: 1,
+            modelComplexity: 1,
+            minDetectionConfidence: 0.7,
+            minTrackingConfidence: 0.7
+        });
+
+        hands.onResults(async (results) => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                const landmarks = results.multiHandLandmarks[0];
+                drawConnectors(ctx, landmarks, HAND_CONNECTIONS, {color: '#6366f1', lineWidth: 2});
+                drawLandmarks(ctx, landmarks, {color: '#2eddcf', lineWidth: 1, radius: 4});
+                const pred = await predecir(landmarks);
+                if (pred) setLetra(pred.letra, pred.confianza);
+            } else {
+                setLetra('', 0);
+            }
+        });
+
+        cameraInstance = new Camera(video, {
+            onFrame: async () => { await hands.send({image: video}); },
+            width: 640,
+            height: 480
+        });
+
+        await cameraInstance.start();
+        placeholder.classList.add('hidden');
+        pill.classList.add('active');
+        pillText.textContent = 'Activa';
+        activo = true;
+    }
+
+    function detener() {
+        if (cameraInstance) cameraInstance.stop();
+        const pill = document.getElementById('statusPill');
+        const pillText = document.getElementById('statusText');
+        const placeholder = document.getElementById('placeholder');
+        pill.classList.remove('active');
+        pillText.textContent = 'Apagada';
+        placeholder.classList.remove('hidden');
+        document.getElementById('placeholderText').textContent = 'Presiona Reiniciar para activar';
+        activo = false;
+        setLetra('', 0);
+    }
+
+    window.addEventListener('load', () => {
+        setTimeout(iniciar, 500);
+    });
+</script>
+
+</body>
+</html>

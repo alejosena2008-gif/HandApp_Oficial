@@ -64,6 +64,7 @@ def generar_frames():
         _, buffer = cv2.imencode('.jpg', frame)
         frame_bytes = buffer.tobytes()
         yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+<<<<<<< HEAD
         for lm in landmarks:
                 x, y = int(lm.x * w), int(lm.y * h)
                 cv2.circle(frame, (x, y), 5, (0, 255, 0), -1)
@@ -83,6 +84,10 @@ def generar_frames():
     _, buffer = cv2.imencode('.jpg', frame)
     frame_bytes = buffer.tobytes()
     yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+=======
+
+    cap.release()
+>>>>>>> cf8d436cfed3aa7b45a4cf179e038a78e7e2d3b9
 
 @app.route('/video')
 def video():

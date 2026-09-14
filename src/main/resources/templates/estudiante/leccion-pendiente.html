@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${leccion.titulo} + ' - HandApp'">Lección</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/IMG/manos.png}">
+    <style>
+        body { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+        .wrap { max-width: 480px; text-align: center; }
+
+        .mascots-construccion {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 12px;
+        }
+        .mascot-wrap { width: 110px; height: 130px; }
+        .mascot-wrap svg { width: 100%; height: 100%; }
+
+        .stripe-bar {
+            height: 10px;
+            border-radius: 6px;
+            margin: 4px auto 24px;
+            max-width: 260px;
+            background: repeating-linear-gradient(
+                45deg,
+                #fbbf24,
+                #fbbf24 10px,
+                #1a1a1a 10px,
+                #1a1a1a 20px
+            );
+        }
+
+        h1 { font-size: var(--font-size-2xl); font-weight: 800; margin-bottom: 10px; }
+        p { color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6; }
+        .btn-volver {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px; background: var(--color-primary); color: #fff;
+            border-radius: var(--radius-lg); text-decoration: none; font-weight: 600; font-size: var(--font-size-sm);
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+
+        <div class="mascots-construccion" aria-hidden="true">
+            <!-- Mili la foca, constructora -->
+            <div class="mascot-wrap">
+                <svg viewBox="0 0 130 150" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="65" cy="142" rx="30" ry="5" fill="rgba(0,0,0,0.08)"/>
+                    <path d="M50 128 Q55 140 40 144 Q50 136 65 138 Q80 136 90 144 Q75 140 80 128 Q72 134 65 134 Q58 134 50 128Z" fill="#8bbbd8"/>
+                    <ellipse cx="65" cy="100" rx="32" ry="28" fill="#9ec8e2"/>
+                    <ellipse cx="65" cy="104" rx="20" ry="18" fill="#cfe8f6"/>
+                    <ellipse cx="65" cy="108" rx="13" ry="11" fill="#dff0fb"/>
+                    <path d="M33 102 Q18 98 16 110 Q20 116 30 112 Q28 108 33 106Z" fill="#8bbbd8"/>
+                    <path d="M97 102 Q112 98 114 110 Q110 116 100 112 Q102 108 97 106Z" fill="#8bbbd8"/>
+                    <ellipse cx="65" cy="78" rx="18" ry="12" fill="#9ec8e2"/>
+                    <ellipse cx="65" cy="64" rx="24" ry="22" fill="#b8d8ee"/>
+                    <ellipse cx="65" cy="76" rx="12" ry="8" fill="#cfe8f6"/>
+
+                    <!-- Casco de construcción -->
+                    <path d="M42 52 Q65 30 88 52 L88 56 L42 56 Z" fill="#fbbf24"/>
+                    <rect x="38" y="54" width="54" height="7" rx="3.5" fill="#f59e0b"/>
+                    <rect x="61" y="34" width="8" height="6" rx="2" fill="#d97706"/>
+
+                    <!-- Ojos felices -->
+                    <path d="M47 60 Q53 53 59 60" stroke="#1a2a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <path d="M71 60 Q77 53 83 60" stroke="#1a2a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="47" cy="67" rx="6" ry="3.5" fill="#f9a8d4" opacity=".5"/>
+                    <ellipse cx="83" cy="67" rx="6" ry="3.5" fill="#f9a8d4" opacity=".5"/>
+                    <path d="M55 79 Q65 88 75 79" stroke="#5e9fc4" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+                    <!-- Llave inglesa -->
+                    <g transform="translate(20,110) rotate(-20)">
+                        <rect x="0" y="0" width="26" height="6" rx="3" fill="#94a3b8"/>
+                        <circle cx="2" cy="3" r="6" fill="none" stroke="#94a3b8" stroke-width="4"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Lulú el pato, constructora -->
+            <div class="mascot-wrap" style="width:92px;">
+                <svg viewBox="0 0 110 140" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="55" cy="135" rx="24" ry="4" fill="rgba(0,0,0,0.08)"/>
+                    <path d="M43 120 L38 130 L34 130 L33 132 L38 132 L39 130 L43 130 L44 132 L48 132 L46 130 L45 130 L44 120Z" fill="#f59e0b"/>
+                    <path d="M67 120 L62 130 L58 130 L57 132 L62 132 L63 130 L67 130 L68 132 L72 132 L70 130 L69 130 L68 120Z" fill="#f59e0b"/>
+                    <ellipse cx="55" cy="102" rx="28" ry="22" fill="#fbbf24"/>
+                    <ellipse cx="52" cy="106" rx="18" ry="14" fill="#fde68a"/>
+                    <path d="M27 98 Q18 92 16 102 Q18 110 28 106 Q26 102 27 98Z" fill="#f59e0b"/>
+                    <path d="M76 95 Q82 88 84 98 Q82 106 74 104 Q76 100 76 95Z" fill="#d97706"/>
+                    <ellipse cx="55" cy="82" rx="14" ry="10" fill="#FFD700"/>
+                    <ellipse cx="55" cy="66" rx="20" ry="18" fill="#FFD700"/>
+                    <ellipse cx="68" cy="70" rx="8" ry="6" fill="gold" opacity="0.9"/>
+                    <path d="M70 68 Q82 66 84 70 Q82 74 70 72Z" fill="#f59e0b"/>
+
+                    <!-- Casco de construcción -->
+                    <path d="M33 55 Q55 34 77 55 L77 59 L33 59 Z" fill="#fbbf24"/>
+                    <rect x="29" y="57" width="52" height="7" rx="3.5" fill="#f59e0b"/>
+                    <rect x="51" y="38" width="8" height="6" rx="2" fill="#d97706"/>
+
+                    <!-- Ojos felices -->
+                    <path d="M57 63 Q62 57 67 63" stroke="#0f172a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="62" cy="69" rx="5" ry="3" fill="#f9a8d4" opacity=".5"/>
+
+                    <!-- Destornillador -->
+                    <g transform="translate(78,100) rotate(25)">
+                        <rect x="0" y="0" width="4" height="20" fill="#94a3b8"/>
+                        <rect x="-3" y="18" width="10" height="8" rx="2" fill="#ef4444"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <div class="stripe-bar"></div>
+
+        <h1 th:text="${leccion.titulo}">Lección</h1>
+        <p>Mili y Lulú están construyendo esta lección con mucho cuidado. Vuelve pronto para practicar esta seña.</p>
+        <a th:href="@{/estudiante/lecciones}" class="btn-volver">← Volver a mis lecciones</a>
+    </div>
+</body>
+</html>

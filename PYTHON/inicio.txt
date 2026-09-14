@@ -1,0 +1,5 @@
+cd "C:\Users\ACER\Desktop\Prototipo HandApp"
+
+
+
+py -m http.server 8080

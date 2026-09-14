@@ -1,9 +1,21 @@
+<<<<<<< HEAD
 create database HANDAPP;
 
 use HANDAPP;
 
 
 
+=======
+-- base de datos plataforma de aprendizaje
+-- hecha por: [tu nombre]
+-- fecha: abril 2026
+
+create database plataforma_aprendizaje;
+use plataforma_aprendizaje;
+
+
+-- tabla rol
+>>>>>>> cf8d436cfed3aa7b45a4cf179e038a78e7e2d3b9
 create table ROL(
 	id_rol int primary key auto_increment,
     nombre_rol varchar(50) not null,
@@ -17,7 +29,11 @@ insert into ROL values (4, 'Moderador', 'puede gestionar usuarios');
 insert into ROL values (5, 'Invitado', 'solo puede ver contenido');
 
 
+<<<<<<< HEAD
 
+=======
+-- tabla usuario
+>>>>>>> cf8d436cfed3aa7b45a4cf179e038a78e7e2d3b9
 create table USUARIO(
 	id_usuario int primary key auto_increment,
     nombre varchar(100) not null,
@@ -35,6 +51,10 @@ insert into USUARIO values (5, 'Juan Martinez', 'juan@gmail.com', 'ijkl', 2);
 insert into USUARIO values (6, 'Sofia Herrera', 'sofia@gmail.com', 'mnop', 4);
 
 
+<<<<<<< HEAD
+=======
+-- tabla leccion
+>>>>>>> cf8d436cfed3aa7b45a4cf179e038a78e7e2d3b9
 create table LECCION(
 	id_leccion int primary key auto_increment,
     titulo varchar(150) not null,
@@ -50,6 +70,10 @@ insert into LECCION values (5, 'Bases de datos', 'tablas relaciones claves', 'Av
 insert into LECCION values (6, 'Algoritmos de ordenamiento', 'bubble sort quicksort', 'Avanzado');
 
 
+<<<<<<< HEAD
+=======
+-- tabla video
+>>>>>>> cf8d436cfed3aa7b45a4cf179e038a78e7e2d3b9
 create table VIDEO(
 	id_video int primary key auto_increment,
     titulo varchar(150),
@@ -64,6 +88,11 @@ insert into VIDEO values (5, 'diseño de base de datos', 600);
 insert into VIDEO values (6, 'quicksort explicado', 450);
 
 
+<<<<<<< HEAD
+=======
+-- tabla ejercicios
+-- un ejercicio pertenece a una leccion (relacion 1:N)
+>>>>>>> cf8d436cfed3aa7b45a4cf179e038a78e7e2d3b9
 create table EJERCICIOS(
 	id_ejercicio int primary key auto_increment,
     pregunta text not null,
@@ -80,6 +109,10 @@ insert into EJERCICIOS values (5, 'que es una llave primaria?', 'identifica de f
 insert into EJERCICIOS values (6, 'complejidad de quicksort?', 'O(n log n) en el caso promedio', 6);
 
 
+<<<<<<< HEAD
+=======
+-- tabla intermedia ejercicio_video (relacion N:N entre ejercicios y video)
+>>>>>>> cf8d436cfed3aa7b45a4cf179e038a78e7e2d3b9
 create table EJERCICIO_VIDEO(
 	id_ejercicio int,
     id_video int,
@@ -96,6 +129,12 @@ insert into EJERCICIO_VIDEO values (5,5);
 insert into EJERCICIO_VIDEO values (6,6);
 
 
+<<<<<<< HEAD
+=======
+-- tabla resultados
+-- un usuario recibe muchos resultados (1:N)
+-- un ejercicio da muchos resultados (N:1)
+>>>>>>> cf8d436cfed3aa7b45a4cf179e038a78e7e2d3b9
 create table RESULTADOS(
 	id_resultado int primary key auto_increment,
     fecha date,
@@ -115,6 +154,10 @@ insert into RESULTADOS values (6, '2025-03-06', 95.00, 6, 5);
 insert into RESULTADOS values (7, '2025-03-07', 60.00, 1, 6);
 
 
+<<<<<<< HEAD
+=======
+-- tabla leccion_usuario para saber que lecciones hizo cada usuario
+>>>>>>> cf8d436cfed3aa7b45a4cf179e038a78e7e2d3b9
 create table LECCION_USUARIO(
 	id_leccion int,
     id_usuario int,

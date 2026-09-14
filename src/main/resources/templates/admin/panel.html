@@ -514,7 +514,7 @@
 
         <span class="nav-section-label">Sistema</span>
 
-        <a href="#" class="nav-item" data-section="reportes">
+        <a th:href="@{/admin/reportes}" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
                 <line x1="6" y1="20" x2="6" y2="14"/>
@@ -576,6 +576,9 @@
     </header>
 
     <div class="content">
+
+        <div th:if="${mensaje}" style="background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.3); color:#34d399; padding:12px 16px; border-radius:8px; font-size:.85rem;" th:text="${mensaje}"></div>
+        <div th:if="${error}" style="background:rgba(248,113,113,.1); border:1px solid rgba(248,113,113,.3); color:#f87171; padding:12px 16px; border-radius:8px; font-size:.85rem;" th:text="${error}"></div>
 
         <div class="stats-grid">
             <div class="stat-card">
@@ -642,12 +645,12 @@
                     <div>
                         <div class="card-head-title">Gestión de usuarios</div>
                     </div>
-                    <button class="btn btn-primary btn-sm" disabled title="Próximamente">
+                    <a th:href="@{/admin/usuarios/nuevo}" class="btn btn-primary btn-sm">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                         </svg>
                         Nuevo
-                    </button>
+                    </a>
                 </div>
 
                 <table>
@@ -678,12 +681,16 @@
                             </td>
                             <td>
                                 <div class="action-btns">
-                                    <button class="action-btn" title="Editar (próximamente)" disabled>
+                                    <a th:href="@{/admin/usuarios/{id}/editar(id=${usuario.id})}" class="action-btn" title="Editar">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                    </button>
-                                    <button class="action-btn" title="Eliminar (próximamente)" disabled>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                                    </button>
+                                    </a>
+                                    <form th:action="@{/admin/usuarios/{id}/eliminar(id=${usuario.id})}" method="post"
+                                          onsubmit="return confirm('¿Eliminar a ' + '\'' + [[${usuario.nombre}]] + '\'' + '? Esta acción no se puede deshacer.');"
+                                          style="display:contents">
+                                        <button type="submit" class="action-btn" title="Eliminar">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -735,22 +742,20 @@
                     <div class="card-head">
                         <div class="card-head-title">Exportar reportes</div>
                     </div>
-                    <div class="export-list">
-                        <div class="export-btn">
-                            <span>Exportar a PDF</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-                        </div>
-                        <div class="export-btn">
-                            <span>Exportar a Excel (XLS)</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-                        </div>
-                        <div class="export-btn">
-                            <span>Exportar a Word (DOCX)</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-                        </div>
-                    </div>
-                    <p class="export-note">Estos botones son solo de referencia visual — todavía falta construir los endpoints en el backend que generen los archivos.</p>
-                </div>
+        <div class="export-list">
+            <a th:href="@{/admin/reportes/exportar/pdf}" class="export-btn" style="cursor:pointer; opacity:1; text-decoration:none;">
+                <span>Exportar a PDF</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            </a>
+            <a th:href="@{/admin/reportes/exportar/excel}" class="export-btn" style="cursor:pointer; opacity:1; text-decoration:none;">
+                <span>Exportar a Excel (XLSX)</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            </a>
+            <a th:href="@{/admin/reportes/exportar/word}" class="export-btn" style="cursor:pointer; opacity:1; text-decoration:none;">
+                <span>Exportar a Word (DOCX)</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            </a>
+        </div>
 
             </div>
         </div>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandApp — Reportes del Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/IMG/manos.png}">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #0a0a0f;
+            --bg2:       #12121a;
+            --bg3:       #1a1a26;
+            --border:    rgba(255,255,255,0.07);
+            --accent:    #34d399;
+            --accent2:   #6ee7b7;
+            --accent-glow: rgba(52,211,153,0.25);
+            --track:     #22222f;
+            --text:      #f0eeff;
+            --text-muted:#8b87a8;
+            --radius:    16px;
+            --radius-sm: 8px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 32px 28px;
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .top-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
+        .top-sub {
+            color: var(--text-muted);
+            font-size: .85rem;
+            margin-top: 4px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--bg2);
+            color: var(--text-muted);
+            font-size: .82rem;
+            text-decoration: none;
+            transition: all .2s;
+        }
+        .back-link:hover { color: var(--text); border-color: var(--accent); }
+
+        .privacy-note {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(52,211,153,.08);
+            border: 1px solid rgba(52,211,153,.25);
+            color: var(--accent2);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: .8rem;
+            margin-bottom: 28px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            transition: border-color .2s, transform .2s;
+        }
+        .card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+        .card-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: .95rem;
+            text-align: center;
+        }
+
+        /* ── Donut ── */
+        .donut {
+            position: relative;
+            width: 128px;
+            height: 128px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+        }
+        .donut-hole {
+            width: 96px;
+            height: 96px;
+            background: var(--bg2);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .donut-pct {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent2);
+        }
+        .donut-label {
+            font-size: .62rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-top: 2px;
+        }
+
+        /* ── Barra cápsula de puntaje promedio ── */
+        .score-wrap { width: 100%; }
+        .score-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: .72rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .score-track {
+            width: 100%;
+            height: 14px;
+            background: var(--track);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .score-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transition: width .8s ease;
+        }
+        .score-empty {
+            font-size: .72rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .card-footer {
+            font-size: .72rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        .card-footer strong { color: var(--text); }
+    </style>
+</head>
+<body>
+
+    <div class="top">
+        <div>
+            <div class="top-title">Reportes de rendimiento</div>
+            <div class="top-sub">Datos agregados por lección — sin nombres ni correos de estudiantes</div>
+        </div>
+        <a th:href="@{/editor/panel}" class="back-link">← Volver al panel</a>
+    </div>
+
+    <div class="privacy-note">
+        🔒 Este reporte solo muestra porcentajes y promedios agregados. Nunca incluye información personal de los estudiantes.
+    </div>
+
+    <div class="grid">
+        <div class="card" th:each="item : ${datos}">
+            <div class="card-title" th:text="${item.titulo}">Lección</div>
+
+            <div class="donut"
+                 th:style="'background: conic-gradient(var(--accent) ' + ${item.pctCompletado} + '%, var(--track) 0)'">
+                <div class="donut-hole">
+                    <span class="donut-pct" th:text="${item.pctCompletado} + '%'">0%</span>
+                    <span class="donut-label">Completado</span>
+                </div>
+            </div>
+
+            <div class="score-wrap">
+                <div class="score-head">
+                    <span>Puntaje promedio</span>
+                    <span th:if="${item.promedioPuntaje != null}" th:text="${item.promedioPuntaje} + '/100'">—</span>
+                </div>
+                <div class="score-track" th:if="${item.promedioPuntaje != null}">
+                    <div class="score-fill" th:style="'width:' + ${item.promedioPuntaje} + '%'"></div>
+                </div>
+                <div class="score-empty" th:unless="${item.promedioPuntaje != null}">Sin datos todavía</div>
+            </div>
+
+            <div class="card-footer">
+                <strong th:text="${item.totalCompletados}">0</strong> completados de
+                <strong th:text="${item.totalIntentos}">0</strong> intentos
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

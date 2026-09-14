@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${esNueva} ? 'HandApp — Nueva Lección' : 'HandApp — Editar Lección'">Formulario</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/IMG/manos.png}">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #0a0a0f; --bg2: #12121a; --bg3: #1a1a26;
+            --border: rgba(255,255,255,0.07);
+            --accent: #34d399; --accent2: #6ee7b7;
+            --text: #f0eeff; --text-muted: #8b87a8;
+            --error: #f87171;
+            --radius: 12px; --radius-sm: 8px;
+        }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+        .form-card { width: 100%; max-width: 520px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; }
+        .form-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; }
+        .form-sub { color: var(--text-muted); font-size: .85rem; margin-bottom: 24px; }
+        .field { margin-bottom: 16px; }
+        .field label { display: block; font-size: .78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+        .field input, .field textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 11px 14px; border-radius: var(--radius-sm); font-size: .9rem; font-family: inherit; outline: none; }
+        .field textarea { resize: vertical; min-height: 90px; }
+        .field input:focus, .field textarea:focus { border-color: var(--accent); }
+        .field small { display: block; margin-top: 5px; color: var(--text-muted); font-size: .72rem; }
+        .checkbox-field { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .checkbox-field input { width: auto; }
+        .checkbox-field label { margin: 0; text-transform: none; font-size: .85rem; font-weight: 500; color: var(--text); }
+        .alert { padding: 11px 14px; border-radius: var(--radius-sm); font-size: .82rem; margin-bottom: 18px; background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3); color: var(--error); }
+        .form-actions { display: flex; gap: 10px; margin-top: 8px; }
+        .btn { flex: 1; padding: 11px; border-radius: var(--radius-sm); font-size: .88rem; font-weight: 600; font-family: inherit; cursor: pointer; border: none; text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-primary { background: var(--accent); color: #062; }
+        .btn-primary:hover { background: var(--accent2); }
+        .btn-ghost { background: var(--bg3); color: var(--text-muted); border: 1px solid var(--border); }
+        .btn-ghost:hover { color: var(--text); }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <div class="form-title" th:text="${esNueva} ? 'Nueva lección' : 'Editar lección'">Formulario</div>
+    <div class="form-sub" th:text="${esNueva} ? 'Crea contenido nuevo para los estudiantes.' : 'Modifica esta lección.'">Subtítulo</div>
+
+    <div class="alert" th:if="${error}" th:text="${error}"></div>
+
+    <form th:action="${esNueva} ? @{/editor/lecciones/nueva} : @{/editor/lecciones/{id}/editar(id=${leccionForm.id})}"
+          th:object="${leccionForm}" method="post">
+
+        <div class="field">
+            <label>Título</label>
+            <input type="text" th:field="*{titulo}" placeholder="Ej. Saludos Básicos" required>
+        </div>
+
+        <div class="field">
+            <label>Descripción</label>
+            <textarea th:field="*{descripcion}" placeholder="Breve descripción de la lección" required></textarea>
+        </div>
+
+        <div class="field">
+            <label>Enlace a video o imagen (opcional)</label>
+            <input type="text" th:field="*{contenidoUrl}" placeholder="https://...">
+            <small>URL del video o imagen que ilustra la seña.</small>
+        </div>
+
+        <div class="field">
+            <label>Orden</label>
+            <input type="number" th:field="*{orden}" placeholder="1" min="1" required>
+            <small>Define en qué posición aparece dentro del listado de lecciones.</small>
+        </div>
+
+        <div class="field">
+            <label>Nombre técnico de la vista</label>
+            <input type="text" th:field="*{vista}" placeholder="ej. leccion-saludos">
+            <small>
+                Debe coincidir EXACTAMENTE con el nombre del archivo HTML (sin ".html") que crees
+                dentro de <code>templates/estudiante/</code> con las preguntas de esta lección.
+                Si lo dejas vacío, los estudiantes verán un aviso de "en construcción".
+            </small>
+        </div>
+
+        <div class="checkbox-field">
+            <input type="checkbox" id="publicada" th:field="*{publicada}">
+            <label for="publicada">Publicada (visible para los estudiantes)</label>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/editor/panel}" class="btn btn-ghost">Cancelar</a>
+            <button type="submit" class="btn btn-primary" th:text="${esNueva} ? 'Crear lección' : 'Guardar cambios'">Guardar</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

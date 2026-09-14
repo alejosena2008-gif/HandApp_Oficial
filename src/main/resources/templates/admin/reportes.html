@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandApp — Reportes de Usuarios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" th:href="@{/IMG/manos.png}">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #0a0a0f; --bg2: #12121a; --bg3: #1a1a26;
+            --border: rgba(255,255,255,0.07);
+            --accent: #7c6cfc; --accent2: #a78bfa;
+            --text: #f0eeff; --text-muted: #8b87a8;
+            --success: #34d399; --warning: #fbbf24;
+            --radius: 16px; --radius-sm: 8px;
+        }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 32px 28px; }
+        .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; gap: 16px; flex-wrap: wrap; }
+        .top-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; }
+        .top-sub { color: var(--text-muted); font-size: .85rem; margin-top: 4px; }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg2); color: var(--text-muted); font-size: .82rem; text-decoration: none; transition: all .2s; }
+        .back-link:hover { color: var(--text); border-color: var(--accent); }
+        .filtros { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 24px; }
+        .filtro-campo { display: flex; flex-direction: column; gap: 6px; }
+        .filtro-campo label { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); font-weight: 600; }
+        .filtro-campo select, .filtro-campo input { background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 9px 12px; border-radius: var(--radius-sm); font-family: inherit; font-size: .85rem; min-width: 200px; }
+        .filtro-btn { background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 700; font-size: .85rem; cursor: pointer; }
+        .filtro-limpiar { color: var(--text-muted); font-size: .82rem; text-decoration: none; padding: 10px 6px; }
+        .filtro-limpiar:hover { color: var(--text); }
+        .tabla-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { text-align: left; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); padding: 14px 18px; border-bottom: 1px solid var(--border); }
+        tbody td { padding: 16px 18px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        tbody tr:last-child td { border-bottom: none; }
+        .usuario-nombre { font-weight: 700; }
+        .usuario-correo { color: var(--text-muted); font-size: .82rem; }
+        .rol-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .7rem; font-weight: 700; text-transform: uppercase; background: rgba(124,108,252,.15); color: var(--accent2); }
+        .resumen-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; }
+        .resumen-label { color: var(--text-muted); font-size: .75rem; }
+        .progreso-lista { display: flex; flex-direction: column; gap: 6px; max-width: 360px; }
+        .progreso-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: .8rem; padding: 6px 10px; background: var(--bg3); border-radius: var(--radius-sm); }
+        .progreso-item .titulo { color: var(--text); }
+        .estado-completado { color: var(--success); font-weight: 700; }
+        .estado-progreso { color: var(--warning); font-weight: 700; }
+        .estado-sin { color: var(--text-muted); }
+        .sin-datos { color: var(--text-muted); font-size: .82rem; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <div class="top">
+        <div>
+            <div class="top-title">Reporte de usuarios</div>
+            <div class="top-sub">Nombre, correo y progreso/puntuación en lecciones de cada estudiante</div>
+        </div>
+        <a th:href="@{/admin/panel}" class="back-link">← Volver al panel</a>
+    </div>
+
+    <form class="filtros" method="get" th:action="@{/admin/reportes}">
+        <div class="filtro-campo">
+            <label for="busqueda">Buscar por nombre o correo</label>
+            <input type="text" id="busqueda" name="busqueda" th:value="${busqueda}" placeholder="ej. Neider o alejo@gmail.com">
+        </div>
+        <div class="filtro-campo">
+            <label for="rol">Rol</label>
+            <select id="rol" name="rol">
+                <option value="">Todos</option>
+                <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"
+                        th:selected="${rolSeleccionado != null and rolSeleccionado == r}"></option>
+            </select>
+        </div>
+                <button type="submit" class="filtro-btn">Filtrar</button>
+        <a th:href="@{/admin/reportes}" class="filtro-limpiar">Limpiar filtros</a>
+    </form>
+
+    <div style="display:flex; gap:10px; margin-bottom: 16px;">
+        <a th:href="@{/admin/reportes/exportar/pdf(busqueda=${busqueda}, rol=${rolSeleccionado})}"
+           style="display:inline-flex; align-items:center; gap:6px; padding:9px 16px; border-radius:8px; border:1px solid var(--border); background:var(--bg2); color:var(--text); font-size:.82rem; text-decoration:none;">
+            Exportar a PDF
+        </a>
+        <a th:href="@{/admin/reportes/exportar/excel(busqueda=${busqueda}, rol=${rolSeleccionado})}"
+           style="display:inline-flex; align-items:center; gap:6px; padding:9px 16px; border-radius:8px; border:1px solid var(--border); background:var(--bg2); color:var(--text); font-size:.82rem; text-decoration:none;">
+            Exportar a Excel
+        </a>
+        <a th:href="@{/admin/reportes/exportar/word(busqueda=${busqueda}, rol=${rolSeleccionado})}"
+           style="display:inline-flex; align-items:center; gap:6px; padding:9px 16px; border-radius:8px; border:1px solid var(--border); background:var(--bg2); color:var(--text); font-size:.82rem; text-decoration:none;">
+            Exportar a Word
+        </a>
+    </div>
+
+    <div class="tabla-wrap">
+        <table>
+            <thead>
+                <tr><th>Usuario</th><th>Rol</th><th>Resumen</th><th>Progreso por lección</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="fila : ${filas}">
+                    <td>
+                        <div class="usuario-nombre" th:text="${fila.nombre}">Nombre</div>
+                        <div class="usuario-correo" th:text="${fila.correo}">correo@ejemplo.com</div>
+                    </td>
+                    <td><span class="rol-pill" th:text="${fila.rol}">ESTUDIANTE</span></td>
+                    <td>
+                        <div th:if="${fila.rol.name() == 'ESTUDIANTE' and fila.progresos != null and !#lists.isEmpty(fila.progresos)}">
+                            <div class="resumen-num" th:text="${fila.leccionesCompletadas} + ' completadas'"></div>
+                            <div class="resumen-label" th:if="${fila.promedioPuntaje != null}"
+                                 th:text="'Promedio: ' + ${#numbers.formatDecimal(fila.promedioPuntaje, 1, 1)} + ' pts'"></div>
+                            <div class="resumen-label" th:unless="${fila.promedioPuntaje != null}">Sin puntajes todavía</div>
+                        </div>
+                        <div class="sin-datos" th:if="${fila.rol.name() == 'ESTUDIANTE' and (fila.progresos == null or #lists.isEmpty(fila.progresos))}">
+                            Aún no ha empezado ninguna lección
+                        </div>
+                        <div class="sin-datos" th:unless="${fila.rol.name() == 'ESTUDIANTE'}">
+                            No aplica (rol <span th:text="${fila.rol}">EDITOR</span>)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progreso-lista" th:if="${fila.rol.name() == 'ESTUDIANTE' and fila.progresos != null and !#lists.isEmpty(fila.progresos)}">
+                            <div class="progreso-item" th:each="p : ${fila.progresos}">
+                                <span class="titulo" th:text="${p.tituloLeccion}">Lección</span>
+                                <span class="estado-completado" th:if="${p.completado}" th:text="${p.puntaje} + ' pts'"></span>
+                                <span class="estado-progreso" th:if="${!p.completado and p.preguntaActual != null}"
+                                      th:text="'Pregunta ' + (${p.preguntaActual} + 1)"></span>
+                                <span class="estado-sin" th:if="${!p.completado and p.preguntaActual == null}">Sin empezar</span>
+                            </div>
+                        </div>
+                        <span class="sin-datos" th:unless="${fila.rol.name() == 'ESTUDIANTE' and fila.progresos != null and !#lists.isEmpty(fila.progresos)}">—</span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(filas)}">
+                    <td colspan="4" class="sin-datos" style="text-align:center; padding: 32px;">No hay usuarios que coincidan con el filtro.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
