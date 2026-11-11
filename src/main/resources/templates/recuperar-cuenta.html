@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HandApp – Recuperación de Cuenta con Google</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" th:href="@{/IMG/manos.png}">
+  <th:block th:replace="~{fragments/tema :: assets}"></th:block>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#0b0d14; --surface:#13151f; --card:#1a1d2b; --border:#272a3d;
+      --accent:#6c63ff; --accent2:#8b84ff; --text:#e8eaf6; --muted:#7880a0;
+      --error:#e05252; --success:#3ecf8e;
+    }
+    body {
+      font-family:'Inter',sans-serif; background:var(--bg); color:var(--text);
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      padding:24px 20px; position:relative; overflow-x:hidden;
+    }
+    body::before { content:''; position:fixed; top:-200px; left:-200px; width:600px; height:600px;
+      background:radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%); pointer-events:none; }
+    body::after { content:''; position:fixed; bottom:-200px; right:-200px; width:500px; height:500px;
+      background:radial-gradient(circle, rgba(139,132,255,0.08) 0%, transparent 70%); pointer-events:none; }
+
+    .recovery-wrapper { width:100%; max-width:440px; position:relative; z-index:1; }
+    .logo-link { display:flex; align-items:center; gap:10px; text-decoration:none; margin-bottom:28px; justify-content:center; }
+    .logo-icon { width:40px; height:40px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; }
+    .logo-icon svg { width:22px; height:22px; color:#fff; }
+    .logo-name { font-size:1.4rem; font-weight:800; color:var(--text); letter-spacing:-0.5px; }
+    .logo-name span { color:var(--accent2); }
+
+    .card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:34px 30px; box-shadow:0 24px 60px rgba(0,0,0,0.4); }
+    .google-badge-top {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 12px; border-radius:999px;
+      background:rgba(255,255,255,0.06); border:1px solid var(--border);
+      font-size:0.76rem; font-weight:600; color:var(--text); margin-bottom:14px;
+    }
+    .card-title { font-size:1.42rem; font-weight:700; margin-bottom:6px; }
+    .card-sub { color:var(--muted); font-size:0.88rem; line-height:1.45; margin-bottom:22px; }
+
+    .btn-google {
+      width:100%; background:#ffffff; color:#1f1f1f;
+      border:1px solid #dadce0; padding:13px 16px; border-radius:10px;
+      font-size:0.95rem; font-weight:600; font-family:inherit;
+      cursor:pointer; transition:all .2s;
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.12);
+    }
+    .btn-google:hover { background:#f8f9fa; transform:translateY(-1px); box-shadow:0 4px 14px rgba(0,0,0,0.18); }
+    .btn-google svg { width:20px; height:20px; flex-shrink:0; }
+
+    .google-accounts-panel {
+      margin-top:16px; background:var(--surface); border:1px solid var(--border);
+      border-radius:14px; padding:14px; display:none;
+    }
+    .google-accounts-panel.show { display:block; animation:fadeIn .22s ease; }
+    .google-panel-header {
+      display:flex; align-items:center; gap:8px; font-size:0.8rem; font-weight:600;
+      color:var(--muted); margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border);
+    }
+    .google-account-item {
+      width:100%; display:flex; align-items:center; gap:11px;
+      padding:9px 10px; border-radius:10px; background:transparent;
+      border:1px solid transparent; color:var(--text); text-align:left;
+      cursor:pointer; font-family:inherit; transition:background .15s, border-color .15s;
+    }
+    .google-account-item:hover { background:rgba(108,99,255,0.12); border-color:rgba(108,99,255,0.3); }
+    .google-avatar {
+      width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#6366f1,#2eddcf);
+      color:#fff; font-weight:700; font-size:0.85rem; display:grid; place-items:center; flex-shrink:0;
+    }
+    .google-acc-info { flex:1; overflow:hidden; }
+    .google-acc-name { display:block; font-size:0.86rem; font-weight:600; color:var(--text); }
+    .google-acc-mail { display:block; font-size:0.75rem; color:var(--muted); text-overflow:ellipsis; overflow:hidden; }
+
+    .verified-box {
+      display:none; align-items:center; gap:10px; padding:11px 14px;
+      background:rgba(62,207,142,0.12); border:1px solid rgba(62,207,142,0.35);
+      border-radius:10px; color:var(--success); font-size:0.83rem; font-weight:600;
+      margin:16px 0;
+    }
+    .verified-box.show { display:flex; }
+
+    .recovery-step2 { display:none; margin-top:16px; padding-top:16px; border-top:1px solid var(--border); }
+    .recovery-step2.show { display:block; animation:fadeIn .25s ease; }
+
+    .form-group { margin-bottom:15px; }
+    .form-group label { display:block; font-size:0.78rem; font-weight:600; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
+    .input-wrap { position:relative; }
+    .input-wrap > svg { position:absolute; left:14px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--muted); pointer-events:none; }
+    .form-group input {
+      width:100%; background:var(--surface); border:1px solid var(--border); color:var(--text);
+      padding:11px 14px 11px 40px; border-radius:10px; font-size:0.92rem; font-family:inherit; outline:none;
+    }
+    .form-group input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(108,99,255,0.15); }
+
+    .alert { padding:12px 15px; border-radius:10px; font-size:0.84rem; margin-bottom:16px; display:none; }
+    .alert.show { display:block; }
+    .alert.err { background:rgba(224,82,82,0.1); border:1px solid rgba(224,82,82,0.3); color:var(--error); }
+
+    .btn-primary {
+      width:100%; background:var(--accent); color:#fff; border:none; padding:13px;
+      border-radius:10px; font-size:0.95rem; font-weight:600; font-family:inherit;
+      cursor:pointer; transition:all .2s; margin-top:6px;
+    }
+    .btn-primary:hover { background:var(--accent2); transform:translateY(-1px); }
+
+    .btn-direct-login {
+      width:100%; background:rgba(62,207,142,0.14); color:var(--success);
+      border:1px solid rgba(62,207,142,0.35); padding:11px; border-radius:10px;
+      font-size:0.88rem; font-weight:600; font-family:inherit; cursor:pointer;
+      transition:all .2s; margin-bottom:14px;
+    }
+    .btn-direct-login:hover { background:rgba(62,207,142,0.22); }
+
+    .divider { display:flex; align-items:center; gap:12px; margin:16px 0; color:var(--muted); font-size:0.76rem; }
+    .divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    .form-footer { text-align:center; margin-top:20px; font-size:0.86rem; color:var(--muted); }
+    .form-footer a { color:var(--accent2); text-decoration:none; font-weight:600; }
+    .form-footer a:hover { text-decoration:underline; }
+
+    @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+  </style>
+</head>
+<body>
+
+<div class="recovery-wrapper">
+  <a class="logo-link" th:href="@{/}">
+    <div class="logo-icon">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M32 4C28.686 4 26 6.686 26 10V30H22V16C22 12.686 19.314 10 16 10C12.686 10 10 12.686 10 16V38C10 50.15 19.85 60 32 60C44.15 60 54 50.15 54 38V22C54 18.686 51.314 16 48 16C44.686 16 42 18.686 42 22V30H38V10C38 6.686 35.314 4 32 4Z" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="logo-name">Hand<span>App</span></span>
+  </a>
+
+  <div class="card">
+    <div class="google-badge-top">
+      <svg width="15" height="15" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Verificación rápida con Google
+    </div>
+
+    <h1 class="card-title">Recuperar mi cuenta</h1>
+    <p class="card-sub">Inicia sesión con tu cuenta de Google para recuperar el acceso inmediatamente o restablecer tu contraseña.</p>
+
+    <div class="alert err show" th:if="${error}" th:text="${error}"></div>
+
+    <!-- Paso 1: Botón de Google y selector de cuenta -->
+    <button type="button" class="btn-google" id="btnGoogleAuth" onclick="abrirSelectorGoogle()">
+      <svg viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      <span>Verificar identidad con Google</span>
+    </button>
+
+    <div class="google-accounts-panel" id="googleAccountsPanel">
+      <div class="google-panel-header">
+        <svg width="14" height="14" viewBox="0 0 48 48"><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/></svg>
+        Selecciona una cuenta de Google para HandApp
+      </div>
+      <button type="button" class="google-account-item" onclick="seleccionarCuentaGoogle('carlos@gmail.com', 'Carlos Perez')">
+        <div class="google-avatar">C</div>
+        <div class="google-acc-info">
+          <span class="google-acc-name">Carlos Perez</span>
+          <span class="google-acc-mail">carlos@gmail.com</span>
+        </div>
+      </button>
+      <button type="button" class="google-account-item" onclick="seleccionarCuentaGoogle('ana@gmail.com', 'Ana Gomez')">
+        <div class="google-avatar" style="background:linear-gradient(135deg,#ec4899,#f59e0b)">A</div>
+        <div class="google-acc-info">
+          <span class="google-acc-name">Ana Gomez</span>
+          <span class="google-acc-mail">ana@gmail.com</span>
+        </div>
+      </button>
+      <button type="button" class="google-account-item" onclick="usarOtraCuentaGoogle()">
+        <div class="google-avatar" style="background:#272a3d">+</div>
+        <div class="google-acc-info">
+          <span class="google-acc-name">Usar otra cuenta de Google</span>
+          <span class="google-acc-mail">Escribir mi correo @gmail.com</span>
+        </div>
+      </button>
+    </div>
+
+    <div class="verified-box" id="verifiedBox">
+      <span>✓</span>
+      <span id="verifiedText">Cuenta de Google verificada</span>
+    </div>
+
+    <!-- Paso 2: Entrar directo con Google o guardar nueva contraseña -->
+    <div class="recovery-step2" id="recoveryStep2">
+      <form th:action="@{/auth/google}" method="post" id="googleDirectForm">
+        <input type="hidden" name="correo" id="googleDirectCorreo">
+        <input type="hidden" name="nombre" id="googleDirectNombre">
+        <button type="submit" class="btn-direct-login">
+          ⚡ Entrar directamente a mi cuenta ahora
+        </button>
+      </form>
+
+      <div class="divider">o asigna una nueva contraseña</div>
+
+      <form th:action="@{/recuperar-cuenta}" method="post" id="recoveryForm">
+        <div class="form-group">
+          <label>Cuenta de Google verificada</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <input type="email" name="correo" id="correoRecuperar" placeholder="tucorreo@gmail.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Nueva contraseña</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+            <input type="password" name="nuevaContrasena" id="nuevaContrasena" placeholder="Mínimo 4 caracteres" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Confirmar nueva contraseña</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+            <input type="password" name="confirmarContrasena" id="confirmarContrasena" placeholder="Repite la nueva contraseña" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">
+          Guardar nueva contraseña y entrar
+        </button>
+      </form>
+    </div>
+
+    <div class="form-footer">
+      <a th:href="@{/login}">← Volver a Iniciar Sesión</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function abrirSelectorGoogle() {
+    document.getElementById('googleAccountsPanel').classList.toggle('show');
+    if (window.HandAppMascots3D && window.HandAppMascots3D.onGoogleStep) {
+      window.HandAppMascots3D.onGoogleStep('selector');
+    }
+  }
+
+  function seleccionarCuentaGoogle(correo, nombre) {
+    document.getElementById('googleAccountsPanel').classList.remove('show');
+    document.getElementById('verifiedBox').classList.add('show');
+    document.getElementById('verifiedText').textContent = 'Google verificado: ' + correo;
+    document.getElementById('correoRecuperar').value = correo;
+    document.getElementById('googleDirectCorreo').value = correo;
+    document.getElementById('googleDirectNombre').value = nombre || '';
+    document.getElementById('recoveryStep2').classList.add('show');
+    if (window.HandAppMascots3D && window.HandAppMascots3D.onGoogleStep) {
+      window.HandAppMascots3D.onGoogleStep('verificado', correo);
+    }
+  }
+
+  function usarOtraCuentaGoogle() {
+    document.getElementById('googleAccountsPanel').classList.remove('show');
+    document.getElementById('verifiedBox').classList.add('show');
+    document.getElementById('verifiedText').textContent = 'Ingresa tu correo de Google para continuar';
+    document.getElementById('recoveryStep2').classList.add('show');
+    const inp = document.getElementById('correoRecuperar');
+    inp.value = '';
+    inp.focus();
+    inp.addEventListener('input', function () {
+      document.getElementById('googleDirectCorreo').value = inp.value;
+    });
+    if (window.HandAppMascots3D && window.HandAppMascots3D.onGoogleStep) {
+      window.HandAppMascots3D.onGoogleStep('otra');
+    }
+  }
+
+  // Si llega con ?google=1 desde login.html, abrir automáticamente el selector de cuentas de Google
+  if (new URLSearchParams(window.location.search).get('google') === '1') {
+    window.addEventListener('DOMContentLoaded', () => setTimeout(abrirSelectorGoogle, 250));
+  }
+</script>
+</body>
+</html>
