@@ -68,6 +68,15 @@
 
         .form-body { padding: 24px 28px 28px; }
 
+        .mascot-note { display:flex; align-items:center; gap:12px; padding:14px 28px; background:rgba(108,99,255,.1); border-bottom:1px solid rgba(139,132,255,.2); }
+        .mascot-pair { display:flex; flex-shrink:0; }
+        .mascot { width:30px; height:30px; display:grid; place-items:center; border:2px solid var(--bg2); border-radius:50%; color:#fff; font-size:.72rem; font-weight:800; }
+        .mascot + .mascot { margin-left:-7px; }
+        .mascot-mili { background:#60a5fa; }
+        .mascot-lulu { background:#fbbf24; color:#422006; }
+        .mascot-note strong { display:block; color:var(--text); font-size:.78rem; margin-bottom:2px; }
+        .mascot-note span { color:var(--text-muted); font-size:.72rem; line-height:1.35; }
+
         .error-box {
             background: rgba(248,113,113,.1);
             border: 1px solid rgba(248,113,113,.3);
@@ -123,6 +132,7 @@
         .btn-secondary { background: var(--bg3); color: var(--text-muted); border: 1px solid var(--border); }
         .btn-secondary:hover { color: var(--text); border-color: var(--accent); }
     </style>
+    <th:block th:replace="~{fragments/tema :: assets}"></th:block>
 </head>
 <body>
     <div class="form-card">

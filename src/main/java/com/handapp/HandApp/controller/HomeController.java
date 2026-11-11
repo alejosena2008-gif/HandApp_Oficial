@@ -42,4 +42,19 @@ public class HomeController {
 
         return "index";
     }
+
+    @GetMapping("/abecedario")
+    public String abecedario() {
+        return "abecedario";
+    }
+
+    @GetMapping("/biblioteca")
+    public String biblioteca() {
+        return "biblioteca_de_señas";
+    }
+
+    @GetMapping("/video")
+    public String video() {
+        return "Video_introductorio";
+    }
 }

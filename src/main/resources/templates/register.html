@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" th:href="@{/IMG/manos.png}">
+  <th:block th:replace="~{fragments/tema :: assets}"></th:block>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -18,25 +19,91 @@
     body::before { content:''; position:fixed; top:-200px; left:-200px; width:600px; height:600px; background:radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%); pointer-events:none; }
     body::after { content:''; position:fixed; bottom:-200px; right:-200px; width:500px; height:500px; background:radial-gradient(circle, rgba(139,132,255,0.08) 0%, transparent 70%); pointer-events:none; }
     .register-wrapper { width:100%; max-width:460px; position:relative; z-index:1; }
-    .logo-link { display:flex; align-items:center; gap:10px; text-decoration:none; margin-bottom:32px; justify-content:center; }
+    .logo-link { display:flex; align-items:center; gap:10px; text-decoration:none; margin-bottom:28px; justify-content:center; }
     .logo-icon { width:40px; height:40px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; }
     .logo-icon svg { width:22px; height:22px; color:#fff; }
     .logo-name { font-size:1.4rem; font-weight:800; color:var(--text); letter-spacing:-0.5px; }
     .logo-name span { color:var(--accent2); }
-    .card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:36px 32px; box-shadow:0 24px 60px rgba(0,0,0,0.4); }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:34px 32px; box-shadow:0 24px 60px rgba(0,0,0,0.4); }
     .card-title { font-size:1.5rem; font-weight:700; margin-bottom:6px; }
-    .card-sub { color:var(--muted); font-size:0.9rem; margin-bottom:28px; }
+    .card-sub { color:var(--muted); font-size:0.9rem; margin-bottom:22px; }
+
+    /* Botones de Registro Social (Google y Apple) */
+    .social-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+    .btn-social {
+      background:var(--surface); border:1px solid var(--border); color:var(--text);
+      padding:11px 14px; border-radius:11px; font-size:0.88rem; font-weight:600; font-family:inherit;
+      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:9px;
+      transition:all .2s;
+    }
+    .btn-social:hover { border-color:var(--accent); background:rgba(108,99,255,0.08); transform:translateY(-1px); }
+    .btn-social.active { border-color:var(--accent); box-shadow:0 0 0 3px rgba(108,99,255,0.18); background:rgba(108,99,255,0.12); }
+    .btn-social svg { width:18px; height:18px; flex-shrink:0; }
+
+    /* Panel desplegable de cuenta Google / Apple */
+    .social-panel {
+      display:none; background:var(--surface); border:1px solid var(--border);
+      border-radius:14px; padding:16px; margin-bottom:18px; animation:fadeIn .22s ease;
+    }
+    .social-panel.show { display:block; }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(-6px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+    .social-panel-header {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--border);
+    }
+    .social-panel-title { display:flex; align-items:center; gap:8px; font-size:0.84rem; font-weight:700; color:var(--text); }
+    .social-panel-title svg { width:17px; height:17px; }
+    .social-panel-close {
+      background:none; border:none; color:var(--muted); font-size:1.1rem; line-height:1;
+      cursor:pointer; padding:2px 6px; border-radius:6px;
+    }
+    .social-panel-close:hover { color:var(--text); background:rgba(255,255,255,0.06); }
+    .social-accounts { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+    .social-acc-btn {
+      display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+      background:var(--card); border:1px solid var(--border); border-radius:10px;
+      padding:9px 12px; color:var(--text); cursor:pointer; font-family:inherit; transition:all .18s;
+    }
+    .social-acc-btn:hover { border-color:var(--accent); transform:translateX(2px); }
+    .social-acc-avatar {
+      width:32px; height:32px; border-radius:50%; background:var(--accent); color:#fff;
+      display:grid; place-items:center; font-size:0.82rem; font-weight:800; flex-shrink:0;
+    }
+    .social-acc-avatar.apple { background:#334155; }
+    .social-acc-info strong { display:block; font-size:0.84rem; font-weight:600; }
+    .social-acc-info span { display:block; font-size:0.74rem; color:var(--muted); }
+    .social-custom-form { display:flex; flex-direction:column; gap:9px; padding-top:8px; border-top:1px dashed var(--border); }
+    .social-custom-form input {
+      width:100%; background:var(--card); border:1px solid var(--border); color:var(--text);
+      padding:9px 12px; border-radius:8px; font-size:0.84rem; font-family:inherit; outline:none;
+    }
+    .social-custom-form input:focus { border-color:var(--accent); }
+    .social-custom-actions { display:flex; gap:8px; }
+    .btn-social-submit {
+      flex:1; background:var(--accent); color:#fff; border:none; padding:9px 12px;
+      border-radius:8px; font-size:0.82rem; font-weight:600; font-family:inherit; cursor:pointer; transition:background .2s;
+    }
+    .btn-social-submit:hover { background:var(--accent2); }
+    .btn-social-fill {
+      background:transparent; color:var(--accent2); border:1px solid rgba(139,132,255,0.35);
+      padding:9px 12px; border-radius:8px; font-size:0.8rem; font-weight:600; font-family:inherit; cursor:pointer;
+    }
+    .btn-social-fill:hover { background:rgba(108,99,255,0.1); }
+
     .form-group { margin-bottom:16px; }
     .form-group label { display:block; font-size:0.78rem; font-weight:600; color:var(--muted); margin-bottom:7px; text-transform:uppercase; letter-spacing:.5px; }
     .input-wrap { position:relative; }
     .input-wrap > svg { position:absolute; left:14px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--muted); pointer-events:none; }
-    .form-group input { width:100%; background:var(--surface); border:1px solid var(--border); color:var(--text); padding:12px 14px 12px 42px; border-radius:10px; font-size:0.9rem; font-family:inherit; outline:none; transition:border-color .2s, box-shadow .2s; }
+    .form-group input { width:100%; background:var(--surface); border:1px solid var(--border); color:var(--text); padding:12px 42px 12px 42px; border-radius:10px; font-size:0.9rem; font-family:inherit; outline:none; transition:border-color .2s, box-shadow .2s; }
     .form-group input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(108,99,255,0.15); }
     .form-group input.invalid { border-color:var(--error); }
     .form-group input::placeholder { color:var(--muted); }
     .field-error { font-size:0.78rem; color:var(--error); margin-top:5px; display:none; }
     .field-error.show { display:block; }
-    .toggle-pass { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--muted); padding:4px; display:flex; }
+    .toggle-pass { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--muted); padding:4px 2px; display:flex; }
     .toggle-pass:hover { color:var(--text); }
     .toggle-pass svg { width:16px; height:16px; }
     .strength-bar { height:3px; border-radius:2px; margin-top:6px; background:var(--border); overflow:hidden; }
@@ -56,7 +123,7 @@
     .alert.err { background:rgba(224,82,82,0.1); border:1px solid rgba(224,82,82,0.3); color:var(--error); }
     .btn-primary { width:100%; background:var(--accent); color:#fff; border:none; padding:14px; border-radius:10px; font-size:1rem; font-weight:600; font-family:inherit; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
     .btn-primary:hover { background:var(--accent2); transform:translateY(-1px); }
-    .divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(--muted); font-size:0.8rem; }
+    .divider { display:flex; align-items:center; gap:12px; margin:18px 0; color:var(--muted); font-size:0.8rem; }
     .divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
     .form-footer { text-align:center; font-size:0.88rem; color:var(--muted); }
     .form-footer a { color:var(--accent2); text-decoration:none; font-weight:600; }
@@ -81,6 +148,50 @@
 
     <div class="alert err show" th:if="${error}" th:text="${error}"></div>
 
+    <!-- Botones de Registro Rápido con Google o Apple -->
+    <div class="social-row">
+      <button type="button" class="btn-social" id="btnSocialGoogle" onclick="openSocialRegister('google')">
+        <svg viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        <span>Google</span>
+      </button>
+
+      <button type="button" class="btn-social" id="btnSocialApple" onclick="openSocialRegister('apple')">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+        </svg>
+        <span>Apple</span>
+      </button>
+    </div>
+
+    <!-- Panel interactivo de registro con Google o Apple -->
+    <div class="social-panel" id="socialPanel">
+      <div class="social-panel-header">
+        <div class="social-panel-title" id="socialPanelTitle">
+          <span>Registrarse con Google</span>
+        </div>
+        <button type="button" class="social-panel-close" onclick="closeSocialPanel()" title="Cerrar">×</button>
+      </div>
+
+      <div class="social-accounts" id="socialAccountsList"></div>
+
+      <form th:action="@{/auth/social}" method="post" class="social-custom-form" id="socialAuthForm">
+        <input type="hidden" name="provider" id="socialProviderInput" value="google">
+        <input type="text" name="nombre" id="socialCustomNombre" placeholder="Tu nombre completo" required>
+        <input type="email" name="correo" id="socialCustomCorreo" placeholder="tu@gmail.com" required>
+        <div class="social-custom-actions">
+          <button type="submit" class="btn-social-submit" id="socialSubmitBtn">Continuar con Google</button>
+          <button type="button" class="btn-social-fill" onclick="fillMainFormFromSocial()">Usar en formulario</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="divider">o regístrate con tu correo</div>
+
     <form th:action="@{/registro}" th:object="${registroDTO}" method="post" id="registerForm">
 
       <div class="form-group">
@@ -90,7 +201,7 @@
             <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
-          <input type="text" th:field="*{nombre}" placeholder="Tu nombre" required>
+          <input type="text" th:field="*{nombre}" id="regNombre" placeholder="Tu nombre" required>
         </div>
         <div class="field-error" id="err-nombre">Ingresa tu nombre.</div>
       </div>
@@ -102,8 +213,10 @@
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
           </svg>
-          <input type="email" th:field="*{correo}" placeholder="tu@correo.com" required>
+          <input type="email" th:field="*{correo}" id="regCorreo" placeholder="tu@correo.com " oninput="detectRoleFromEmail(this.value)" required>
         </div>
+      
+        
         <div class="field-error" id="err-correo">Ingresa un correo válido.</div>
       </div>
 
@@ -172,6 +285,81 @@
 </div>
 
 <script>
+  const SOCIAL_PRESETS = {
+    google: {
+      label: 'Registrarse con Google',
+      placeholder: 'tu.correo@gmail.com',
+      btnText: 'Continuar con Google',
+      accounts: [
+        { nombre: 'Carlos Perez', correo: 'carlos@gmail.com', inicial: 'C' },
+        { nombre: 'Ana Gomez', correo: 'ana@gmail.com', inicial: 'A' }
+      ]
+    },
+    apple: {
+      label: 'Registrarse con Apple ID',
+      placeholder: 'tu.usuario@icloud.com',
+      btnText: 'Continuar con Apple',
+      accounts: [
+        { nombre: 'Sofia Martinez', correo: 'sofia.martinez@icloud.com', inicial: 'S' },
+        { nombre: 'Mateo Lopez', correo: 'mateo.lopez@icloud.com', inicial: 'M' }
+      ]
+    }
+  };
+
+  function openSocialRegister(provider) {
+    const cfg = SOCIAL_PRESETS[provider];
+    if (!cfg) return;
+
+    document.getElementById('btnSocialGoogle').classList.toggle('active', provider === 'google');
+    document.getElementById('btnSocialApple').classList.toggle('active', provider === 'apple');
+
+    document.getElementById('socialProviderInput').value = provider;
+    document.getElementById('socialPanelTitle').innerHTML = `<span>${cfg.label}</span>`;
+    document.getElementById('socialCustomCorreo').placeholder = cfg.placeholder;
+    document.getElementById('socialSubmitBtn').textContent = cfg.btnText;
+
+    const listEl = document.getElementById('socialAccountsList');
+    listEl.innerHTML = cfg.accounts.map(acc => `
+      <button type="button" class="social-acc-btn" onclick="quickSocialSubmit('${provider}', '${acc.nombre}', '${acc.correo}')">
+        <div class="social-acc-avatar ${provider === 'apple' ? 'apple' : ''}">${acc.inicial}</div>
+        <div class="social-acc-info">
+          <strong>${acc.nombre}</strong>
+          <span>${acc.correo}</span>
+        </div>
+      </button>
+    `).join('');
+
+    document.getElementById('socialPanel').classList.add('show');
+
+    if (window.HandAppMascots3D && typeof window.HandAppMascots3D.onSocialRegister === 'function') {
+      window.HandAppMascots3D.onSocialRegister(provider);
+    }
+  }
+
+  function closeSocialPanel() {
+    document.getElementById('socialPanel').classList.remove('show');
+    document.getElementById('btnSocialGoogle').classList.remove('active');
+    document.getElementById('btnSocialApple').classList.remove('active');
+  }
+
+  function quickSocialSubmit(provider, nombre, correo) {
+    document.getElementById('socialProviderInput').value = provider;
+    document.getElementById('socialCustomNombre').value = nombre;
+    document.getElementById('socialCustomCorreo').value = correo;
+    document.getElementById('socialAuthForm').submit();
+  }
+
+  function fillMainFormFromSocial() {
+    const nombre = document.getElementById('socialCustomNombre').value.trim();
+    const correo = document.getElementById('socialCustomCorreo').value.trim();
+    const nombreInput = document.querySelector('[name=nombre]');
+    const correoInput = document.querySelector('[name=correo]');
+    if (nombre && nombreInput) nombreInput.value = nombre;
+    if (correo && correoInput) correoInput.value = correo;
+    closeSocialPanel();
+    document.getElementById('contrasena').focus();
+  }
+
   document.getElementById('registerForm').addEventListener('submit', function (e) {
     const nombre = document.querySelector('[name=nombre]').value.trim();
     const correo = document.querySelector('[name=correo]').value.trim();
@@ -195,6 +383,29 @@
   });
 
   function show(id) { document.getElementById(id).classList.add('show'); }
+
+  function detectRoleFromEmail(val) {
+    const email = (val || '').trim().toLowerCase();
+    const label = document.getElementById('roleDetectedLabel');
+    const box = document.getElementById('roleDomainHint');
+    if (!label || !box) return;
+    if (email.endsWith('@handapp.com')) {
+      label.textContent = '🛡️ Rol asignado: ADMINISTRADOR — Entrarás al Panel Admin';
+      label.style.color = '#a78bfa';
+      box.style.borderColor = 'rgba(167,139,250,0.6)';
+      box.style.background = 'rgba(124,108,252,0.16)';
+    } else if (email.endsWith('@editorhand.com')) {
+      label.textContent = '✏️ Rol asignado: EDITOR — Entrarás al Panel Editor';
+      label.style.color = '#34d399';
+      box.style.borderColor = 'rgba(52,211,153,0.6)';
+      box.style.background = 'rgba(52,211,153,0.14)';
+    } else {
+      label.textContent = '🎓 Rol asignado: ESTUDIANTE — Acceso a Lecciones y Traductor';
+      label.style.color = 'var(--text)';
+      box.style.borderColor = 'rgba(139,132,255,0.25)';
+      box.style.background = 'rgba(108,99,255,0.1)';
+    }
+  }
 
   function togglePass(id, btn) {
     const inp = document.getElementById(id);

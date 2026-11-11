@@ -122,6 +122,14 @@ class Navigation {
     }
     
     init() {
+        const authenticated = this.searchContainer?.dataset.authenticated === 'true';
+
+        if (!authenticated) {
+            this.searchToggle?.addEventListener('click', () => {
+                this.searchContainer?.classList.add('locked');
+            });
+        }
+
         // Scroll handler
         this.handleScroll();
         window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
@@ -137,7 +145,7 @@ class Navigation {
         }
         
         // Search functionality
-        if (this.searchToggle && this.searchContainer) {
+        if (authenticated && this.searchToggle && this.searchContainer) {
             this.searchToggle.addEventListener('click', () => this.openSearch());
             this.searchClose?.addEventListener('click', () => this.closeSearch());
             
@@ -612,7 +620,7 @@ class SearchFunctionality {
             if (e.key === 'Enter') {
                 const query = this.searchInput.value.trim();
                 if (query) {
-                    window.location.href = `html/biblioteca_de_señas.html?buscar=${encodeURIComponent(query)}`;
+                    window.location.href = `/biblioteca?buscar=${encodeURIComponent(query)}`;
                 }
             }
         });

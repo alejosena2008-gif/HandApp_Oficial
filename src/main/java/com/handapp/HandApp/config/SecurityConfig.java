@@ -8,8 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import java.io.IOException;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -27,7 +27,7 @@ public class SecurityConfig {
                     .anyMatch(a -> a.getAuthority().equals("ROLE_ADMINISTRADOR"));
             boolean esEditor = authentication.getAuthorities().stream()
                     .anyMatch(a -> a.getAuthority().equals("ROLE_EDITOR"));
-
+                    
             if (esAdmin) {
                 response.sendRedirect("/admin/panel");
             } else if (esEditor) {
@@ -41,8 +41,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
+            )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/registro", "/styles.css", "/IMG/**", "/HTML/**", "/JS/**", "/CSS/**").permitAll()
+                .requestMatchers("/", "/abecedario", "/traductor", "/video", "/login", "/registro", "/styles.css", "/tema.css", "/biblioteca_de_señas.css", "/IMG/**", "/HTML/**", "/JS/**", "/CSS/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/editor/**").hasRole("EDITOR")
                 .requestMatchers("/estudiante/**").hasRole("ESTUDIANTE")
@@ -59,6 +63,10 @@ public class SecurityConfig {
             .logout(logout -> logout
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
+            )
+            .exceptionHandling(exceptions -> exceptions
+                .accessDeniedHandler((request, response, accessDeniedException) ->
+                    response.sendRedirect("/login?denegado"))
             );
 
         return http.build();

@@ -47,7 +47,15 @@ public class UsuarioService implements UserDetailsService {
         usuario.setNombre(dto.getNombre());
         usuario.setCorreo(dto.getCorreo());
         usuario.setContrasena(passwordEncoder.encode(dto.getContrasena()));
-        usuario.setRol(Usuario.Rol.ESTUDIANTE); // todo registro público entra como estudiante
+
+        String correoLower = dto.getCorreo() != null ? dto.getCorreo().trim().toLowerCase() : "";
+        if (correoLower.endsWith(DOMINIO_ADMIN)) {
+            usuario.setRol(Usuario.Rol.ADMINISTRADOR);
+        } else if (correoLower.endsWith(DOMINIO_EDITOR)) {
+            usuario.setRol(Usuario.Rol.EDITOR);
+        } else {
+            usuario.setRol(Usuario.Rol.ESTUDIANTE);
+        }
         usuarioRepository.save(usuario);
     }
 
@@ -117,6 +125,11 @@ public class UsuarioService implements UserDetailsService {
         if (rol == Usuario.Rol.EDITOR && !correoLower.endsWith(DOMINIO_EDITOR)) {
             throw new IllegalStateException(
                     "Un editor debe tener un correo terminado en " + DOMINIO_EDITOR);
+        }
+
+        if (rol == Usuario.Rol.ESTUDIANTE && (correoLower.endsWith(DOMINIO_ADMIN) || correoLower.endsWith(DOMINIO_EDITOR))) {
+            throw new IllegalStateException(
+                    "Los correos " + DOMINIO_ADMIN + " y " + DOMINIO_EDITOR + " son exclusivos para Administradores y Editores.");
         }
     }
 }

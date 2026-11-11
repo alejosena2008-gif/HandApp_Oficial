@@ -55,18 +55,29 @@
         .content { flex: 1; padding: 28px; display: flex; flex-direction: column; gap: 24px; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 12px; transition: background .2s, transform .2s, box-shadow .2s; cursor: default; }
+        .stat-card:hover {
+            border-color: transparent;
+            background:
+                linear-gradient(var(--bg2), var(--bg2)) padding-box,
+                linear-gradient(135deg, #34d399, #6ee7b7) border-box;
+            box-shadow: 0 0 18px rgba(52,211,153,.22);
+            transform: translateY(-2px);
+        }
         .stat-label { font-size: .8rem; color: var(--text-muted); font-weight: 500; }
         .stat-value { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; }
 
         .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
         .card-head { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
         .card-head-title { font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 700; }
+        .card-head-actions { display: flex; align-items: center; gap: 8px; }
 
         .btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: var(--radius-sm); font-size: .82rem; font-weight: 500; cursor: pointer; border: none; text-decoration: none; }
         .btn svg { width: 14px; height: 14px; }
         .btn-primary { background: var(--accent); color: #062; }
         .btn-primary:hover { background: var(--accent2); }
+        .btn-secondary { background: var(--bg3); color: var(--text-muted); border: 1px solid var(--border); }
+        .btn-secondary:hover { color: var(--text); border-color: var(--accent); }
         .btn-sm { padding: 5px 11px; font-size: .78rem; }
 
         table { width: 100%; border-collapse: collapse; }
@@ -101,6 +112,7 @@
             .main { margin-left: 0; }
         }
     </style>
+    <th:block th:replace="~{fragments/tema :: assets}"></th:block>
 </head>
 <body>
 
@@ -177,12 +189,20 @@
         <div class="card">
             <div class="card-head">
                 <div class="card-head-title">Mis lecciones</div>
-                <a th:href="@{/editor/lecciones/nueva}" class="btn btn-primary btn-sm">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                    </svg>
-                    Nueva lección
-                </a>
+                <div class="card-head-actions">
+                    <a th:href="@{/editor/reportes}" class="btn btn-secondary btn-sm">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3v18h18"/><path d="M7 16l4-5 3 3 5-7"/>
+                        </svg>
+                        Ver reportes
+                    </a>
+                    <a th:href="@{/editor/lecciones/nueva}" class="btn btn-primary btn-sm">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Nueva lección
+                    </a>
+                </div>
             </div>
 
             <table>

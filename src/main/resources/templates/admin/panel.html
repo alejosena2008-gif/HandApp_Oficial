@@ -235,9 +235,14 @@
             border-radius: var(--radius-sm);
             padding: 0 12px;
             height: 36px;
-            transition: border-color .2s;
+            transition: background .2s;
         }
-        .search-bar:focus-within { border-color: var(--accent); }
+        .search-bar:focus-within {
+            border-color: transparent;
+            background:
+                linear-gradient(var(--bg3), var(--bg3)) padding-box,
+                linear-gradient(135deg, var(--accent), #5eead4) border-box;
+        }
         .search-bar svg { width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; }
         .search-bar input {
             background: none;
@@ -271,10 +276,17 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            transition: border-color .2s, transform .2s;
+            transition: background .2s, transform .2s;
             cursor: default;
         }
-        .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .stat-card:hover {
+            border-color: transparent;
+            background:
+                linear-gradient(var(--bg2), var(--bg2)) padding-box,
+                linear-gradient(135deg, #34d399, #6ee7b7) border-box;
+            box-shadow: 0 0 18px rgba(52,211,153,.22);
+            transform: translateY(-2px);
+        }
         .stat-header { display: flex; align-items: center; justify-content: space-between; }
         .stat-label { font-size: .8rem; color: var(--text-muted); font-weight: 500; }
         .stat-icon {
@@ -428,8 +440,27 @@
             font-weight: 500;
             cursor: not-allowed;
             opacity: .55;
+            transition: color .2s, border-color .2s, background .2s, box-shadow .2s;
         }
         .export-btn svg { width: 15px; height: 15px; }
+        .export-btn.export-pdf:hover {
+            color: #f87171;
+            border-color: #f87171;
+            background: rgba(248,113,113,.12);
+            box-shadow: 0 0 16px rgba(248,113,113,.2);
+        }
+        .export-btn.export-xlsx:hover {
+            color: #34d399;
+            border-color: #34d399;
+            background: rgba(52,211,153,.12);
+            box-shadow: 0 0 16px rgba(52,211,153,.2);
+        }
+        .export-btn.export-docx:hover {
+            color: #60a5fa;
+            border-color: #60a5fa;
+            background: rgba(96,165,250,.12);
+            box-shadow: 0 0 16px rgba(96,165,250,.2);
+        }
         .export-note {
             padding: 0 20px 18px;
             font-size: .72rem;
@@ -475,6 +506,7 @@
             .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
+    <th:block th:replace="~{fragments/tema :: assets}"></th:block>
 </head>
 <body>
 
@@ -570,7 +602,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                 </svg>
-                <input type="text" placeholder="Buscar usuarios...">
+                <input type="text" id="userSearch" placeholder="Buscar usuarios..." autocomplete="off">
             </div>
         </div>
     </header>
@@ -662,7 +694,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="usuario : ${usuarios}">
+                        <tr th:each="usuario : ${usuarios}" data-user-row>
                             <td>
                                 <div class="user-cell">
                                     <div class="mini-avatar"
@@ -696,6 +728,9 @@
                         </tr>
                         <tr th:if="${#lists.isEmpty(usuarios)}">
                             <td colspan="3" class="empty-state">No hay usuarios registrados todavía.</td>
+                        </tr>
+                        <tr id="noSearchResults" hidden>
+                            <td colspan="3" class="empty-state">No se encontraron usuarios.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -743,15 +778,15 @@
                         <div class="card-head-title">Exportar reportes</div>
                     </div>
         <div class="export-list">
-            <a th:href="@{/admin/reportes/exportar/pdf}" class="export-btn" style="cursor:pointer; opacity:1; text-decoration:none;">
+            <a th:href="@{/admin/reportes/exportar/pdf}" class="export-btn export-pdf" style="cursor:pointer; opacity:1; text-decoration:none;">
                 <span>Exportar a PDF</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
             </a>
-            <a th:href="@{/admin/reportes/exportar/excel}" class="export-btn" style="cursor:pointer; opacity:1; text-decoration:none;">
+            <a th:href="@{/admin/reportes/exportar/excel}" class="export-btn export-xlsx" style="cursor:pointer; opacity:1; text-decoration:none;">
                 <span>Exportar a Excel (XLSX)</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
             </a>
-            <a th:href="@{/admin/reportes/exportar/word}" class="export-btn" style="cursor:pointer; opacity:1; text-decoration:none;">
+            <a th:href="@{/admin/reportes/exportar/word}" class="export-btn export-docx" style="cursor:pointer; opacity:1; text-decoration:none;">
                 <span>Exportar a Word (DOCX)</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
             </a>
@@ -783,6 +818,25 @@
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             item.classList.add('active');
         });
+    });
+
+    const userSearch = document.getElementById('userSearch');
+    const userRows = Array.from(document.querySelectorAll('[data-user-row]'));
+    const noSearchResults = document.getElementById('noSearchResults');
+
+    userSearch?.addEventListener('input', () => {
+        const query = userSearch.value.trim().toLocaleLowerCase();
+        let visibleRows = 0;
+
+        userRows.forEach(row => {
+            const matches = row.textContent.toLocaleLowerCase().includes(query);
+            row.hidden = !matches;
+            if (matches) visibleRows++;
+        });
+
+        if (noSearchResults) {
+            noSearchResults.hidden = query === '' || visibleRows > 0;
+        }
     });
 </script>
 </body>

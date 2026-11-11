@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="duo(title, text)" class="mascot-duo">
+    <style>
+        .mascot-duo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 16px 22px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, rgba(99,102,241,.13), rgba(46,221,207,.12));
+            border: 1px solid rgba(139,132,255,.28);
+            border-radius: 20px;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, .08);
+        }
+        .mascot-duo .mascot-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .mascot-duo .seal-wrap,
+        .mascot-duo .duck-wrap {
+            width: 118px;
+            height: 118px;
+        }
+        .mascot-duo .seal-svg,
+        .mascot-duo .duck-svg {
+            width: 100%;
+            height: 100%;
+            animation: mascot-float 2.8s ease-in-out infinite;
+        }
+        .mascot-duo .duck-svg { animation-delay: .25s; }
+        .mascot-duo .mascot-name {
+            color: #6366f1;
+            background: rgba(99,102,241,.14);
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: .66rem;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+        .mascot-duo-copy {
+            flex: 1;
+            text-align: center;
+            padding: 0 8px;
+        }
+        .mascot-duo-copy strong {
+            display: block;
+            color: inherit;
+            font-size: .98rem;
+            margin-bottom: 4px;
+        }
+        .mascot-duo-copy span {
+            display: block;
+            color: inherit;
+            opacity: .78;
+            font-size: .84rem;
+            line-height: 1.45;
+        }
+        @media (max-width: 560px) {
+            .mascot-duo { padding: 12px 14px; gap: 10px; }
+            .mascot-duo .seal-wrap, .mascot-duo .duck-wrap { width: 84px; height: 84px; }
+        }
+        @keyframes mascot-float { 0%,100% { transform:translateY(0) rotate(0); } 50% { transform:translateY(-5px) rotate(-2deg); } }
+    </style>
+    <div class="mascot-unit mascot-unit-left" aria-hidden="true">
+        <div class="seal-wrap">
+            <img class="seal-svg" src="/IMG/mascotas3d/mili_right.png" alt="Mili 3D">
+        </div>
+        <span class="mascot-name">Mili</span>
+    </div>
+    <div class="mascot-duo-copy">
+        <strong th:text="${title}">Mili y Lulú te acompañan</strong>
+        <span th:text="${text}">Aprende lengua de señas con ellos.</span>
+    </div>
+    <div class="mascot-unit mascot-unit-right" aria-hidden="true">
+        <div class="duck-wrap">
+            <img class="duck-svg" src="/IMG/mascotas3d/lulu_left.png" alt="Lulú 3D">
+        </div>
+        <span class="mascot-name">Lulú</span>
+    </div>
+</div>
+</body>
+</html>

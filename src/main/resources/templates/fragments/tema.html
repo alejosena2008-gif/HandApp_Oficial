@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="assets">
+    <link rel="stylesheet" th:href="@{/CSS/tema.css}">
+    <script>
+        (function () {
+            var theme = 'light';
+            try {
+                theme = localStorage.getItem('handapp-theme') || 'light';
+            } catch (error) {
+                console.warn('No se pudo recuperar el tema guardado.', error);
+            }
+            document.documentElement.setAttribute('data-theme', theme);
+        }());
+    </script>
+    <script th:src="@{/JS/proteccion_y_carga.js}" defer></script>
+    <script th:src="@{/JS/tema.js}" defer></script>
+    <script th:src="@{/JS/mascotas3d.js}" defer></script>
+</th:block>
+</body>
+</html>

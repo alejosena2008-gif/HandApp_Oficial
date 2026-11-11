@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HandApp - Aprende Lengua de Señas</title>
-    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" th:href="@{/CSS/styles.css}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" th:href="@{/IMG/manos.png}">
+    <th:block th:replace="~{fragments/tema :: assets}"></th:block>
 </head>
 <body>
     <!-- Cursor personalizado -->
@@ -49,7 +50,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="html/abecedario.html" class="nav-link" data-text="Abecedario">
+                        <a th:href="@{/abecedario}" class="nav-link" data-text="Abecedario">
                             <span class="nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
@@ -76,15 +77,19 @@
                         </button>
                         <div class="dropdown-menu lessons-dropdown">
                             <div class="dropdown-grid">
-                                <a th:each="leccion : ${lecciones}"
-                                   th:href="@{/estudiante/lecciones/{id}(id=${leccion.id})}"
-                                   class="dropdown-item">
+                                        <a th:if="${logueado}" th:each="leccion : ${lecciones}"
+                                th:href="@{/estudiante/lecciones/{id}(id=${leccion.id})}"
+                                class="dropdown-item">
                                     <span class="lesson-number" th:text="${#numbers.formatInteger(leccion.orden, 2)}">01</span>
                                     <span class="lesson-title" th:text="${leccion.titulo}">Título</span>
                                     <span class="lesson-progress">
                                         <span class="progress-bar" style="--progress: 0%"></span>
                                     </span>
                                 </a>
+                                <div th:if="${!logueado}" class="dropdown-item locked" aria-label="Lecciones bloqueadas">
+                                    <span class="lesson-number">🔒</span>
+                                    <span class="lesson-title">Inicia sesión para acceder a las lecciones</span>
+                                </div>
                                 <div th:if="${#lists.isEmpty(lecciones)}" style="padding:16px; font-size:.85rem; color:var(--text-secondary,#666);">
                                     Todavía no hay lecciones publicadas.
                                 </div>
@@ -139,7 +144,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a href="../Prototipo HandApp/HTML/traductor.html" class="nav-link" data-text="Traductor">
+                        <a th:href="@{/traductor}" class="nav-link" data-text="Traductor">
                             <span class="nav-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
@@ -154,15 +159,15 @@
             <!-- Acciones del header -->
             <div class="header-actions">
                 <!-- Barra de búsqueda expandible -->
-                <div class="search-container" id="searchContainer">
-                    <button class="search-toggle" id="searchToggle" aria-label="Buscar">
+                <div class="search-container" id="searchContainer" th:attr="data-authenticated=${logueado}">
+                    <button class="search-toggle" id="searchToggle" type="button" aria-label="Buscar" th:attr="aria-disabled=${!logueado}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="11" cy="11" r="8"/>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                         </svg>
                     </button>
                     <div class="search-input-wrapper">
-                        <input type="text" class="search-input" id="searchInput" placeholder="Buscar señas, lecciones...">
+                        <input type="text" class="search-input" id="searchInput" placeholder="Buscar señas, lecciones..." th:disabled="${!logueado}">
                         <button class="search-close" id="searchClose">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <line x1="18" y1="6" x2="6" y2="18"/>
@@ -188,6 +193,8 @@
                     <button class="user-avatar" id="userMenuToggle" th:text="${inicial}">A</button>
                     <div class="user-dropdown" id="userDropdown">
                         <span class="user-dropdown-name" th:text="${nombreUsuario}">Nombre</span>
+                        <a th:if="${esAdmin}" href="/admin/panel" class="user-dropdown-item" style="display:block; text-decoration:none; color:var(--accent2, #8b84ff); font-weight:700;">🛡️ Panel Administrador</a>
+                        <a th:if="${esEditor}" href="/editor/panel" class="user-dropdown-item" style="display:block; text-decoration:none; color:#34d399; font-weight:700;">✏️ Panel Editor</a>
                         <form th:action="@{/logout}" method="post" style="display:contents">
                             <button type="submit" class="user-dropdown-item" style="width:100%; text-align:left; background:none; border:none; cursor:pointer; font:inherit;">Cerrar sesión</button>
                         </form>
@@ -210,7 +217,7 @@
             <div class="mobile-menu-content">
                 <nav class="mobile-nav">
                     <a href="#inicio" class="mobile-nav-link">Inicio</a>
-                    <a href="#abecedario" class="mobile-nav-link">Abecedario</a>
+                    <a th:href="@{/abecedario}" class="mobile-nav-link">Abecedario</a>
                     <div class="mobile-accordion">
                         <button class="mobile-accordion-trigger">
                             Lecciones
@@ -219,9 +226,10 @@
                             </svg>
                         </button>
                         <div class="mobile-accordion-content">
-                            <a th:each="leccion : ${lecciones}"
-                               th:href="@{/estudiante/lecciones/{id}(id=${leccion.id})}"
-                               th:text="'Lección ' + ${leccion.orden} + ': ' + ${leccion.titulo}">Lección</a>
+                            <a th:if="${logueado}" th:each="leccion : ${lecciones}"
+                            th:href="@{/estudiante/lecciones/{id}(id=${leccion.id})}"
+                            th:text="'Lección ' + ${leccion.orden} + ': ' + ${leccion.titulo}">Lección</a>
+                            <span th:if="${!logueado}" class="mobile-locked-item">🔒 Inicia sesión para acceder a las lecciones</span>
                         </div>
                     </div>
                     <div class="mobile-accordion">
@@ -289,15 +297,15 @@
                 y un traductor en tiempo real. Conecta con una nueva forma de comunicarte.
             </p>
 
-            <div class="hero-actions">
-                    <a th:href="${logueado} ? '#lecciones' : @{/registro}" class="btn btn-primary btn-large">
+                <div class="hero-actions">
+                    <a th:if="${!logueado}" th:href="@{/registro}" class="btn btn-primary btn-large">
                     <span>Empezar Ahora</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="5" y1="12" x2="19" y2="12"/>
                         <polyline points="12,5 19,12 12,19"/>
                     </svg>
                 </a>
-                <a href="../Prototipo HandApp/HTML/Video_introductorio.html" class="btn btn-outline btn-large">
+                <a th:href="@{/video}" class="btn btn-outline btn-large">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polygon points="5,3 19,12 5,21"/>
                     </svg>
@@ -384,7 +392,7 @@
                     <p class="feature-description">
                         Aprende cada letra del alfabeto con animaciones detalladas y guías paso a paso.
                     </p>
-                    <a href="#abecedario" class="feature-link">
+                    <a th:href="@{/abecedario}" class="feature-link">
                         Explorar
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"/>
@@ -406,29 +414,6 @@
                     </p>
                     <a href="#lecciones" class="feature-link">
                         Ver Lecciones
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"/>
-                            <polyline points="12,5 19,12 12,19"/>
-                        </svg>
-                    </a>
-                </article>
-
-                <article class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="6" width="20" height="12" rx="2"/>
-                            <line x1="6" y1="12" x2="10" y2="12"/>
-                            <line x1="8" y1="10" x2="8" y2="14"/>
-                            <circle cx="17" cy="10" r="1"/>
-                            <circle cx="15" cy="13" r="1"/>
-                        </svg>
-                    </div>
-                    <h3 class="feature-title">Biblioteca de Señas</h3>
-                    <p class="feature-description">
-                        Explora nuestra colección de señas con imágenes y videos para su correcta interpretación.
-                    </p>
-                    <a href="../Prototipo HandApp/HTML/señas.html" class="feature-link">
-                        Ver Biblioteca
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"/>
                             <polyline points="12,5 19,12 12,19"/>
@@ -469,7 +454,7 @@
                     <p class="feature-description">
                         Convierte texto a Lengua de señas instantáneamente con nuestro traductor inteligente.
                     </p>
-                    <a href="#traductor" class="feature-link">
+                    <a th:href="@{/traductor}" href="/traductor" class="feature-link">
                         Probar Traductor
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"/>
@@ -524,7 +509,7 @@
                 <nav class="footer-nav">
                     <div class="footer-nav-column">
                         <h4>Aprender</h4>
-                        <a href="#">Abecedario</a>
+                        <a th:href="@{/abecedario}">Abecedario</a>
                         <a href="#">Lecciones</a>
                         <a href="#">Juegos</a>
                         <a href="#">Traductor</a>
@@ -553,7 +538,7 @@
                             <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
                         </svg>
                     </a>
-                    <a href="https://www.instagram.com/" aria-label="Instagram">
+                    <a href="https://www.instagram.com/handapp_oficial/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                             <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
